@@ -37,6 +37,10 @@ const Button = styled.button(({ variant, isSmall, isLarge, isBold }) => [
     tw`bg-neutral-2 text-neutral-9 hocus:(bg-neutral-3)
         disabled:hocus:(bg-base text-neutral-8)
       `,
+ variant === "trans" &&
+    tw` border border-dguMain hocus:(bg-neutral-8)
+         disabled:hocus:(bg-base text-neutral-8)
+        `,
 
   isSmall && tw`text-sm`,
   isLarge && tw`text-lg`,
