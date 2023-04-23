@@ -1,6 +1,4 @@
 import tw from "twin.macro";
-import {useState} from 'react';
-
 
 const TD = tw.td`py-2 px-4`;
 
