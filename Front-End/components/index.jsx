@@ -12,3 +12,6 @@ export { default as ExternalLink } from "./ExternalLink"
 export { default as ThemeChanger } from "./ThemeChanger"
 export { default as LoadingCircle } from "./LoadingCircle"
 export { default as FullPageLoading } from "./FullPageLoading"
+export { default as DropMenu } from "./DropMenu"
+export { default as TimeTable } from "./TimeTable"
+
