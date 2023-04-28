@@ -1,7 +1,7 @@
 import { useState } from "react";
 import tw from "twin.macro";
 import {Button} from "./Button"
-
+//이 컴포넌트는 나중에 마이페이지 페이지 제작할 때 들어갈 컴포넌트로 이 파일 삭제 후 마이페이지 페이지에 바로 컴포넌트 생성 후 활용할 예정
 /* reserve = {예약번호 : INT,
               신청일 : DATE,
               시설분류 : Charset,

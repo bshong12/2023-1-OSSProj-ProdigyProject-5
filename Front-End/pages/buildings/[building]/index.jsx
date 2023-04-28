@@ -12,13 +12,43 @@ export default function Building({ heading, rooms, name }) {
   const pageHeading = heading || `${name} Rooms`
   const [selectedFloor, setSelectedFloor] = useState("");
 
-  filterRoomsByFloor = () => { //선택된 층수에 따라 강의실 filter해서 분류
+  const filterRoomsByFloor = () => { //선택된 층수에 따라 강의실 filter해서 분류
     if(!selectedFloor) {
       return rooms
     }
     return rooms.filter((room) => room[1] === selectedFloor)
   }
 
+  const Roomli = ({room}) => {
+    const [isRoomOpen, setIsRoomOpen] = useState(false);
+    return(
+      <li tw="mr-5 mb-5">
+                  <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
+                    <Link href={`${asPath}/${nameToSlug(room[0])}`} passHref>
+                      <StyledLink
+                        underline
+                        tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
+                        bg-neutral-1 px-2 py-2 rounded-lg capitalize"
+                      >
+                        {room[0]}
+                      </StyledLink>
+                    </Link>
+                    <button onClick={()=> setIsRoomOpen(!isRoomOpen)} tw="mr-3">
+                      <img src="/static/drop_icon.png"/>
+                    </button>
+                  </span>
+                  {isRoomOpen &&(
+                    <div tw="bg-neutral-1 p-3">
+                      <ol>
+                        <li>수용인원 : {room[2]}</li>
+                        <li>보유기자재정보 : {room[3]}</li>
+                        <li>보유시설정비정보 : {room[4]}</li>
+                      </ol>
+                    </div>
+                  )}
+                </li>
+    )
+  }
   const FloorItem = tw.li`
     hover:bg-gray-100
     pt-1 pb-1
@@ -38,34 +68,14 @@ export default function Building({ heading, rooms, name }) {
               <DropMenu buttonText={"층 리스트"}>
                 <ul>
                   <FloorItem onClick={() => setSelectedFloor("")}>모든 층 보기</FloorItem>
-                  <FloorItem onClick={() => selectedFloor(1)}>1층</FloorItem>
-                  <FloorItem onClick={() => selectedFloor(2)}>2층</FloorItem>
+                  <FloorItem onClick={() => setSelectedFloor(1)}>1층</FloorItem>
+                  <FloorItem onClick={() => setSelectedFloor(2)}>2층</FloorItem>
                 </ul>
               </DropMenu>
             </span>
             <ul tw="list-inside text-left text-lg font-hero grid gap-2 sm:(grid-cols-2) lg:(grid-cols-3)">
-
-              {filterRoomsByFloor.map((room) => (
-                <li key={room[0]}>
-                  <span tw="flex flex-between w-auto bg-neutral-1">
-                    <Link href={`${asPath}/${nameToSlug(room)}`} passHref>
-                      <StyledLink
-                        underline
-                        tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
-                        bg-neutral-1 px-2 py-2 rounded-lg capitalize"
-                      >
-                        {room[0]}
-                      </StyledLink>
-                    </Link>
-                    <DropMenu buttonText={""}>
-                      <ol>
-                        <li>수용 인원 : {room[2]}</li>
-                        <li>보유 기자재 : {room[3]}</li>
-                        <li>보유시설정비 : {room[4]}</li>
-                      </ol>
-                    </DropMenu>
-                  </span>
-                </li>
+              {filterRoomsByFloor().map((room) => (
+                <Roomli key={room[0]} room={room} />
               ))}
             </ul>
           </div>

@@ -19,7 +19,7 @@ export default function TimeTable({ reservedTimes, allTimes }) {
   return (
     <table tw="border border-gray-700 table-auto w-full border-collapse">
       <thead>
-        <tr tw="border-bottom border-gray-600 text-center">
+        <tr tw="border-b border-gray-600 text-center">
           <th colSpan={2}>예약 가능 시간 내역</th>
         </tr>
       </thead>

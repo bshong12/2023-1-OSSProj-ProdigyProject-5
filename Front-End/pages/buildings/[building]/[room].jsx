@@ -2,44 +2,54 @@ import { useEffect, useState } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Img, BreadCrumb, StyledLink, Button } from "../../../components"
+import { Img, BreadCrumb, StyledLink, Button, TimeTable } from "../../../components"
 import { UserUIContainer } from "../../../layouts/UserUIContainer"
 import { buildings, nameToSlug, slugToName } from "../../../utils/buildings"
 import { format } from "date-fns"
 import { HiOutlineClock } from "react-icons/hi"
 
-const professors = [
+const reservTable = [
   {
     name: "Lonnie Bowe",
     img: "/static/bowe.jpg",
-    time: "8:00pm - 8:45pm",
+    time: "8:00pm - 8:30",
     title: "Assistant Professor of Computer Science",
   },
   {
     name: "Joseph Allen",
     img: "/static/allen.jpg",
-    time: "9:15pm - 10:30pm",
+    time: "9:00pm - 10:30",
     title: "Distinguished Professor of Geology/Chair",
   },
   {
     name: "Lisa Darlington",
     img: "/static/lisa.jpg",
-    time: "12:00pm - 12:45pm",
+    time: "12:00pm - 12:30",
     title: "Professor-Mathematics/Department Chair",
   },
   {
     name: "Mark Dietrich",
     img: "/static/dietrich.jpg",
-    time: "1:00pm - 1:45pm",
+    time: "13:00pm - 13:30",
     title: "Assistant Professor of Computer Science",
   },
   {
     name: "Angela Addair",
     img: "/static/addair.jpg",
-    time: "3:00pm - 4:00pm",
+    time: "15:00pm - 16:00",
     title: "Assistant Professor of Management",
   },
 ]
+
+const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
+
+function TimeSplit(reserveTable) {
+  const [startTime, endTime] = reserveTable.time.split(" - ");
+  const [startHour, startMinute] = startTime.split(":");
+  const [endHour, endMinute] = endTime.split(":");
+
+
+}
 
 export default function Room({ room, name }) {
   const { asPath } = useRouter()
@@ -60,7 +70,7 @@ export default function Room({ room, name }) {
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap">
             <div tw="w-full mb-12 lg:(w-1/2 border-r mb-0)">
-              <Calendar />
+              <TimeTable />
             </div>
             <hr />
             <div tw="w-full lg:(w-1/2) flex flex-col items-center px-6">

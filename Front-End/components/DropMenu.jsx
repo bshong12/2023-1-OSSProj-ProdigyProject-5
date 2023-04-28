@@ -1,10 +1,10 @@
 import tw from "twin.macro";
 import {useState, useRef} from 'react';
 
-export default function DropMenu ({ buttonText, children }) {
+export default function DropMenu ({ buttonText, children, variant }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const buttonRef = useRef(null);
-
+  
   return (
     <div tw="relative">
       <button
