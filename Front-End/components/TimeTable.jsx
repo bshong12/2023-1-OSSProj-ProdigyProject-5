@@ -1,7 +1,7 @@
 import { useState } from "react";
 import tw from "twin.macro";
 
-const TD = tw.td`py-2 px-4`;
+const TD = tw.td`py-2 px-4 h-12`;
 
 export default function TimeTable({ reservedTimes, allTimes }) {
   const [selectedTimes, setSelectedTimes] = useState([]);
@@ -17,10 +17,10 @@ export default function TimeTable({ reservedTimes, allTimes }) {
   };
 
   return (
-    <table tw="border border-gray-700 table-auto w-full border-collapse">
+    <table tw="border border-neutral-5 rounded-lg table-auto w-full border-collapse text-left">
       <thead>
-        <tr tw="border-b border-gray-600 text-center">
-          <th colSpan={2}>예약 가능 시간 내역</th>
+        <tr tw="border-b border-neutral-4 text-center">
+          <th colSpan={2} tw="h-10">예약 가능 시간 내역</th>
         </tr>
       </thead>
       <tbody>
