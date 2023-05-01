@@ -90,6 +90,16 @@ function ReservedTable() {
     }
   };
 
+  useEffect(() => {
+    slotRefs.current.forEach((slotRef,index) => {
+      const isReserved = fullTime.includes(allTimes[index]);
+
+      if(isReserved) {
+        handleReserved(slotRef);
+      }
+    });
+  }, [fullTime]);
+
   return (
     <table tw="border-collapse border border-neutral-5 w-full lg:(w-1/2)">
       <thead>
