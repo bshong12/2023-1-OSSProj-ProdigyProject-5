@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
-import { Img } from "../../components"
+import { Img, Button } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
 import ReactDatePicker from "react-datepicker"
@@ -56,6 +56,16 @@ export default function Buildings({ allBuildings }) {
           <h1 className="h2-headline" tw="mt-20 pb-5">
             Buildings
           </h1>
+          <div tw="w-full justify-end">
+            <Button 
+              variant={trans}
+              type="button"
+              onClick={() => router.push("buildings/campusmap")}
+              tw="flex items-center justify-center"
+              disabled={!!isLoading}
+              isSmall
+              > {isLoading ? <LoadingCircle /> : "지도로 보기"} </Button>
+          </div>
           <div
             tw="relative px-5 py-10
                 grid gap-4 grid-cols-2 sm:(grid-cols-3) lg:(grid-cols-4)
