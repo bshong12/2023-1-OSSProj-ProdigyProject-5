@@ -4,7 +4,7 @@ export const buildings = [
     name: "student center",
     heading: "Student Center Rooms",
     img: "/static/student center.jpeg",
-    rooms: ["AB Conference Room", "Ballroom", "Alumni Lounge", "State Room"],
+    rooms: [["AB Conference Room",1,80,"어쩌구","저쩌구"], ["Ballroom",1,80,"어쩌구","저쩌구"], ["Alumni Lounge",1,80,"어쩌구","저쩌구"], ["State Room",1,80,"어쩌구","저쩌구"]],
   },
   {
     name: "rahall",
