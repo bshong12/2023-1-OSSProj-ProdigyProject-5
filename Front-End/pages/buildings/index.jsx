@@ -58,7 +58,7 @@ export default function Buildings({ allBuildings }) {
           </h1>
           <div tw="w-full justify-end">
             <Button 
-              variant={trans}
+              variant="trans"
               type="button"
               onClick={() => router.push("buildings/campusmap")}
               tw="flex items-center justify-center"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import tw from "twin.macro";
-import { Button, DropMenu } from "../../components";
+import { Button, DropMenu, Img } from "../../components";
 import { UserUIContainer } from "../../layouts/UserUIContainer";
 
 export default function Map() {
@@ -15,7 +15,7 @@ export default function Map() {
           </h1>
           <div tw="w-full justify-end">
             <Button 
-              variant={trans}
+              variant="trans"
               type="button"
               onClick={() => router.push("buildings")}
               tw="flex items-center justify-center"
@@ -24,10 +24,12 @@ export default function Map() {
               > {isLoading ? <LoadingCircle /> : "지도로 보기"} </Button>
           </div>
           <span tw="w-9/12">
-
+            <Img src="/static/campus_map.png"/>
           </span>
           <span tw="w-1/4">
+            <DropMenu buttonText={"건물 리스트"}>
 
+            </DropMenu>
           </span>
         </section>
       </main>
