@@ -29,6 +29,8 @@ export default function Map() {
           <span tw="w-1/4">
             <DropMenu buttonText={"건물 리스트"}>
 
+
+
             </DropMenu>
           </span>
         </section>
