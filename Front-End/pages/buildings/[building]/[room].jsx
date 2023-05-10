@@ -136,7 +136,7 @@ function ReservedTable() {
 //예약 팝업 Form. 
 //user는 사용자 정보로 현재 로그인 되어있는 사용자의 기본정보가 자동으로 입력될 수 있게 하기 위해 받는 것
 //reservation은 예약 날짜, 시작시간, 종료시간, 신청 장소를 받기 위한 것임
-//user = {name:"", studentID: "", phone: "phonenumber", email:"email@gmail.com"}
+const user = {name:"name", studentID: "id", major: "major", phone: "phonenumber", email:"email@gmail.com"}
 //reservation: {building: "", room: "", startTime: "", endTime:""} 이라 가정
 function Form(user, reservation) {
   const TRow = tw.tr`
@@ -152,7 +152,6 @@ function Form(user, reservation) {
     text-center
   `
   const TData = tw.td`
-    w-9/12
     flex
     justify-center
   `
@@ -161,7 +160,7 @@ function Form(user, reservation) {
   `
   return (
     <div tw="w-full">
-      <p tw="w-full text-left "><b>상세내역 입력</b></p>
+      <h3 tw="w-full text-left ">상세내역 입력</h3>
       <table tw="w-full collapse">
         <TRow>
           <THead>*신청사유</THead>
@@ -182,6 +181,55 @@ function Form(user, reservation) {
         <TRow>
           <THead>*행사개요</THead>
           <TData><textarea tw="w-90%" rows={"4"} id="Outline" name="outline"/></TData>
+        </TRow>
+        <TRow>
+          <THead>신청자</THead>
+          <TData>
+            <table tw="w-full collapse">
+              <TRow>
+                <THead>신청자</THead>
+                <TData colSpan={3}>
+                  <div tw="border-neutral-6 bg-neutral-3 w=1/2">{user.name}</div>
+                  <div tw="border-neutral-6 bg-neutral-3 w=1/2">{user.studentID}</div>
+                </TData>
+              </TRow>
+              <TRow>
+                <THead>소속명</THead>
+                <TData><div tw="border-neutral-6 bg-neutral-3 w=1/2">{user.major}</div></TData>
+                <THead>신청일</THead>
+                <TData>{new Date().toISOString().slice(0, 10)}</TData>
+              </TRow>
+              <TRow>
+                <THead>핸드폰</THead>
+                <TData>{user.phone}</TData>
+                <THead>이메일</THead>
+                <TData>{user.email}</TData>
+              </TRow>
+            </table>
+          </TData>
+        </TRow>
+        <TRow>
+          <THead>신청내역</THead>
+          <TData>
+            <table tw="w-full collapse">
+              <TRow>
+                <THead>예약일자</THead>
+                <TData colSpan={3}>예약일자</TData>
+              </TRow>
+              <TRow>
+                <THead>시작시간</THead>
+                <TData>시작시간</TData>
+                <THead>종료시간</THead>
+                <TData>종료시간</TData>
+              </TRow>
+              <TRow>
+                <THead>신청건물</THead>
+                <TData>건물</TData>
+                <THead>신청장소</THead>
+                <TData>장소</TData>
+              </TRow>
+            </table>
+          </TData>
         </TRow>
       </table>
     </div>
@@ -240,7 +288,7 @@ export default function Room({ room, name }) {
               setIsOpen={setIsOpen} 
               titleProps={"대관사용신청"} 
               buttonArea={buttonArea}>
-
+              <Form user={user} />
             </Modal>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">
