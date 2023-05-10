@@ -7,6 +7,7 @@ import { UserUIContainer } from "../../../layouts/UserUIContainer"
 import { buildings, nameToSlug, slugToName } from "../../../utils/buildings"
 import { format } from "date-fns"
 import { HiOutlineClock } from "react-icons/hi"
+import { Modal } from "../../../primitives"
 
 const reservTable = [
   {
@@ -76,7 +77,7 @@ function TimeSplit(reserveTable) {
   return fullTime;
 }
 
-
+//예약되어 있는 시간 표시하는 테이블
 function ReservedTable() {
   const fullTime = TimeSplit(reservTable);
 
@@ -132,12 +133,94 @@ function ReservedTable() {
   );
 }
 
-
+//예약 팝업 Form. 
+//user는 사용자 정보로 현재 로그인 되어있는 사용자의 기본정보가 자동으로 입력될 수 있게 하기 위해 받는 것
+//reservation은 예약 날짜, 시작시간, 종료시간, 신청 장소를 받기 위한 것임
+//user = {name:"", studentID: "", phone: "phonenumber", email:"email@gmail.com"}
+//reservation: {building: "", room: "", startTime: "", endTime:""} 이라 가정
+function Form(user, reservation) {
+  const TRow = tw.tr`
+    border-t
+    border-b
+    border-neutral-5
+  `
+  const THead = tw.th`
+    border-r
+    border-neutral-6
+    bg-neutral-2
+    w-3/12
+    text-center
+  `
+  const TData = tw.td`
+    w-9/12
+    flex
+    justify-center
+  `
+  const TInput = tw.input`
+    w-90%
+  `
+  return (
+    <div tw="w-full">
+      <p tw="w-full text-left "><b>상세내역 입력</b></p>
+      <table tw="w-full collapse">
+        <TRow>
+          <THead>*신청사유</THead>
+          <TData><TInput type="text" id="Reason" name="reason"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*행사명</THead>
+          <TData><TInput type="text" id="ReservName" name="reserve_name"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*예상인원</THead>
+          <TData><TInput type="number" id="Headcount" name="headcound"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*단체(주최자)명</THead>
+          <TData><TInput type="text" id="OrganizerName" name="organizer_name"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*행사개요</THead>
+          <TData><textarea tw="w-90%" rows={"4"} id="Outline" name="outline"/></TData>
+        </TRow>
+      </table>
+    </div>
+  )
+}
 
 
 export default function Room({ room, name }) {
   const { asPath } = useRouter()
   const pageHeading = room[0]?.toLowerCase().includes("room") ? room[0] : `Room -  ${room[0]}`
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTime, setSelectedTimes] = useState([]);
+
+  const handleButtonClick = () => { //시간을 선택하고 예약하기 버튼을 눌렀을 때 모달창이 열리도록
+    setIsOpen(true);
+  }
+
+  const onReserve = () => { // 예약 모달창에서 예약신청 버튼을 눌렀을 때
+    const result = window.confirm("예약이 완료되었습니다. 예약내역을 확인하시겠습니까?");
+    if(result) {
+      window.location.href= '/mypage'
+    } else {
+      window.location.href = '/buildings'
+    }
+  }
+  
+  const onCancle = () => { //취소 버튼을 눌렀을 때
+    const result = window.confirm("예약을 취소하시겠습니까?");
+    if(result) {
+      setIsOpen(false);
+    }
+  }
+  
+  const buttonArea = ( // 모달 창에 들어갈 buttonArea.
+    <div tw="w-full flex justify-center">
+      <Button variant={"primary"} onClick={onReserve}>예약신청</Button>
+      <Button variant={"trans"} onClick={onCancle}>닫기</Button>
+    </div>
+  )
 
   return (
     <UserUIContainer title={pageHeading} headerBorder footer>
@@ -151,11 +234,22 @@ export default function Room({ room, name }) {
             >
               {pageHeading}
             </h1>
-            <Button tw="w-52 mt-5 mb-5">예약하기</Button>
+            <Button tw="w-52 mt-5 mb-5" onClick={handleButtonClick}>예약하기</Button>
+            <Modal 
+              isOpen={isOpen} 
+              setIsOpen={setIsOpen} 
+              titleProps={"대관사용신청"} 
+              buttonArea={buttonArea}>
+
+            </Modal>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">
             <div tw="w-full mb-12 lg:(w-1/2 border-r mb-0)">
-              <TimeTable reservedTimes={TimeSplit(reservTable)} allTimes={allTimes}/>
+              <TimeTable 
+                reservedTimes={TimeSplit(reservTable)} 
+                allTimes={allTimes} 
+                selectedTime={selectedTime}
+                setSelectedTimes={setSelectedTimes}/>
             </div>
             <hr />
             <ReservedTable />

@@ -3,16 +3,27 @@ import tw from "twin.macro";
 
 const TD = tw.td`py-2 px-4 h-12`;
 
-export default function TimeTable({ reservedTimes, allTimes }) {
+export default function TimeTable({ reservedTimes, allTimes, selectedTime, setSelectedTimes }) {
   const [selectedTimes, setSelectedTimes] = useState([]);
 
   const possibleTimes = allTimes.filter(time => !reservedTimes.includes(time));
 
+  //연속된 시간 선택을 위한 함수
   const handleTimeSelection = (time) => {
-    if (selectedTimes.includes(time)) {
-      setSelectedTimes(selectedTimes.filter(selectedTime => selectedTime !== time));
-    } else {
-      setSelectedTimes([...selectedTimes, time]);
+    const newSelectedTimes = [...selectedTimes, time];
+    const isSequential = newSelectedTimes
+      .map(selectedTime => selectedTime.split(':').map(time => parseInt(time)))
+      .sort((a, b) => a[0] - b[0] || a[1] - b[1])
+      .every((time, index, array) => {
+        if (index === 0) {
+          return true;
+        }
+        const prevTime = array[index - 1];
+        return time[0] === prevTime[0] && time[1] === prevTime[1] + 30;
+      });
+  
+    if (isSequential) {
+      setSelectedTimes(newSelectedTimes);
     }
   };
 
