@@ -136,8 +136,56 @@ function ReservedTable() {
 //예약 팝업 Form. 
 //user는 사용자 정보로 현재 로그인 되어있는 사용자의 기본정보가 자동으로 입력될 수 있게 하기 위해 받는 것
 //reservation은 예약 날짜, 시작시간, 종료시간, 신청 장소를 받기 위한 것임
+//user = {name:"", studentID: "", phone: "phonenumber", email:"email@gmail.com"}
+//reservation: {building: "", room: "", startTime: "", endTime:""} 이라 가정
 function Form(user, reservation) {
-
+  const TRow = tw.tr`
+    border-t
+    border-b
+    border-neutral-5
+  `
+  const THead = tw.th`
+    border-r
+    border-neutral-6
+    bg-neutral-2
+    w-3/12
+    text-center
+  `
+  const TData = tw.td`
+    w-9/12
+    flex
+    justify-center
+  `
+  const TInput = tw.input`
+    w-90%
+  `
+  return (
+    <div tw="w-full">
+      <p tw="w-full text-left "><b>상세내역 입력</b></p>
+      <table tw="w-full collapse">
+        <TRow>
+          <THead>*신청사유</THead>
+          <TData><TInput type="text" id="Reason" name="reason"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*행사명</THead>
+          <TData><TInput type="text" id="ReservName" name="reserve_name"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*예상인원</THead>
+          <TData><TInput type="number" id="Headcount" name="headcound"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*단체(주최자)명</THead>
+          <TData><TInput type="text" id="OrganizerName" name="organizer_name"/></TData>
+        </TRow>
+        <TRow>
+          <THead>*행사개요</THead>
+          <TData><textarea tw="w-90%" rows={"4"} id="Outline" name="outline"/></TData>
+        </TRow>
+      </table>
+    </div>
+  )
 }
 
 
@@ -169,8 +217,8 @@ export default function Room({ room, name }) {
   
   const buttonArea = ( // 모달 창에 들어갈 buttonArea.
     <div tw="w-full flex justify-center">
-      <Button variant={"primary"}>예약신청</Button>
-      <Button variant={"trans"}>닫기</Button>
+      <Button variant={"primary"} onClick={onReserve}>예약신청</Button>
+      <Button variant={"trans"} onClick={onCancle}>닫기</Button>
     </div>
   )
 
