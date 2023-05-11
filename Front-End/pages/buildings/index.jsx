@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { Img, Button } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
@@ -14,13 +15,13 @@ const Datepicker = () => {
     <div tw="w-full mx-auto mt-28 flex items-center justify-end">
       <div tw="flex items-center justify-end">
         <ReactDatePicker
-          tw="rounded-lg border-gray-500 w-24 h-auto mr-2"
+          tw="rounded-lg border-gray-500 w-32 h-auto mr-2"
           selected={selectedDate}
           minDate={new Date('2023-01-01')}
           onChange={(date) => setSelectedDate(date)}
           dateFormat="yyyy/MM/dd"
         />
-        <img src="/static/cal_icon.png" tw="w-7 h-auto"/>
+        <img src="/static/cal_icon.png" tw="w-7 h-auto mr-10"/>
       </div>
     </div>
   );
@@ -47,6 +48,8 @@ const BuildingCard = ({ building }) => {
 }
 
 export default function Buildings({ allBuildings }) {
+  const router = useRouter()
+
   return (
     <UserUIContainer title="Buildings" headerBorder footer>
       <main tw="h-full">
@@ -55,15 +58,14 @@ export default function Buildings({ allBuildings }) {
           <h1 className="h2-headline" tw="mt-20 pb-5">
             Buildings
           </h1>
-          <div tw="w-full justify-end">
+          <div tw="w-full flex justify-end py-10">
             <Button 
               variant="trans"
               type="button"
               onClick={() => router.push("buildings/campusmap")}
-              tw="flex items-center justify-center"
-              disabled={!!isLoading}
+              tw="flex items-center justify-center w-32 mr-10"
               isSmall
-              > {isLoading ? <LoadingCircle /> : "지도로 보기"} </Button>
+              >"지도로 보기" </Button>
           </div>
           <div
             tw="relative px-5 py-10

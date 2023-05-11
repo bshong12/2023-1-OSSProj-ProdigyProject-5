@@ -3,8 +3,7 @@ import tw from "twin.macro";
 
 const TD = tw.td`py-2 px-4 h-12`;
 
-export default function TimeTable({ reservedTimes, allTimes, selectedTime, setSelectedTimes }) {
-  const [selectedTimes, setSelectedTimes] = useState([]);
+export default function TimeTable({ reservedTimes, allTimes, selectedTimes, setSelectedTimes }) {
 
   const possibleTimes = allTimes.filter(time => !reservedTimes.includes(time));
 

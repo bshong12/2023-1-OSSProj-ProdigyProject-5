@@ -138,7 +138,7 @@ function ReservedTable() {
 //reservation은 예약 날짜, 시작시간, 종료시간, 신청 장소를 받기 위한 것임
 const user = {name:"name", studentID: "id", major: "major", phone: "phonenumber", email:"email@gmail.com"}
 //reservation: {building: "", room: "", startTime: "", endTime:""} 이라 가정
-function Form(user, reservation) {
+function Form(user) {
   const TRow = tw.tr`
     border-t
     border-b
@@ -156,82 +156,84 @@ function Form(user, reservation) {
     justify-center
   `
   const TInput = tw.input`
-    w-90%
+    from-90%
   `
   return (
     <div tw="w-full">
       <h3 tw="w-full text-left ">상세내역 입력</h3>
-      <table tw="w-full collapse">
-        <TRow>
-          <THead>*신청사유</THead>
-          <TData><TInput type="text" id="Reason" name="reason"/></TData>
-        </TRow>
-        <TRow>
-          <THead>*행사명</THead>
-          <TData><TInput type="text" id="ReservName" name="reserve_name"/></TData>
-        </TRow>
-        <TRow>
-          <THead>*예상인원</THead>
-          <TData><TInput type="number" id="Headcount" name="headcound"/></TData>
-        </TRow>
-        <TRow>
-          <THead>*단체(주최자)명</THead>
-          <TData><TInput type="text" id="OrganizerName" name="organizer_name"/></TData>
-        </TRow>
-        <TRow>
-          <THead>*행사개요</THead>
-          <TData><textarea tw="w-90%" rows={"4"} id="Outline" name="outline"/></TData>
-        </TRow>
-        <TRow>
-          <THead>신청자</THead>
-          <TData>
-            <table tw="w-full collapse">
-              <TRow>
-                <THead>신청자</THead>
-                <TData colSpan={3}>
-                  <div tw="border-neutral-6 bg-neutral-3 w=1/2">{user.name}</div>
-                  <div tw="border-neutral-6 bg-neutral-3 w=1/2">{user.studentID}</div>
-                </TData>
-              </TRow>
-              <TRow>
-                <THead>소속명</THead>
-                <TData><div tw="border-neutral-6 bg-neutral-3 w=1/2">{user.major}</div></TData>
-                <THead>신청일</THead>
-                <TData>{new Date().toISOString().slice(0, 10)}</TData>
-              </TRow>
-              <TRow>
-                <THead>핸드폰</THead>
-                <TData>{user.phone}</TData>
-                <THead>이메일</THead>
-                <TData>{user.email}</TData>
-              </TRow>
-            </table>
-          </TData>
-        </TRow>
-        <TRow>
-          <THead>신청내역</THead>
-          <TData>
-            <table tw="w-full collapse">
-              <TRow>
-                <THead>예약일자</THead>
-                <TData colSpan={3}>예약일자</TData>
-              </TRow>
-              <TRow>
-                <THead>시작시간</THead>
-                <TData>시작시간</TData>
-                <THead>종료시간</THead>
-                <TData>종료시간</TData>
-              </TRow>
-              <TRow>
-                <THead>신청건물</THead>
-                <TData>건물</TData>
-                <THead>신청장소</THead>
-                <TData>장소</TData>
-              </TRow>
-            </table>
-          </TData>
-        </TRow>
-      </table>
+      <form>
+        <table tw="w-full collapse">
+          <TRow>
+            <THead>*신청사유</THead>
+            <TData><TInput type="text" id="Reason" name="reason"/></TData>
+          </TRow>
+          <TRow>
+            <THead>*행사명</THead>
+            <TData><TInput type="text" id="ReservName" name="reserve_name"/></TData>
+          </TRow>
+          <TRow>
+            <THead>*예상인원</THead>
+            <TData><TInput type="number" id="Headcount" name="headcound"/></TData>
+          </TRow>
+          <TRow>
+            <THead>*단체(주최자)명</THead>
+            <TData><TInput type="text" id="OrganizerName" name="organizer_name"/></TData>
+          </TRow>
+          <TRow>
+            <THead>*행사개요</THead>
+            <TData><textarea tw="from-90%" rows={"4"} id="Outline" name="outline"/></TData>
+          </TRow>
+          <TRow>
+            <THead>신청자</THead>
+            <TData>
+              <table tw="w-full collapse">
+                <TRow>
+                  <THead>신청자</THead>
+                  <TData colSpan={3}>
+                    <div tw="border-neutral-6 bg-neutral-3 w-1/2">{user.name}</div>
+                    <div tw="border-neutral-6 bg-neutral-3 w-1/2">{user.studentID}</div>
+                  </TData>
+                </TRow>
+                <TRow>
+                  <THead>소속명</THead>
+                  <TData><div tw="border-neutral-6 bg-neutral-3 w-1/2">{user.major}</div></TData>
+                  <THead>신청일</THead>
+                  <TData>{new Date().toISOString().slice(0, 10)}</TData>
+                </TRow>
+                <TRow>
+                  <THead>핸드폰</THead>
+                  <TData>{user.phone}</TData>
+                  <THead>이메일</THead>
+                  <TData>{user.email}</TData>
+                </TRow>
+              </table>
+            </TData>
+          </TRow>
+          <TRow>
+            <THead>신청내역</THead>
+            <TData>
+              <table tw="w-full collapse">
+                <TRow>
+                  <THead>예약일자</THead>
+                  <TData colSpan={3}>예약일자</TData>
+                </TRow>
+                <TRow>
+                  <THead>시작시간</THead>
+                  <TData>시작시간</TData>
+                  <THead>종료시간</THead>
+                  <TData>종료시간</TData>
+                </TRow>
+                <TRow>
+                  <THead>신청건물</THead>
+                  <TData>건물</TData>
+                  <THead>신청장소</THead>
+                  <TData>장소</TData>
+                </TRow>
+              </table>
+            </TData>
+          </TRow>
+        </table>
+      </form>
     </div>
   )
 }
@@ -296,7 +298,7 @@ export default function Room({ room, name }) {
               <TimeTable 
                 reservedTimes={TimeSplit(reservTable)} 
                 allTimes={allTimes} 
-                selectedTime={selectedTime}
+                selectedTimes={selectedTime}
                 setSelectedTimes={setSelectedTimes}/>
             </div>
             <hr />
