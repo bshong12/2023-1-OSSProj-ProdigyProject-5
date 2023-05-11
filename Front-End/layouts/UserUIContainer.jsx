@@ -12,7 +12,7 @@ import { HiLightningBolt, HiCog, HiUser } from "react-icons/hi"
 const dropDownOptions = [
   {
     name: "Profile",
-    href: "/",
+    href: "/mypage",
     icon: HiUser,
   },
 ]
