@@ -4,14 +4,15 @@ const buildings = [
     date: "20230501",
     heading: "Student Center Rooms",
     img: "/static/student center.jpeg",
-    rooms: ["AB Conference Room", "Ballroom", "Alumni Lounge", "State Room"],
+    rooms: [{name:"AB Conference Room", floor:"1"}, {name:"Ballroom", floor:"2"}, {name:"Alumni Lounge",floor:"3"}, {name:"State Room", floor:"1"}],
   },
   {
     name: "rahall",
-    date: "20230502",
+    date: "20230501",
     heading: "Rahall Building Rooms",
     img: "/static/rehall.jpeg",
-    rooms: ["103", "119", "128", "303", "304", "311", "315", "318"],
+    rooms: [{name:"103",floor:"1"}, {name:"119", floor:"1"}, {name:"128", floor:"1"},
+     {name:"303", floor:"3"}, {name:"304", floor:"3"}, {name:"311", floor:"3"}, {name:"315", floor:"3"}, {name:"318", floor:"3"}],
   },
   {
     name: "university point",
