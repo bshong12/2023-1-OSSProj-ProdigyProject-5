@@ -37,7 +37,7 @@ const Button = styled.button(({ variant, isSmall, isLarge, isBold }) => [
     tw`bg-neutral-2 text-neutral-9 hocus:(bg-neutral-3)
         disabled:hocus:(bg-base text-neutral-8)
       `,
- variant === "trans" &&
+  variant === "trans" &&
     tw` border border-dguMain hocus:(bg-neutral-8)
          disabled:hocus:(bg-base text-neutral-8)
          rounded-brand

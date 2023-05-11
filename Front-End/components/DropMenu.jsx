@@ -21,7 +21,10 @@ export default function DropMenu ({ buttonText, children, variant }) {
         <div
           tw="absolute border border-gray-300 right-0 mt-2 w-48 rounded-md shadow-lg bg-white z-10"
           css={{top: buttonRef.current ? buttonRef.current.offsetHeight + 2 : 0, // 버튼 아래에 위치시키기 위해 top 위치 계산
-          left: buttonRef.current ? buttonRef.current.offsetLeft : 0,}} 
+          left: buttonRef.current ? buttonRef.current.offsetLeft : 0,
+          maxHeight: "200px", // 최대 높이
+          overflowY: "auto", // 스크롤 추가
+        }} 
         >
           {children}
         </div>
