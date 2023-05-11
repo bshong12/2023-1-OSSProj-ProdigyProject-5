@@ -20,6 +20,8 @@ app.listen(PORT, () => {
 
 const buildingController = require('./controllers/buildings');
 const roomController = require('./controllers/rooms');
+const roomReservation = require('./controllers/reservation');
 
 app.use('/buildings', buildingController);
 app.use('/buildings/:date', roomController);
+app.use('/buildings/:date/:buildingname', roomReservation);
