@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 
 app.use(cors());
 
@@ -34,6 +34,32 @@ app.post('/signup', async (req, res) => {
     res.status(201).json({ message: '회원 가입이 완료되었습니다.' });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// 로그인
+app.post('/login', async (req, res) => {
+  try {
+    const { studentID, password } = req.body;
+
+    // 사용자 찾기
+    const user = users.find(user => user.studentID === studentID);
+    if (!user) {
+      throw new Error('사용자를 찾을 수 없습니다.');
+    }
+
+    // 비밀번호 검증
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new Error('비밀번호가 일치하지 않습니다.');
+    }
+
+    // JWT 토큰 생성
+    const token = jwt.sign({ studentID: user.studentID }, 'secretKey');
+
+    res.status(200).json({ token });
+  } catch (err) {
+    res.status(401).json({ error: err.message });
   }
 });
 
