@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+
 
 app.use(cors());
 
@@ -16,6 +18,23 @@ app.get('/', (req, res) =>{
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
+});
+
+// 회원 가입
+app.post('/signup', async (req, res) => {
+  try {
+    const { studentID, password, name, phonenumber } = req.body;
+
+    // 비밀번호를 해시화
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 회원 정보 저장(나중에 DB와 연결할 부분)
+    users.push({ studentID, password: hashedPassword, name, phonenumber });
+
+    res.status(201).json({ message: '회원 가입이 완료되었습니다.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 const buildingController = require('./controllers/buildings');
