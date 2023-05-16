@@ -59,7 +59,7 @@ const Tab = () => {
 
 export default function MyPage() {
   return(
-    <UserUIContainer title="mypage" headerBorder footer>
+    <UserUIContainer title="mypage" headerBorder footer logoName="마이페이지">
       <main tw="h-full">
         
         <section tw="max-w-screen-lg mx-auto text-center my-28">

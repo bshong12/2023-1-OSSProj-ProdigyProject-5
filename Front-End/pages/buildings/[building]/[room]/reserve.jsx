@@ -1,163 +1,179 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, Fragment } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Img, BreadCrumb, StyledLink, Button, TimeTable } from "../../../../components"
-import { UserUIContainer } from "../../../../layouts/UserUIContainer"
+import { StyledLink, Button, Input} from "../../../../components"
 import { buildings, nameToSlug, slugToName } from "../../../../utils/buildings"
 import { format } from "date-fns"
-import { HiOutlineClock } from "react-icons/hi"
-import { Modal } from "../../../../primitives"
 
 
 
 
 
-//예약 팝업 Form. 
-//user는 사용자 정보로 현재 로그인 되어있는 사용자의 기본정보가 자동으로 입력될 수 있게 하기 위해 받는 것
-//reservation은 예약 날짜, 시작시간, 종료시간, 신청 장소를 받기 위한 것임
 const user = {name:"name", studentID: "id", major: "major", phone: "phonenumber", email:"email@gmail.com"}
-//reservation: {building: "", room: "", startTime: "", endTime:""} 이라 가정
-function Form(user) {
-  const TRow = tw.tr`
-    border-t
-    border-b
-    border-neutral-5
-  `
-  const THead = tw.th`
-    border-r
-    border-neutral-6
-    bg-neutral-2
-    w-3/12
-    text-center
-  `
-  const TData = tw.td`
-    flex
-    justify-center
-  `
-  const TInput = tw.input`
-    from-90%
-  `
+
+function Form({user}) {
+
   return (
     <div tw="w-full">
-      <h3 tw="w-full text-left ">상세내역 입력</h3>
+      <h3 tw="w-full text-left bg-neutral-2 h-10 flex items-center p-2">상세내역 입력</h3>
+      <hr tw="w-full border-neutral-3"/>
       <form>
-        <table tw="w-full collapse">
-          <TRow>
-            <THead>*신청사유</THead>
-            <TData><TInput type="text" id="Reason" name="reason"/></TData>
-          </TRow>
-          <TRow>
-            <THead>*행사명</THead>
-            <TData><TInput type="text" id="ReservName" name="reserve_name"/></TData>
-          </TRow>
-          <TRow>
-            <THead>*예상인원</THead>
-            <TData><TInput type="number" id="Headcount" name="headcound"/></TData>
-          </TRow>
-          <TRow>
-            <THead>*단체(주최자)명</THead>
-            <TData><TInput type="text" id="OrganizerName" name="organizer_name"/></TData>
-          </TRow>
-          <TRow>
-            <THead>*행사개요</THead>
-            <TData><textarea tw="from-90%" rows={"4"} id="Outline" name="outline"/></TData>
-          </TRow>
-          <TRow>
-            <THead>신청자</THead>
-            <TData>
-              <table tw="w-full collapse">
-                <TRow>
-                  <THead>신청자</THead>
-                  <TData colSpan={3}>
-                    <div tw="border-neutral-6 bg-neutral-3 w-1/2">{user.name}</div>
-                    <div tw="border-neutral-6 bg-neutral-3 w-1/2">{user.studentID}</div>
-                  </TData>
-                </TRow>
-                <TRow>
-                  <THead>소속명</THead>
-                  <TData><div tw="border-neutral-6 bg-neutral-3 w-1/2">{user.major}</div></TData>
-                  <THead>신청일</THead>
-                  <TData>{new Date().toISOString().slice(0, 10)}</TData>
-                </TRow>
-                <TRow>
-                  <THead>핸드폰</THead>
-                  <TData>{user.phone}</TData>
-                  <THead>이메일</THead>
-                  <TData>{user.email}</TData>
-                </TRow>
-              </table>
-            </TData>
-          </TRow>
-          <TRow>
-            <THead>신청내역</THead>
-            <TData>
-              <table tw="w-full collapse">
-                <TRow>
-                  <THead>예약일자</THead>
-                  <TData colSpan={3}>예약일자</TData>
-                </TRow>
-                <TRow>
-                  <THead>시작시간</THead>
-                  <TData>시작시간</TData>
-                  <THead>종료시간</THead>
-                  <TData>종료시간</TData>
-                </TRow>
-                <TRow>
-                  <THead>신청건물</THead>
-                  <TData>건물</TData>
-                  <THead>신청장소</THead>
-                  <TData>장소</TData>
-                </TRow>
-              </table>
-            </TData>
-          </TRow>
-        </table>
+       <div tw="flex w-full items-center mt-5 border-t border-b border-neutral-3 "> 
+        <p tw="w-3/12 mr-3">신청사유</p>  
+        <Input
+              type="text"
+              placeholder="신청사유"
+              autoComplete="off"
+              autoCapitalize="none"
+              maxLength="30"
+              noLabel
+              required
+              tw="h-7 m-2 w-9/12"
+            />
+        </div>
+        <div tw="flex w-full items-center border-b border-neutral-3 "> 
+        <p tw="w-3/12 mr-3">행사명</p>  
+        <Input
+              type="text"
+              placeholder="행사명"
+              autoComplete="off"
+              autoCapitalize="none"
+              maxLength="30"
+              noLabel
+              required
+              tw="h-7 m-2 w-9/12"
+            />
+        </div>
+        <div tw="flex w-full items-center border-b border-neutral-3 justify-start"> 
+        <p tw="w-3/12 mr-3">신청인원</p>
+        <Input
+              type="number"
+              placeholder="신청사유"
+              autoComplete="off"
+              autoCapitalize="none"
+              maxLength="30"
+              noLabel
+              required
+              tw="h-7 m-2 w-1/2"
+            />
+        </div>
+        <div tw="flex w-full items-center border-b border-neutral-3 "> 
+        <p tw="w-3/12 mr-3">단체(주최자)명</p>  
+        <Input
+              type="text"
+              placeholder="단체명"
+              autoComplete="off"
+              autoCapitalize="none"
+              maxLength="30"
+              noLabel
+              required
+              tw="h-7 m-2 w-9/12"
+            />
+        </div>
+        <div tw="flex w-full items-center border-b border-neutral-3 h-44"> 
+        <p tw="w-3/12 mr-3">행사개요</p>  
+        <textarea
+              type="text"
+              placeholder="행사개요를 구체적으로 작성하여 주세요."
+              autoComplete="off"
+              autoCapitalize="none"
+              maxLength="30"
+              tw="h-32 m-2 w-9/12 appearance-none bg-base
+              px-3 py-4 
+              text-neutral-7 text-sm sm:text-base 
+              font-medium tracking-wide
+              rounded-brand
+              border border-neutral-3
+              ring-neutral-3 ring-opacity-10
+              placeholder-neutral-3
+              focus:(outline-none ring-neutral-7 border-neutral-7)"
+            />
+        </div>
+        <h3 tw="text-left mt-5">신청자 정보</h3>
+           <hr tw="w-full border-neutral-3"/>
+           <div tw="border border-neutral-4 mt-5"> 
+            <div tw="flex w-full items-center border-neutral-4 bg-neutral-1 h-7">
+              <p tw="border-neutral-3 w-1/12 text-neutral-5 text-sm">이름</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">학번</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">소속</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">전화번호</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">이메일</p>
+            </div> 
+            <div tw="flex w-full items-center border-t border-neutral-3 h-7">
+              <p tw="border-neutral-3 w-1/12 text-neutral-5">{user.name}</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">{user.studentID}</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">{user.major}</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5">{user.phone}</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5">{user.email}</p>
+            </div>
+           </div>
       </form>
+
     </div>
   )
 }
 
 
-export default function ReserveForm({ reservInfo }) { //앞서 선택했던 예약 정보들 받아오기
-  const { asPath } = useRouter()
-  const [isOpen, setIsOpen] = useState(false);
+export default function ReserveForm() { //앞서 선택했던 예약 정보들 받아오기
+  const { asPath } = useRouter();
+  const router = useRouter();
 
 
   const onReserve = () => { //예약신청 버튼을 눌렀을 때
     const result = window.confirm("예약이 완료되었습니다. 예약내역을 확인하시겠습니까?");
     if(result) {
-      window.location.href= '/mypage'
+      router.push('../mypage');
     } else {
-      window.location.href = '/buildings'
+      router.push('../../buildings');
     }
   }
   
   const onCancle = () => { //취소 버튼을 눌렀을 때
     const result = window.confirm("예약을 취소하시겠습니까?");
     if(result) {
-      setIsOpen(false);
+      router.push('../mypage');
     }
   }
   
-  const ButtonArea = ( // buttonArea.
+  const ButtonArea = () => { // buttonArea.
+    return (
     <div tw="w-full flex justify-center">
-      <Button variant={"primary"} onClick={onReserve}>예약신청</Button>
-      <Button variant={"trans"} onClick={onCancle}>닫기</Button>
+      <Button variant={"primary"} onClick={onReserve} tw="m-7 w-36">예약신청</Button>
+      <Button variant={"trans"} onClick={onCancle} tw="m-7 w-36">닫기</Button>
     </div>
-  )
-
+    )
+}
   return (
-    
+    <Fragment>
       <main tw="h-full">
         <section tw="text-center my-28">
-          <div tw="max-w-screen-sm mx-auto">
-           <Form user={user} reservInfo={reservInfo}/>
+          <div tw="max-w-screen-lg mx-auto">
+           <Form user={user}/>
+           
+           <h3 tw="text-left mt-5">신청 정보 확인</h3>
+           <hr tw="w-full border-neutral-3"/>
+           <div tw="border border-neutral-4 mt-5"> 
+            <div tw="flex w-full items-center border-neutral-4 bg-neutral-1 h-7">
+              <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">예약일자</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">시작시간</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">종료시간</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">신청건물</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">신청장소</p>
+            </div> 
+            <div tw="flex w-full items-center border-t border-neutral-3 h-7">
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">23.06.01</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">13:00</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">14:30</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5">학술/문화관</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5">K217</p>
+            </div>
+           </div>
            <ButtonArea/>
           </div>
         </section>
       </main>
-   
+    </Fragment>
   )
 }
 

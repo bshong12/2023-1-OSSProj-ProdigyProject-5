@@ -136,6 +136,7 @@ function ReservedTable() {
 
 export default function Room({ room, name }) {
   const { asPath } = useRouter()
+  const router = useRouter()
   const pageHeading = room[0]?.toLowerCase().includes("room") ? room[0] : `Room -  ${room[0]}`
   const [selectedTime, setSelectedTimes] = useState([]);
   
@@ -152,7 +153,10 @@ export default function Room({ room, name }) {
             >
               {pageHeading}
             </h1>
-            <Button tw="w-52 mt-5 mb-5">예약하기</Button>
+            <Button tw="w-52 mt-5 mb-5">
+              <Link href={`${asPath}/reserve`} passHref>예약하기
+              </Link>
+            </Button>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">
             <div tw="w-full mb-12 lg:(w-1/2 border-r mb-0)">
