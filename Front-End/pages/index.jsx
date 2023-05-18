@@ -19,7 +19,7 @@ const SmallDiv = styled.div(() => [
       [width:calc(50% - 5em)]
       `};
     }
-    ,
+    
     > small {
       ${tw`inline-block`}
     }
@@ -84,8 +84,8 @@ export default function Home() {
           <div>
             <Input
               type="text"
-              placeholder="학번을 입력해주세요"
-              aria-label="Student ID"
+              placeholder="아이디 또는 학번을 입력해주세요"
+              aria-label="ID"
               autoComplete="off"
               autoCapitalize="none"
               maxLength="10"
@@ -111,6 +111,10 @@ export default function Home() {
             />
             <small tw="text-red-700">{errors?.password?.message}</small>
           </div>
+          <div tw="flex items-center">
+            <input type="checkbox" id="identify" name="identify" value="manager" tw="border border-neutral-4"/>
+            <label for="identify" tw="text-sm text-neutral-4 ml-3">관리자로 로그인하시겠습니까?</label>
+          </div>
           <Button
             type="button"
             onClick={() => router.push("/buildings")}
@@ -122,6 +126,9 @@ export default function Home() {
             {isLoading ? <LoadingCircle /> : "로그인"}
           </Button>
         </form>
+        <Link href="/signup">
+          <StyledLink tw="text-center">회원가입</StyledLink>
+        </Link>
       </main>
     </MarketingContainer>
   )

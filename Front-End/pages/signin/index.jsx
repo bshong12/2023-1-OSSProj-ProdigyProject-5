@@ -19,7 +19,6 @@ const SmallDiv = styled.div(() => [
       width[calc(50% - 5em)]
       `};
     }
-    ,
     > small {
       ${tw`inline-block`}
     }

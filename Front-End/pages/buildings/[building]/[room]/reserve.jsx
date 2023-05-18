@@ -8,7 +8,7 @@ import { format } from "date-fns"
 
 
 
-
+//전 페이지에서 신청정보 모두 넘겨줘야 함
 
 const user = {name:"name", studentID: "id", major: "major", phone: "phonenumber", email:"email@gmail.com"}
 
