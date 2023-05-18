@@ -19,11 +19,11 @@ const dropDownOptions = [
 
 export const UserUIContainer = ({
   children,
-  fixed,
   headerBorder,
   footer,
   footerNav,
   title,
+  logoName,
 }) => {
   const router = useRouter()
   const [openTaskModal, setOpenTaskModal] = useState(false)
@@ -49,7 +49,7 @@ export const UserUIContainer = ({
         }}
       />
       <Header headerBorder={headerBorder}>
-        <Logo showName />
+        <Logo showName name={logoName}/>
         <div tw="inline-flex items-center justify-end">
           <UserDropDown />
         </div>

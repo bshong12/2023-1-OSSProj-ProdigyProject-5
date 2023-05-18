@@ -65,7 +65,7 @@ export default function Buildings({ allBuildings }) {
               onClick={() => router.push("buildings/campusmap")}
               tw="flex items-center justify-center w-32 mr-10"
               isSmall
-              >"지도로 보기" </Button>
+              >지도로 보기</Button>
           </div>
           <div
             tw="relative px-5 py-10
