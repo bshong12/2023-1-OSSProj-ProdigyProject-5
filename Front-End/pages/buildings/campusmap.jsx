@@ -1,31 +1,8 @@
 import { useEffect, useState } from "react";
 import tw from "twin.macro";
 import { useRouter } from "next/router"
-import { Button, DropMenu, Img } from "../../components";
+import { Button, DropMenu, Datepicker } from "../../components";
 import { UserUIContainer } from "../../layouts/UserUIContainer";
-import ReactDatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css";
-
-const Datepicker = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  return (
-    <div tw="w-full mx-auto mt-28 flex items-center justify-end">
-      <div tw="flex items-center justify-end">
-        <ReactDatePicker
-          tw="rounded-lg border-gray-500 w-32 h-auto mr-2"
-          selected={selectedDate}
-          minDate={new Date('2023-01-01')}
-          onChange={(date) => setSelectedDate(date)}
-          dateFormat="yyyy/MM/dd"
-        />
-        <img src="/static/cal_icon.png" tw="w-7 h-auto mr-10"/>
-      </div>
-    </div>
-  );
-  
-  
-};
 
 export default function Map() {
   const router = useRouter()
