@@ -1,33 +1,11 @@
 import { useEffect, useState } from "react";
 import tw from "twin.macro";
 import { useRouter } from "next/router"
-import { Button, DropMenu, Img } from "../../components";
+import { Button, DropMenu, Datepicker } from "../../components";
 import { UserUIContainer } from "../../layouts/UserUIContainer";
-import ReactDatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css";
+import { buildings, nameToSlug } from "../../utils/buildings"
 
-const Datepicker = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  return (
-    <div tw="w-full mx-auto mt-28 flex items-center justify-end">
-      <div tw="flex items-center justify-end">
-        <ReactDatePicker
-          tw="rounded-lg border-gray-500 w-32 h-auto mr-2"
-          selected={selectedDate}
-          minDate={new Date('2023-01-01')}
-          onChange={(date) => setSelectedDate(date)}
-          dateFormat="yyyy/MM/dd"
-        />
-        <img src="/static/cal_icon.png" tw="w-7 h-auto mr-10"/>
-      </div>
-    </div>
-  );
-  
-  
-};
-
-export default function Map() {
+export default function Map(Buildings) {
   const router = useRouter()
 
   return(
@@ -55,8 +33,6 @@ export default function Map() {
             <div tw="w-1/6 flex mt-20">
               <DropMenu buttonText={"건물 리스트"}>
 
-
-
               </DropMenu>
             </div>
           </div>
@@ -64,4 +40,15 @@ export default function Map() {
       </main>
     </UserUIContainer>
   )
+}
+
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get("api/buildings");
+    const allBuildings = response.data;
+    return { props: { Buildings } };
+  } catch (error) {
+    console.error("Failed to fetch buildings data:", error);
+    return { props: { Buildings: [] } };
+  }
 }

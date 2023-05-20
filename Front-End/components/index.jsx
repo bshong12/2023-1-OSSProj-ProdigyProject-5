@@ -13,4 +13,5 @@ export { default as LoadingCircle } from "./LoadingCircle"
 export { default as FullPageLoading } from "./FullPageLoading"
 export { default as DropMenu } from "./DropMenu"
 export { default as TimeTable } from "./TimeTable"
+export { default as Datepicker } from "./DatePicker"
 
