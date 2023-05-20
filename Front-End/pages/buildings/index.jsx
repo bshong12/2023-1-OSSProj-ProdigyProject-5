@@ -8,14 +8,16 @@ import { buildings, nameToSlug } from "../../utils/buildings"
 import { useSelector } from "react-redux"
 import axios from "axios"
 
+
 const BuildingCard = ({ building }) => {
   const { name, img } = building
   const slug = nameToSlug(name)
   const selectedDate = useSelector((state) => state.date.selectedDate);
+  const date = new Date(selectedDate);
 
   const handleClick = async () => {
     try {
-      await axios.post(`api/${selectedDate}/buildingname`, { name: name });
+      await axios.post(`api/${date}/buildingname`, { name: name });
       // 서버로 선택한 건물 정보를 전달하는 POST 요청을 보냄
     } catch (error) {
       console.error("Failed to send building info:", error);
@@ -44,28 +46,33 @@ export default function Buildings({ allBuildings }) {
     <UserUIContainer title="Buildings" headerBorder footer>
       <main tw="h-full">
         <section tw="max-w-screen-lg mx-auto text-center my-28">
-          <Datepicker/>
-          <h1 className="h2-headline" tw="mt-20 pb-5">
-            Buildings
-          </h1>
-          <div tw="w-full flex justify-end py-10">
-            <Button 
-              variant="trans"
-              type="button"
-              onClick={() => router.push("buildings/campusmap")}
-              tw="flex items-center justify-center w-32 mr-10"
-              isSmall
-              >지도로 보기</Button>
+          <div tw="w-full mt-28 flex items-center justify-end">
+            <div tw="flex items-center justify-end flex-row">
+              <img src="/static/cal_icon.png" tw="w-10 h-auto" />
+              <Datepicker/>
+            </div>
           </div>
-          <div
-            tw="relative px-5 py-10
-                grid gap-4 grid-cols-2 sm:(grid-cols-3) lg:(grid-cols-4)
-                "
-          >
-            {allBuildings?.map((building) => (
-              <BuildingCard building={building} key={building.name} />
-            ))}
-          </div>
+            <h1 className="h2-headline" tw="mt-20 pb-5">
+              Buildings
+            </h1>
+            <div tw="w-full flex justify-end py-10">
+              <Button 
+                variant="trans"
+                type="button"
+                onClick={() => router.push("buildings/campusmap")}
+                tw="flex items-center justify-center w-32 mr-10"
+                isSmall
+                >지도로 보기</Button>
+            </div>
+            <div
+              tw="relative px-5 py-10
+                  grid gap-4 grid-cols-2 sm:(grid-cols-3) lg:(grid-cols-4)
+                  "
+            >
+              {allBuildings?.map((building) => (
+                <BuildingCard building={building} key={building.name} />
+              ))}
+            </div>
         </section>
       </main>
     </UserUIContainer>
