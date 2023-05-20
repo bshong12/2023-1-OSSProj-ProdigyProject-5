@@ -64,6 +64,14 @@ module.exports = {
     config.resolve.fallback = { fs: false, module: false }
     return config
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:5000/api/:path*',
+      },
+    ];
+  },
 }
 
 const ContentSecurityPolicy = `
