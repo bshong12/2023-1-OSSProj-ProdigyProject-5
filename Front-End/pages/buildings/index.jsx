@@ -9,15 +9,14 @@ import { useSelector } from "react-redux"
 import api from "../../utils/api"
 
 
-const BuildingCard = ({ building }) => {
+const BuildingCard = ({ building, date }) => {
   const { name, img } = building
   const slug = nameToSlug(name)
-  const selectedDate = useSelector((state) => state.date.selectedDate);
-  const date = new Date(selectedDate);
+  
 
   const handleClick = async () => {
     try {
-      await axios.post(`api/${date}/buildingname`, { name: name });
+      await axios.post(`api/buildings/${selectedDate}/${slug}`, { name: name });
       // 서버로 선택한 건물 정보를 전달하는 POST 요청을 보냄
     } catch (error) {
       console.error("Failed to send building info:", error);
@@ -41,6 +40,9 @@ const BuildingCard = ({ building }) => {
 
 export default function Buildings({ allBuildings }) {
   const router = useRouter()
+  const selectedDate = useSelector((state) => state.selectedDate);
+  const date = new Date(selectedDate);
+  console.log(date);
 
   return (
     <UserUIContainer title="Buildings" headerBorder footer>
@@ -70,7 +72,7 @@ export default function Buildings({ allBuildings }) {
                   "
             >
               {allBuildings?.map((building) => (
-                <BuildingCard building={building} key={building.name} />
+                <BuildingCard building={building} date={date} key={building.name} />
               ))}
             </div>
         </section>
