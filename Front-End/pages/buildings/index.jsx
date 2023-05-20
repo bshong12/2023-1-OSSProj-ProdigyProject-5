@@ -6,7 +6,7 @@ import { Img, Button, Datepicker } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
 import { useSelector } from "react-redux"
-import axios from "axios"
+import api from "../../utils/api"
 
 const BuildingCard = ({ building }) => {
   const { name, img } = building
@@ -76,8 +76,9 @@ export default function Buildings({ allBuildings }) {
 //만약 객체 형태로 올 경우 {{}, {}, ...} => Object.values(buildings)로 배열로 바꿔줘야 함
 export async function getServerSideProps() {
   try {
-    const response = await axios.get("api/buildings");
+    const response = await api.get("/buildings");
     const allBuildings = response.data;
+    console.log(allBuildings)
     return { props: { allBuildings } };
   } catch (error) {
     console.error("Failed to fetch buildings data:", error);
