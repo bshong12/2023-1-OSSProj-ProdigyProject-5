@@ -10,7 +10,7 @@ import api from "../../utils/api"
 
 
 const BuildingCard = ({ building, date }) => {
-  const { name, img } = building
+  const { name, image } = building
   const slug = nameToSlug(name)
   
 
@@ -31,7 +31,7 @@ const BuildingCard = ({ building, date }) => {
           {name}
         </span>
         <div tw="relative h-40 rounded-lg">
-          <Img objectFit={"cover"} tw="rounded-lg" layout={"fill"} src={img} alt={name} />
+          <Img objectFit={"cover"} tw="rounded-lg" layout={"fill"} src={image} alt={name} />
         </div>
       </a>
     </Link>
@@ -87,7 +87,7 @@ export async function getServerSideProps() {
   try {
     const response = await api.get("/buildings");
     const allBuildings = response.data;
-    console.log(allBuildings)
+
     return { props: { allBuildings } };
   } catch (error) {
     console.error("Failed to fetch buildings data:", error);
