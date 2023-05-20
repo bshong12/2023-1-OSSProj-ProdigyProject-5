@@ -2,40 +2,30 @@ import { useEffect, useState } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Img, Button } from "../../components"
+import { Img, Button, Datepicker } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
-import ReactDatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css";
-
-const Datepicker = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  return (
-    <div tw="w-full mx-auto mt-28 flex items-center justify-end">
-      <div tw="flex items-center justify-end">
-        <ReactDatePicker
-          tw="rounded-lg border-gray-500 w-32 h-auto mr-2"
-          selected={selectedDate}
-          minDate={new Date('2023-01-01')}
-          onChange={(date) => setSelectedDate(date)}
-          dateFormat="yyyy/MM/dd"
-        />
-        <img src="/static/cal_icon.png" tw="w-7 h-auto mr-10"/>
-      </div>
-    </div>
-  );
-  
-  
-};
+import { useSelector } from "react-redux"
+import axios from "axios"
 
 const BuildingCard = ({ building }) => {
-  const { img, name } = building
+  const { name, img } = building
   const slug = nameToSlug(name)
+  const selectedDate = useSelector((state) => state.date.selectedDate);
+
+  const handleClick = async () => {
+    try {
+      await axios.post(`api/${selectedDate}/buildingname`, { name: name });
+      // 서버로 선택한 건물 정보를 전달하는 POST 요청을 보냄
+    } catch (error) {
+      console.error("Failed to send building info:", error);
+    }
+  };
+
 
   return (
     <Link href={`/buildings/${slug}`} passHref>
-      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
+      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)" onClick={handleClick}>
         <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg ">
           {name}
         </span>
@@ -82,15 +72,17 @@ export default function Buildings({ allBuildings }) {
   )
 }
 
-// This gets called on every request
+// 백엔드에서 보내주는 data buildings가 [{name: "name", img: "img"}, ...] 형태로 보내줄 것이라 가정
+//만약 객체 형태로 올 경우 {{}, {}, ...} => Object.values(buildings)로 배열로 바꿔줘야 함
 export async function getServerSideProps() {
-  // Fetch data from external API [database]
-  // const res = await fetch(`https://.../data`)
-  // Temporary getting data from local file
-  const allBuildings = buildings
-
-  // Pass data to the page via props
-  return { props: { allBuildings } }
+  try {
+    const response = await axios.get("api/buildings");
+    const allBuildings = response.data;
+    return { props: { allBuildings } };
+  } catch (error) {
+    console.error("Failed to fetch buildings data:", error);
+    return { props: { allBuildings: [] } };
+  }
 }
 
 Buildings.theme = "light"
