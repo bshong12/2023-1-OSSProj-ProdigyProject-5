@@ -16,7 +16,7 @@ export const setSelectedDate = (date) => ({
   payload: date,
 });
 
-// 리듀서
+// 리듀서 - Datepicker 컴포넌트에서 날짜가 변경되어 dispatch함수를 실행시키면 해당 내용이 리듀서로 전달됨
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_SELECTED_DATE:
@@ -33,3 +33,7 @@ const reducer = (state = initialState, action) => {
 const store = createStore(reducer);
 
 export default store;
+
+//Datepicker가 없는 파일에서 날짜 불러오는 방법
+// import { useSelector } from "react-redux";
+// const selectedDate = useSelector((state) => state.selectedDate);

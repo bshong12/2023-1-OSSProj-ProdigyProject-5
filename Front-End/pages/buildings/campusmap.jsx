@@ -3,8 +3,9 @@ import tw from "twin.macro";
 import { useRouter } from "next/router"
 import { Button, DropMenu, Datepicker } from "../../components";
 import { UserUIContainer } from "../../layouts/UserUIContainer";
+import { buildings, nameToSlug } from "../../utils/buildings"
 
-export default function Map() {
+export default function Map(Buildings) {
   const router = useRouter()
 
   return(
@@ -32,8 +33,6 @@ export default function Map() {
             <div tw="w-1/6 flex mt-20">
               <DropMenu buttonText={"건물 리스트"}>
 
-
-
               </DropMenu>
             </div>
           </div>
@@ -41,4 +40,15 @@ export default function Map() {
       </main>
     </UserUIContainer>
   )
+}
+
+export async function getServerSideProps() {
+  try {
+    const response = await axios.get("api/buildings");
+    const allBuildings = response.data;
+    return { props: { Buildings } };
+  } catch (error) {
+    console.error("Failed to fetch buildings data:", error);
+    return { props: { Buildings: [] } };
+  }
 }

@@ -5,14 +5,27 @@ import { useRouter } from "next/router"
 import { Img, Button, Datepicker } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
+import { useSelector } from "react-redux"
+import axios from "axios"
 
 const BuildingCard = ({ building }) => {
-  const { img, name } = building
+  const { name, img } = building
   const slug = nameToSlug(name)
+  const selectedDate = useSelector((state) => state.date.selectedDate);
+
+  const handleClick = async () => {
+    try {
+      await axios.post(`api/${selectedDate}/buildingname`, { name: name });
+      // 서버로 선택한 건물 정보를 전달하는 POST 요청을 보냄
+    } catch (error) {
+      console.error("Failed to send building info:", error);
+    }
+  };
+
 
   return (
     <Link href={`/buildings/${slug}`} passHref>
-      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
+      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)" onClick={handleClick}>
         <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg ">
           {name}
         </span>
@@ -59,15 +72,17 @@ export default function Buildings({ allBuildings }) {
   )
 }
 
-// This gets called on every request
+// 백엔드에서 보내주는 data buildings가 [{name: "name", img: "img"}, ...] 형태로 보내줄 것이라 가정
+//만약 객체 형태로 올 경우 {{}, {}, ...} => Object.values(buildings)로 배열로 바꿔줘야 함
 export async function getServerSideProps() {
-  // Fetch data from external API [database]
-  // const res = await fetch(`https://.../data`)
-  // Temporary getting data from local file
-  const allBuildings = buildings
-
-  // Pass data to the page via props
-  return { props: { allBuildings } }
+  try {
+    const response = await axios.get("api/buildings");
+    const allBuildings = response.data;
+    return { props: { allBuildings } };
+  } catch (error) {
+    console.error("Failed to fetch buildings data:", error);
+    return { props: { allBuildings: [] } };
+  }
 }
 
 Buildings.theme = "light"

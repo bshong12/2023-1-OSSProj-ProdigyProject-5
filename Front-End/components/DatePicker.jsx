@@ -3,18 +3,12 @@ import { setSelectedDate } from "../redux/store";
 import ReactDatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 
-const Datepicker = () => {
-  const selectedDate = useSelector((state) => state.selectedDate);
-  const dispatch = useDispatch();
+//날짜 선택
+const Datepicker = () => { 
+  const selectedDate = useSelector((state) => state.selectedDate); //현재 Redux에 저장되어 있는 날짜 가져오기
+  const dispatch = useDispatch(); 
 
-  // 초기에 선택된 날짜가 없을 경우, 오늘 날짜로 설정
-  useEffect(() => {
-    if (!selectedDate) {
-      setSelectedDate(new Date());
-    }
-  }, []);
-
-  const handleDateChange = (date) => {
+  const handleDateChange = (date) => { //날짜를 선택하면 Redux에 있는 날짜를 바꾸기 위한 함수
     dispatch(setSelectedDate(date));
   };
 
