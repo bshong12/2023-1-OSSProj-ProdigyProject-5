@@ -1,39 +1,30 @@
-// src/redux/store.js
-
-import { createStore } from "redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 // 초기 상태
 const initialState = {
   selectedDate: new Date(),
 };
 
-// 액션 타입
-const SET_SELECTED_DATE = "SET_SELECTED_DATE";
-
-// 액션 생성자 함수
-export const setSelectedDate = (date) => ({
-  type: SET_SELECTED_DATE,
-  payload: date,
+// createSlice를 사용하여 액션과 리듀서를 생성
+const dateSlice = createSlice({
+  name: "date",
+  initialState,
+  reducers: {
+    setSelectedDate: (state, action) => {
+      state.selectedDate = action.payload;
+    },
+  },
 });
 
-// 리듀서 - Datepicker 컴포넌트에서 날짜가 변경되어 dispatch함수를 실행시키면 해당 내용이 리듀서로 전달됨
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_SELECTED_DATE:
-      return {
-        ...state,
-        selectedDate: action.payload,
-      };
-    default:
-      return state;
-  }
-};
+// 액션 생성자 함수를 추출
+export const { setSelectedDate } = dateSlice.actions;
+
+// rootReducer를 생성
+const rootReducer = dateSlice.reducer;
 
 // 스토어 생성
-const store = createStore(reducer);
+const store = configureStore({
+  reducer: rootReducer,
+});
 
 export default store;
-
-//Datepicker가 없는 파일에서 날짜 불러오는 방법
-// import { useSelector } from "react-redux";
-// const selectedDate = useSelector((state) => state.selectedDate);
