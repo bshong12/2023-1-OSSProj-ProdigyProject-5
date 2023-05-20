@@ -4,34 +4,36 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { BreadCrumb, StyledLink, DropMenu } from "../../../components";
 import { UserUIContainer } from "../../../layouts/UserUIContainer";
-import { buildings, nameToSlug } from "../../../utils/buildings";
+import { nameToSlug } from "../../../utils/buildings";
+import {useSelector} from 'react-redux';
 
-//rooms=[[이름,층수,수용인원,보유기자재정보,보유시설정비정보],[...],...] 라는 가정 하에 작성
-export default function Building({ heading, rooms, name }) {
+// {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
+export default function Building({ buildingname, buildingData }) {
   const { asPath } = useRouter();
-  const pageHeading = heading || `${name} Rooms`;
-  const [selectedFloor, setSelectedFloor] = useState("");
+  const pageHeading = buildingname || "강의실 목록";
+  const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
+  const floors = [...new Set(buildingData.map((room) => room.floor))];
 
   const filterRoomsByFloor = () => {
     //선택된 층수에 따라 강의실 filter해서 분류
     if (!selectedFloor) {
-      return rooms;
+      return buildingData;
     }
-    return rooms.filter((room) => room[1] === selectedFloor);
+    return buildingData.filter((room) => room.floor === selectedFloor);
   };
 
-  const Roomli = ({ room }) => {
+  const Roomli = ({ roomData }) => {
     const [isRoomOpen, setIsRoomOpen] = useState(false);
     return (
       <li tw="mr-5 mb-5">
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
-          <Link href={`${asPath}/${nameToSlug(room[0])}`} passHref>
+          <Link href={`${asPath}/${nameToSlug(roomData.room)}`} passHref>
             <StyledLink
               underline
               tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
                         bg-neutral-1 px-2 py-2 rounded-lg capitalize"
             >
-              {room[0]}
+              {roomData.room}
             </StyledLink>
           </Link>
           <button onClick={() => setIsRoomOpen(!isRoomOpen)} tw="mr-3">
@@ -41,9 +43,9 @@ export default function Building({ heading, rooms, name }) {
         {isRoomOpen && (
           <div tw="bg-neutral-1 p-3">
             <ol>
-              <li>수용인원 : {room[2]}</li>
-              <li>보유기자재정보 : {room[3]}</li>
-              <li>보유시설정비정보 : {room[4]}</li>
+              <li>수용인원 : {roomData.capacity}</li>
+              <li>보유기자재정보 : {roomData.equip_info}</li>
+              <li>보유시설정비정보 : {roomData.facility_info}</li>
             </ol>
           </div>
         )}
@@ -71,14 +73,18 @@ export default function Building({ heading, rooms, name }) {
                   <FloorItem onClick={() => setSelectedFloor("")}>
                     모든 층 보기
                   </FloorItem>
-                  <FloorItem onClick={() => setSelectedFloor(1)}>1층</FloorItem>
-                  <FloorItem onClick={() => setSelectedFloor(2)}>2층</FloorItem>
+                  {floors.map((floor) => (
+                  <FloorItem
+                    key={floor}
+                    onClick={() => setSelectedFloor(floor)}
+                  > {floor} 층 </FloorItem>
+                  ))}
                 </ul>
               </DropMenu>
             </span>
             <ul tw="list-inside text-left text-lg font-hero grid gap-2 sm:(grid-cols-2) lg:(grid-cols-3)">
-              {filterRoomsByFloor().map((room) => (
-                <Roomli key={room[0]} room={room} />
+              {filterRoomsByFloor().map((roomData) => (
+                <Roomli key={room[0]} roomData={roomData} />
               ))}
             </ul>
           </div>
@@ -90,22 +96,18 @@ export default function Building({ heading, rooms, name }) {
 
 Building.theme = "light";
 
-export const getStaticPaths = async () => {
-  // get an array of all possible building links/slugs
-  const paths = await buildings.map((b) => ({
-    params: { building: nameToSlug(b.name) },
-  }));
+export async function getServerSideProps(context) {
+  const { buildingname } = context.query;
+  const selectedDate = useSelector((state) => state.selectedDate);
+  
+  try {
+    const response = await api.get(`/buildings/${selectedDate}/${buildingname}`);
+    const buildingData = response.data;
+    
+    return { props: { buildingname, ...buildingData } };
+  } catch (error) {
+    // 오류 처리
+    return { props: { buildingname: "" } };
+  }
+}
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps = async ({ params }) => {
-  // get data from the requested building
-  const buildingData = await buildings.find(
-    (b) => nameToSlug(b.name) === params.building
-  );
-  return { props: { ...buildingData } };
-};

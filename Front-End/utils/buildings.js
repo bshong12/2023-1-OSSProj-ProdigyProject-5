@@ -1,106 +1,153 @@
 //adds the name and image for each building button
 export const buildings = [
   {
-    name: "student center",
-    heading: "Student Center Rooms",
-    img: "/static/student center.jpeg",
-    rooms: [["AB Conference Room",1,80,"어쩌구","저쩌구"], ["Ballroom",1,80,"어쩌구","저쩌구"], ["Alumni Lounge",1,80,"어쩌구","저쩌구"], ["State Room",1,80,"어쩌구","저쩌구"]],
+    number: 1,
+    name: "본관"
   },
   {
-    name: "rahall",
-    heading: "Rahall Building Rooms",
-    img: "/static/rehall.jpeg",
-    rooms: ["103", "119", "128", "303", "304", "311", "315", "318"],
+    number: 2,
+    name: "정각원",
   },
   {
-    name: "university point",
-    heading: "University Point Rooms",
-    img: "/static/university point.jpeg",
-    rooms: ["chapel"],
+    number: 3,
+    name: "명진관"
   },
   {
-    name: "art",
-    heading: "Art Building Rooms",
-    img: "/static/art.jpeg",
-    rooms: [
-      "A101",
-      "A102",
-      "A104",
-      "A106",
-      "A107",
-      "A200",
-      "A201",
-      "A204",
-      "A206",
-      "A207",
-      "M001",
-      "M010",
-      "M011",
-      "M103",
-      "M104",
-      "M105",
-      "M107",
-    ],
+    number: 4,
+    name: "만해관"
   },
   {
-    name: "admin",
-    heading: "Admin Building Rooms",
-    img: "/static/admin.jpeg",
-    rooms: [
-      "A100",
-      "A110",
-      "A124",
-      "A135",
-      "A136",
-      "A237",
-      "A300",
-      "A301",
-      "A302",
-      "A303",
-      "A304",
-      "A308",
-      "A309",
-      "A310",
-      "A320",
-      "A321",
-      "A330",
-      "A331",
-    ],
+    number: 5,
+    name: "법학관"
   },
   {
-    name: "science",
-    heading: "Science Building Rooms",
-    img: "/static/science.jpeg",
-    rooms: [
-      "S101",
-      "S102",
-      "S103",
-      "S104",
-      "S105",
-      "S203",
-      "S204",
-      "S207",
-      "S210",
-      "S300",
-      "S301",
-      "S304",
-      "S308",
-      "S309",
-      "S400",
-    ],
+    number: 6,
+    name: "과학관"
   },
   {
-    name: "carter",
-    heading: "Carter Building Rooms",
-    img: "/static/carter.jpeg",
-    rooms: ["Dance Studio", "303", "402", "405", "406"],
+    number: 7,
+    name: "원흥관1"
   },
   {
-    name: "library",
-    heading: "Library Building Rooms",
-    img: "/static/library.jpeg",
-    rooms: ["B28", "B8", "President's Room"],
+    number: 8,
+    name: "원흥관2"
   },
+  {
+    number: 9,
+    name: "혜화관"
+  },
+  {
+    number: 10,
+    name: "학림관"
+  },
+  {
+    number: 11,
+    name: "학생회관"
+  },
+  {
+    number: 12,
+    name: "경영관"
+  },
+  {
+    number: 13,
+    name: "사회과학관"
+  },
+  {
+    number: 14,
+    name: "문화관"
+  },
+  {
+    number: 15,
+    name: "학술관"
+  },
+  {
+    number: 16,
+    name: "다향관"
+  },
+  {
+    number: 17,
+    name: "금강관"
+  },
+  {
+    number: 18,
+    name: "박물관"
+  },
+  {
+    number: 19,
+    name: "계산관A"
+  },
+  {
+    number: 20,
+    name: "계산관B"
+  } ,
+  {
+    number: 21,
+    name: "정보문화관P"
+  },
+  {
+    number: 22,
+    name: "정보문화관Q"
+  },
+  {
+    number: 23,
+    name: "상록원"
+  },
+  {
+    number: 24,
+    name: "반야관"
+  },
+  {
+    number: 25,
+    name: "만해시비"
+  },
+  {
+    number: 26,
+    name: "만해광장"
+  },
+  {
+    number: 27,
+    name: "중앙도서관"
+  },
+  {
+    number: 28,
+    name: "생활협동조합"
+  },
+  {
+    number: 29,
+    name: "대운동장"
+  },
+  {
+    number: 30,
+    name: "체육관"
+  },
+  {
+    number: 31,
+    name: "기숙사"
+  },
+  {
+    number: 32,
+    name: "신공학관"
+  },
+  {
+    number: 33,
+    name: "충무로영상상센터"
+  },
+ {
+    number: 34,
+    name: "법학생활관"
+ },
+  {
+    number: 35,
+    name: "고시반기숙사"
+  },
+  {
+    number: 36,
+    name: "혜화별관"
+  },
+  {
+    number: 37,
+    name: "원흥별관"
+  }
 ]
 
 // replace all occurrences only works with regex

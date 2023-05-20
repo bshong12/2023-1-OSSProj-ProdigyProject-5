@@ -15,7 +15,6 @@ export default function Map(Buildings) {
       <main tw="h-full">
         
         <section tw="max-w-screen-lg mx-auto text-center my-28">
-        <Provider store={store}>
             <Datepicker/>
           
             <h1 className="h2-headline" tw="mt-20 pb-5">
@@ -40,7 +39,6 @@ export default function Map(Buildings) {
                 </DropMenu>
               </div>
             </div>
-        </Provider>
         </section>
       </main>
     </UserUIContainer>
