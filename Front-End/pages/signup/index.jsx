@@ -65,6 +65,13 @@ export default function Signup() {
               w-full"
           onSubmit={onSubmit}
         >
+           <div>
+            <p>자격</p>
+            <select tw="w-full rounded-lg border-neutral-3">
+              <option value="student">학생</option>
+              <option value="manager">관리자</option>
+            </select>
+          </div>
           <div>
             <p>이름</p>
             <Input
@@ -80,7 +87,7 @@ export default function Signup() {
             />
           </div>
           <div>
-            <p>학번</p>
+            <p>학번/ID</p>
             <Input
               type="number"
               aria-label="Student ID"
@@ -107,20 +114,7 @@ export default function Signup() {
               required
             />
           </div>
-          <div>
-            <p>소속(전공)</p>
-            <Input
-              type="text"
-              aria-label="Major"
-              autoComplete="off"
-              autoCapitalize="none"
-              maxLength="10"
-              id="major"
-              name="major"
-              noLabel
-              required
-            />
-          </div>
+         
           <div>
             <p>이메일</p>
             <Input

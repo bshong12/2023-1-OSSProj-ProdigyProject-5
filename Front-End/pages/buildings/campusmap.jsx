@@ -9,6 +9,19 @@ import { store } from '../../redux/store';
 
 export default function Map(Buildings) {
   const router = useRouter()
+  const BuildingItem = tw.li`
+    hover:bg-gray-100
+    pt-1 pb-1
+  `;
+
+  function handleBuildingClick(buildingName, buildingId) {
+    const matchedBuilding = Buildings.find((building) => building.name === buildingId);
+    if (matchedBuilding) {
+      router.push(`/buildings/${nameToSlug(buildingId)}`)
+     }else {
+      alert(`${buildingName}은/는 대관신청이 불가능합니다`)
+    }
+  }
 
   return(
     <UserUIContainer title="campusmap" headerBorder footer>
@@ -35,7 +48,14 @@ export default function Map(Buildings) {
               </div>
               <div tw="w-1/6 flex mt-20">
                 <DropMenu buttonText={"건물 리스트"}>
-
+                  <ul>
+                    {buildings.map((building) => (
+                    <BuildingItem
+                      key={building.number}
+                      onClick={handleBuildingClick(building.name, building.id)}
+                    > <b>{building.number}</b> {building.name}</BuildingItem>
+                    ))}
+                  </ul>
                 </DropMenu>
               </div>
             </div>
