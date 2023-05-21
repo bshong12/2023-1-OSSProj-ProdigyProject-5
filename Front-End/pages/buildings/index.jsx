@@ -9,24 +9,16 @@ import { useSelector } from "react-redux"
 import api from "../../utils/api"
 
 
-const BuildingCard = ({ building, date }) => {
+
+
+const BuildingCard = ({ building}) => {
+
   const { name, image } = building
   const slug = nameToSlug(name)
   
-
-  const handleClick = async () => {
-    try {
-      await axios.post(`api/buildings/${selectedDate}/${slug}`, { name: name });
-      // 서버로 선택한 건물 정보를 전달하는 POST 요청을 보냄
-    } catch (error) {
-      console.error("Failed to send building info:", error);
-    }
-  };
-
-
   return (
     <Link href={`/buildings/${slug}`} passHref>
-      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)" onClick={handleClick}>
+      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
         <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg ">
           {name}
         </span>
