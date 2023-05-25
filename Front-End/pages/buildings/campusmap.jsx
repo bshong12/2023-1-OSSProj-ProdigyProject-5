@@ -6,13 +6,15 @@ import { UserUIContainer } from "../../layouts/UserUIContainer";
 import { buildings, nameToSlug } from "../../utils/buildings"
 import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
+import axios from "axios";
 
-export default function Map(Buildings) {
+export default function Map({Buildings}) {
   const router = useRouter()
   const BuildingItem = tw.li`
     hover:bg-gray-100
     pt-1 pb-1
   `;
+  const allBuildings = buildings
 
   function handleBuildingClick(buildingName, buildingId) {
     const matchedBuilding = Buildings.find((building) => building.name === buildingId);
@@ -28,8 +30,12 @@ export default function Map(Buildings) {
       <main tw="h-full">
         
         <section tw="max-w-screen-lg mx-auto text-center my-28">
-            <Datepicker/>
-          
+        <div tw="w-full mt-28 flex items-center justify-end">
+            <div tw="flex items-center justify-end flex-row">
+              <img src="/static/cal_icon.png" tw="w-10 h-auto" />
+              <Datepicker/>
+            </div>
+          </div>
             <h1 className="h2-headline" tw="mt-20 pb-5">
               Campus Map
             </h1>
@@ -43,16 +49,16 @@ export default function Map(Buildings) {
                 > 건물 보기</Button>
             </div>
             <div tw="w-full flex ">
-              <div tw="w-9/12">
-                <img src="/static/campus_map.png" alt="캠퍼스 지도"/>
+              <div tw="w-10/12">
+                <img src="/static/campus_map.png" alt="캠퍼스 지도" />
               </div>
               <div tw="w-1/6 flex mt-20">
                 <DropMenu buttonText={"건물 리스트"}>
                   <ul>
-                    {buildings.map((building) => (
+                    {allBuildings.map((building) => (
                     <BuildingItem
                       key={building.number}
-                      onClick={handleBuildingClick(building.name, building.id)}
+                      onClick={()=>handleBuildingClick(building.name, building.id)}
                     > <b>{building.number}</b> {building.name}</BuildingItem>
                     ))}
                   </ul>
@@ -67,8 +73,9 @@ export default function Map(Buildings) {
 
 export async function getServerSideProps() {
   try {
-    const response = await axios.get("api/buildings");
-    const allBuildings = response.data;
+    const response = await api.get("/buildings");
+    const Buildings = response.data;
+
     return { props: { Buildings } };
   } catch (error) {
     console.error("Failed to fetch buildings data:", error);
