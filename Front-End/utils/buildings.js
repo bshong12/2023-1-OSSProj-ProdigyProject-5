@@ -162,7 +162,7 @@ export const buildings = [
   },
   {
     number: 33,
-    name: "충무로 영상센터",
+    name: "충무로영상센터",
     id: "충무로 영상센터"
   },
  {
