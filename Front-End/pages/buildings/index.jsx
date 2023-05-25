@@ -82,7 +82,7 @@ export async function getServerSideProps() {
 
     return { props: { allBuildings } };
   } catch (error) {
-    console.error("Failed to fetch buildings data:", error);
+    console.log("Failed to fetch buildings data:", error);
     return { props: { allBuildings: [] } };
   }
 }
