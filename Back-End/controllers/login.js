@@ -33,6 +33,7 @@ async function logIn(req, res){
       const accessToken = jwt.sign({
         id : user.id,
         username: user.name,
+        phone : user.phonenumber,
         email : user.email
       }, process.env.ACCESS_SECRET,{
         expiresIn : '1m'

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({mergeParams: true}); // 부모 라우터의 파라미터 사용하기 위해
 const buildingModel = require('../models/buildings');
 const {reservedTime, classTime} = require('../services/reservation');
 const {verifyToken} = require('../services/auth')
@@ -30,8 +30,8 @@ async function getTimetable(req, res) {
 
 async function postReservTime(req, res) {
   try{
-    const selectedTimes = req.body.time;
-    if (selectedTimes) {
+    window.selectedTimes = req.body.time;
+    if (window.selectedTimes) {
       res.status(200).send('Selected times: ' + selectedTimes);
     } else {
       res.status(400).send('No times selected');
@@ -44,17 +44,28 @@ async function postReservTime(req, res) {
 
 async function getReservation(req, res) {
   try{
+    //[user: {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”}, reservation: {building: “building”, room: “room”, date: “2021-10-10”, startTime: “10:00", endTime: “11:00”}]
     const user = req.user;
-    res.status(200).json(user);
+    const reservation = req.params;
+    reservation.time = window.selectedTimes;    
+    
+    const result = {
+      user: user,
+      reservation: reservation
+    }
+
+    res.status(200).send(result);
   }
   catch(err) {
 
   }
 }
 
+// 예약 정보 저장
 async function postReservation(req, res) {
   try{
-    
+    const data = req.body;
+    // {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”} 이런 형식의 데이터를 데이터베이스에 저장
   }
   catch(err) {
 
