@@ -35,7 +35,6 @@ export default function Buildings({ allBuildings }) {
   const selectedDate = useSelector((state) => state.selectedDate);
   const date = new Date(selectedDate);
   console.log(date);
-
   return (
     <UserUIContainer title="Buildings" headerBorder footer>
       <main tw="h-full">

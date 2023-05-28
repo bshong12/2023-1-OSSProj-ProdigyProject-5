@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import tw from "twin.macro";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from 'react-redux';
+import { wrapper } from '../../../store';
 import { BreadCrumb, StyledLink, DropMenu } from "../../../components";
 import { UserUIContainer } from "../../../layouts/UserUIContainer";
 import { nameToSlug } from "../../../utils/buildings";
 import {useSelector} from 'react-redux';
+
+// const selectedDate = useSelector((state) => state.selectedDate);
 
 // {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
 export default function Building({ buildingname, buildingData }) {
@@ -96,10 +100,13 @@ export default function Building({ buildingname, buildingData }) {
 
 Building.theme = "light";
 
-export async function getServerSideProps(context) {
-  const { buildingname } = context.query;
-  const selectedDate = useSelector((state) => state.selectedDate);
-  
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const { store, query } = context;
+  const { buildingname } = query;
+
+  // Redux의 상태 값 가져오기
+  const selectedDate = store.getState().selectedDate;
+
   try {
     const response = await api.get(`/buildings/${selectedDate}/${buildingname}`);
     const buildingData = response.data;
@@ -109,5 +116,4 @@ export async function getServerSideProps(context) {
     // 오류 처리
     return { props: { buildingname: "" } };
   }
-}
-
+});

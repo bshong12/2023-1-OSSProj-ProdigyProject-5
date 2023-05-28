@@ -145,9 +145,10 @@ export default function Room({ room, reservedTimes }) {
 
 Room.theme = "light"
 
+
 export async function getServerSideProps(context) {
   const { buildingname, room } = context.query;
-  const selectedDate = useSelector((state) => state.selectedDate);
+  // const selectedDate = useSelector((state) => state.selectedDate);
   
   try {
     const response = await api.get(`/buildings/${selectedDate}/${buildingname}/${room}`);
