@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+router.use(express.json());
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post('/signup', signUp);
 
 async function signUp(req, res){
   try{
-    const { studentID, password, name, phonenumber } = req.body;
+    const { id, password, name, phonenumber, email } = req.body;
 
     // 사용자 확인
     const users = [] // users는 데이터베이스에서 가져와야함(지금은 임의로 설정)
@@ -25,8 +25,8 @@ async function signUp(req, res){
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // 회원 정보 저장(나중에 DB와 연결할 부분)
-    // saveUser({ studentID, password: hashedPassword, name, phonenumber });
-    users.push({ studentID, password: hashedPassword, name, phonenumber });
+    // saveUser({ id, password: hashedPassword, name, phonenumber });
+    users.push({ id, password: hashedPassword, name, phonenumber, email });
     res.status(201).json({ message: '회원 가입이 완료되었습니다.' });
   }
   catch(err){
