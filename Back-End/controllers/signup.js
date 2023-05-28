@@ -27,7 +27,7 @@ async function signUp(req, res){
     // 회원 정보 저장(나중에 DB와 연결할 부분)
     // saveUser({ id, password: hashedPassword, name, phonenumber });
     users.push({ id, password: hashedPassword, name, phonenumber, email });
-    res.status(201).json({ message: '회원 가입이 완료되었습니다.' });
+    res.status(201).json({ success: true, message: '회원 가입이 완료되었습니다.' });
   }
   catch(err){
     res.status(500).json({ error: err.message });
