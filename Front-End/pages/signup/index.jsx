@@ -71,7 +71,7 @@ export default function Signup() {
     signup(data)
     .then((response) => {
       console.log(response);
-      
+      setIsLoading(false);
       // 서버측에서 json형태로 보내주는 경우 {"success": true} 
       // if (response.data.success) {
       //  if(confirm("회원가입이 완료되었습니다. 로그인 페이지로 이동하시겠습니까?")) {
@@ -85,10 +85,8 @@ export default function Signup() {
     })
     .catch((error) => {
       console.error(error);
+      setIsLoading(false);  
     })
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
   };
 
   return (
@@ -110,7 +108,8 @@ export default function Signup() {
         >
            <div>
             <p>자격</p>
-            <select tw="w-full rounded-lg border-neutral-3">
+            <select tw="w-full rounded-lg border-neutral-3" {...register("qualification")} aria-label="qualification" required>
+              <option value="">자격</option>
               <option value="student">학생</option>
               <option value="manager">관리자</option>
             </select>
@@ -125,6 +124,7 @@ export default function Signup() {
               maxLength="10"
               id="name"
               name="name"
+              {...register("name")}
               noLabel
               required
             />
@@ -139,6 +139,7 @@ export default function Signup() {
               maxLength="30"
               id="studentID"
              name="studentID"
+             {...register("studentID")}
               noLabel
               required
             />
@@ -153,6 +154,7 @@ export default function Signup() {
               maxLength="10"
               id="Password"
               name="Password"
+              {...register("password")}
               noLabel
               required
             />
@@ -168,6 +170,7 @@ export default function Signup() {
               maxLength="10"
               id="email"
               name="email"
+              {...register("email")}
               noLabel
               required
             />
@@ -182,6 +185,7 @@ export default function Signup() {
               maxLength="10"
               id="phoneNumber"
               name="phoneNumber"
+              {...register("phoneNumber")}
               noLabel
               required
             />
