@@ -2,23 +2,32 @@ import React, { useEffect, useState, useRef } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useDispatch, useSelector } from 'react-redux';
+import { wrapper } from '../../../store';
 import { Img, BreadCrumb, StyledLink, Button, TimeTable } from "../../../../components"
 import { UserUIContainer } from "../../../../layouts/UserUIContainer"
 import { allTimes,nameToSlug, slugToName } from "../../../../utils/buildings"
-import { format } from "date-fns"
-import { HiOutlineClock } from "react-icons/hi"
-import { useSelector } from 'react-redux';
+import api from "../../../../utils/api";
+
 
 
 //reservedTimes = [{name: "예약명", startTime: "시작시간", endTime: "종료시간"}, {name: "예약명", startTime: "시작시간", endTime: "종료시간"}] 이라고 가정
 
 // const fullTime = []; 예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
 
+const transReservedTimes = async (transData)  => {
+  const res = await api.post(`/buildings/${transData.selectedDate}/${transData.buildingname}/${transData.room}`, transData, {
+    headers: {
+      Authorization: `Bearer ${transData.userToken}`,
+    },
+  });
+};
+
+
 function TimeSplit(reservedTimes) {
   const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
 
-  reservedTimes.forEach(reserve => {
-    const [startTime, endTime] = reserve.time.split(" - ");
+  reservedTimes.forEach((startTime, endTime) => {
     const [startHour, startMinute] = startTime.split(":");
     const [endHour, endMinute] = endTime.split(":");
 
@@ -68,6 +77,7 @@ function ReservedTable() {
     });
   }, [fullTime]);
 
+
   return (
     <table tw="border-collapse border border-neutral-5 w-full lg:(w-1/2)">
       <thead>
@@ -102,13 +112,40 @@ function ReservedTable() {
   
 
 
-export default function Room({ room, reservedTimes }) {
+export default function Room({ buildingname,room, reservedTimes }) {
   const { asPath } = useRouter()
   const router = useRouter()
   const pageHeading = room[0]?.toLowerCase().includes("room") ? room[0] : `Room -  ${room[0]}`
   const [selectedTime, setSelectedTimes] = useState([]);
-  
+  const [userToken, setUserToken] = useState("");
 
+  const selectedDate = useSelector((state) => state.selectedDate);
+
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    setUserToken(token);
+  }, []);
+
+  const transData = {
+    buildingname: slugToName(buildingname),
+    room: slugToName(room),
+    selectedTime: selectedTime,
+    userToken: userToken,
+    selectedDate: selectedDate,
+  }
+
+  
+  const handleClick = (data) => {
+    transReservedTimes(data)
+      .then((res) => {
+        router.push({
+          pathname: `${asPath}/reserve`,
+          query: { responseData: JSON.stringify(res) },
+        });
+      });
+  };
+  
   return (
     <UserUIContainer title={pageHeading} headerBorder footer>
       <main tw="h-full">
@@ -121,10 +158,7 @@ export default function Room({ room, reservedTimes }) {
             >
               {pageHeading}
             </h1>
-            <Button tw="w-52 mt-5 mb-5">
-              <Link href={`${asPath}/reserve`} passHref>예약하기
-              </Link>
-            </Button>
+            <Button tw="w-52 mt-5 mb-5" onClick={()=>handleClick(transData)}>예약하기</Button>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">
             <div tw="w-full mb-12 lg:(w-1/2 border-r mb-0)">
@@ -145,43 +179,23 @@ export default function Room({ room, reservedTimes }) {
 
 Room.theme = "light"
 
-export async function getServerSideProps(context) {
-  const { buildingname, room } = context.query;
-  const selectedDate = useSelector((state) => state.selectedDate);
-  
+
+
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const { store, query } = context;
+  const { buildingname, room } = query;
+
+  // Redux의 상태 값 가져오기
+  const selectedDate = store.getState().selectedDate;
+
   try {
-    const response = await api.get(`/buildings/${selectedDate}/${buildingname}/${room}`);
+    const response = await api.get(`/buildings/${selectedDate}/${nameToSlug(buildingname)}/${nameToSlug(room)}`);
     const reservedTimes = response.data;
     
-    return { props: { buildingname, ...reservedTimes } };
+    return { props: { buildingname, room, ...reservedTimes } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };
   }
-}
+});
 
-
-// export const getStaticPaths = async () => {
-//   const paths = []
-//   buildings.forEach((b) => {
-//     b.rooms.forEach((room) => {
-//       paths.push({ params: { building: nameToSlug(b.name), room: nameToSlug(room[0]) } })
-//     })
-//   })
-//   return {
-//     // get an array of all possible building links/slugs
-//     paths,
-//     fallback: false,
-//   }
-// }
-
-// export const getStaticProps = async ({ params }) => {
-//   // get data from the requested building
-//   const buildingData = await buildings.find((b) => nameToSlug(b.name) === params.building)
-
-//   buildingData["room"] = buildingData.rooms.filter(
-//     (room) => nameToSlug(room[0]) === params.room,
-//   )[0]
-
-//   return { props: { ...buildingData } }
-// }

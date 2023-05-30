@@ -27,4 +27,6 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
+export const wrapper = createWrapper(store, { debug: true })
+
 export default store;

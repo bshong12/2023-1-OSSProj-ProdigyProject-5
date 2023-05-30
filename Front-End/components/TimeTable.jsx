@@ -21,9 +21,9 @@ export default function TimeTable({ reservedTimes, allTimes, selectedTimes, setS
         return time[0] === prevTime[0] && time[1] === prevTime[1] + 30;
       });
   
-    if (isSequential) {
-      setSelectedTimes(newSelectedTimes);
-    }
+      if (newSelectedTimes.length <= 8 && isSequential) {
+        setSelectedTimes(newSelectedTimes);
+      }
   };
 
   return (

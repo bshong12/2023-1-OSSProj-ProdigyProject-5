@@ -26,20 +26,24 @@ const SmallDiv = styled.div(() => [
   `,
 ])
 
-const studentIDSchema = yup.object().shape({
-  studentID: yup
-    .string()
-    .matches(/^[0-9]{8}$/, "Please enter a valid student ID") // 정규표현식에 맞지 않는 경우 에러 메시지 출력
-    .required("Student ID is required!"),
-})
+const login = async (data) => {
+  try {
+    const response = await api.post("/user", data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-const passwordSchema = yup.object().shape({
-  password: yup.string().required("Password is required!"),
-})
+const schema = yup.object().shape({
+  studentID: yup.string().required("학번 또는 ID를 입력해주세요."),
+  password: yup.string().required("비밀번호를 입력해주세요."),
+});
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const [token, setToken] = useState(null);
+
 
   const {
     register,
@@ -47,16 +51,34 @@ export default function Home() {
     formState: { errors },
   } = useForm({
     mode: "onBlur",
-    resolver: yupResolver(studentIDSchema),
-    resolver: yupResolver(passwordSchema),
+    resolver: yupResolver(schema),
   })
+
+  
   const onSubmit = (data) => {
     setIsLoading(true)
     console.log(data)
+
+    login(data)
+    .then((response) => {
+      if (response.status === 200) {
+        setToken(response.data.token);
+        sessionStorage.setItem("token", response.data.token);
+        router.push("/buildings");
+      } else {
+        alert("로그인 실패");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
     setTimeout(() => {
       setIsLoading(false)
     }, 1000)
   }
+
+  
 
   return (
     <MarketingContainer title="log in" footer noHeaderNav>
@@ -85,7 +107,7 @@ export default function Home() {
             <Input
               type="text"
               placeholder="아이디 또는 학번을 입력해주세요"
-              aria-label="ID"
+              aria-label="sutdentID"
               autoComplete="off"
               autoCapitalize="none"
               maxLength="10"
@@ -100,12 +122,12 @@ export default function Home() {
             <Input
               type="text"
               placeholder="비밀번호를 입력해주세요"
-              aria-label="Password"
+              aria-label="password"
               autoComplete="off"
               autoCapitalize="none"
               maxLength="30"
-              {...register("studentID")}
-              error={!!errors?.studentID}
+              {...register("password")}
+              error={!!errors?.password}
               noLabel
               required
             />
@@ -116,8 +138,7 @@ export default function Home() {
             <label for="identify" tw="text-sm text-neutral-4 ml-3">관리자로 로그인하시겠습니까?</label>
           </div>
           <Button
-            type="button"
-            onClick={() => router.push("/buildings")}
+            type="submit"
             // type="submit"
             tw="flex items-center justify-center"
             disabled={!!isLoading}
