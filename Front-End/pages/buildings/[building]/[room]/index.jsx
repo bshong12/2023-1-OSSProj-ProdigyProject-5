@@ -27,9 +27,9 @@ const transReservedTimes = async (transData)  => {
 function TimeSplit(reservedTimes) {
   const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
 
-  reservedTimes.forEach((startTime, endTime) => {
-    const [startHour, startMinute] = startTime.split(":");
-    const [endHour, endMinute] = endTime.split(":");
+  reservedTimes.forEach(reserv => {
+    const [startHour, startMinute] = reserv.startTime.split(":");
+    const [endHour, endMinute] = reserv.endTime.split(":");
 
     if(startHour === endHour){
       fullTime.push(`${startHour}:${startMinute}`);

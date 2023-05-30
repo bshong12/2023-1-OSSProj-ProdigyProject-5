@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from 'react-redux';
-import { wrapper } from '../../../store';
+import { wrapper } from '../../../redux/store';
 import { BreadCrumb, StyledLink, DropMenu } from "../../../components";
 import { UserUIContainer } from "../../../layouts/UserUIContainer";
 import { nameToSlug } from "../../../utils/buildings";
@@ -19,9 +19,7 @@ export default function Building({ buildingname, buildingData }) {
   const pageHeading = buildingname || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
   const floors = [...new Set(buildingData.map((room) => room.floor))];
-  const[userToken, setUserToken] = useState("");
-
-
+  
   
   const filterRoomsByFloor = () => {
     //선택된 층수에 따라 강의실 filter해서 분류

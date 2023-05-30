@@ -4,9 +4,10 @@ import tw, { styled, css } from "twin.macro"
 import Link from "next/link"
 import MarketingContainer from "../layouts/MarketingContainer"
 import { Img, Input, Button, LoadingCircle, StyledLink } from "../components"
-import { useForm } from "react-hook-form"
+import { set, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import api from "../utils/api"
 
 const SmallDiv = styled.div(() => [
   tw`relative w-full text-center text-neutral-5 after:(right-0) before:(left-0)`,
@@ -28,7 +29,12 @@ const SmallDiv = styled.div(() => [
 
 const login = async (data) => {
   try {
-    const response = await api.post("/user", data);
+    const requestData = {
+      id: data.studentID,
+      password: data.password,
+    };
+    const response = await api.post("/login", requestData);
+    return response;
   } catch (error) {
     console.error(error);
   }
@@ -62,10 +68,12 @@ export default function Home() {
     login(data)
     .then((response) => {
       if (response.status === 200) {
-        setToken(response.data.token);
-        sessionStorage.setItem("token", response.data.token);
+        // setToken(response.data.token);
+        // sessionStorage.setItem("token", response.data.token); // 토큰 저장
+        setIsLoading(false);
         router.push("/buildings");
       } else {
+        setIsLoading(false);
         alert("로그인 실패");
       }
     })
@@ -107,7 +115,7 @@ export default function Home() {
             <Input
               type="text"
               placeholder="아이디 또는 학번을 입력해주세요"
-              aria-label="sutdentID"
+              aria-label="studentID"
               autoComplete="off"
               autoCapitalize="none"
               maxLength="10"
