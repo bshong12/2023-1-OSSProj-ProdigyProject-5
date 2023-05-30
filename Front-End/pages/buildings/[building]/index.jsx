@@ -3,7 +3,6 @@ import tw from "twin.macro";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from 'react-redux';
-import { wrapper } from '../../../redux/store';
 import { BreadCrumb, StyledLink, DropMenu } from "../../../components";
 import { UserUIContainer } from "../../../layouts/UserUIContainer";
 import { nameToSlug } from "../../../utils/buildings";
@@ -19,7 +18,7 @@ export default function Building({ buildingname, buildingData }) {
   const pageHeading = buildingname || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
   const floors = [...new Set(buildingData.map((room) => room.floor))];
-  
+  const date = useSelector((state) => state.selectedDate);
   
   const filterRoomsByFloor = () => {
     //선택된 층수에 따라 강의실 filter해서 분류
@@ -34,7 +33,8 @@ export default function Building({ buildingname, buildingData }) {
     return (
       <li tw="mr-5 mb-5">
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
-          <Link href={`${asPath}/${nameToSlug(roomData.room)}`} passHref>
+          <Link href={
+            {pathname:`${asPath}/${nameToSlug(roomData.room)}`, query: date }} passHref as={`${asPath}/${nameToSlug(roomData.room)}`}>
             <StyledLink
               underline
               tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
@@ -103,12 +103,9 @@ export default function Building({ buildingname, buildingData }) {
 
 Building.theme = "light";
 
-export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-  const { store, query } = context;
-  const { buildingname } = query;
-
-  // Redux의 상태 값 가져오기
-  const selectedDate = store.getState().selectedDate;
+export async function getServerSideProps (context) {
+  const { buildingname } = context.params;
+  const { selectedDate } = context.query;
 
   try {
     const response = await api.get(`/buildings/${selectedDate}/${buildingname}`);
@@ -119,4 +116,4 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     // 오류 처리
     return { props: { buildingname: "" } };
   }
-});
+};
