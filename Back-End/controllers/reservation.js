@@ -1,54 +1,37 @@
 const express = require('express');
-const router = express.Router();
-const buildingModel = require('../models/buildings')
-// const dateService = require('../services/buildings')
+const router = express.Router({mergeParams: true}); // 부모 라우터의 파라미터 사용하기 위해
+const buildingModel = require('../models/buildings');
+const {reservedTime, classTime} = require('../services/reservation');
+const {verifyToken} = require('../services/auth')
 
-// router.get('/:room', getRoomInfo);
-router.get('/:room', renderForm);
-router.post('/:room', postReservTime);
-// router.get('/:room/reservation', getRoomsByFloor)
+router.get('/:room', getTimetable);   // 예약 가능한 시간 불러오기
+router.post('/:room', postReservTime);  // 선택한 시간 예약 저장
+router.post('/:room/reservation', verifyToken, getReservation);  // 선택한 시간 예약 저장
+router.post('/:room/reservation', postReservation);  // 선택한 시간 예약 저장
 
-// 강의실 정보 가져오기
-// async function getRoomInfo(req, res) {
-//   try{
-//       res.status(200).send()
-//     }
-//   catch(err) {
-//     console.log(err)
-//   }
-// }
-
-async function renderForm(req, res) {
+async function getTimetable(req, res) {
   try{
-    const path = req.baseUrl + req.path;
-    res.send(`
-    <h1>Checkbox Example</h1>
-    <form action="${path}" method="post">
-      <label for="time1">10:00</label>
-      <input type="checkbox" id="time1" name="time" value="1000"><br>
+    // 건물, 날짜, 강의실 이름 req.params로 주어짐
+    // 건물, 강의실 이름에 맞는 수업&예약 정보 mysql에서 가져옴 -> 한 강의실
+    // 날짜로 요일 계산해서 그 요일에 맞는 수업시간 가져옴
+    const date = req.params.date;
+    const room = req.params.room;
+    const time1 = reservedTime(date, room)
+    const time2 = classTime(date, room)
 
-      <label for="time2">11:00</label>
-      <input type="checkbox" id="time2" name="time" value="1100"><br>
+    // time = time1.concat(time2) // 예약과 수업으로 인해 사용되는 시간(시작, 끝시간 주어짐)
 
-      <label for="time3">12:00</label>
-      <input type="checkbox" id="time3" name="time" value="1200"><br>
-
-      <label for="time4">1:00</label>
-      <input type="checkbox" id="time4" name="time" value="1300"><br>
-
-      <button type="submit">Submit</button>
-    </form>
-  `);
+    res.status(200).send(time);
   }
-  catch(err){
-    console.log(err)
+  catch(err) {
+    console.log(err);
   }
 }
 
 async function postReservTime(req, res) {
   try{
-    const selectedTimes = req.body.time;
-    if (selectedTimes) {
+    window.selectedTimes = req.body.time;
+    if (window.selectedTimes) {
       res.status(200).send('Selected times: ' + selectedTimes);
     } else {
       res.status(400).send('No times selected');
@@ -56,6 +39,36 @@ async function postReservTime(req, res) {
   }
   catch(err) {
     console.log(err)
+  }
+}
+
+async function getReservation(req, res) {
+  try{
+    //[user: {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”}, reservation: {building: “building”, room: “room”, date: “2021-10-10”, startTime: “10:00", endTime: “11:00”}]
+    const user = req.user;
+    const reservation = req.params;
+    reservation.time = window.selectedTimes;    
+    
+    const result = {
+      user: user,
+      reservation: reservation
+    }
+
+    res.status(200).send(result);
+  }
+  catch(err) {
+
+  }
+}
+
+// 예약 정보 저장
+async function postReservation(req, res) {
+  try{
+    const data = req.body;
+    // {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”} 이런 형식의 데이터를 데이터베이스에 저장
+  }
+  catch(err) {
+
   }
 }
 
