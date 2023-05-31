@@ -32,7 +32,7 @@ async function signup(data) {
     const response = await api.post("/signup", data);
     // 회원가입 성공
     console.log(response.data);
-    
+    return response;  
   } catch (error) {
     // 회원가입 실패
     console.error(error.response.data);

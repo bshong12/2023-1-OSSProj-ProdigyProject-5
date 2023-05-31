@@ -1,31 +1,32 @@
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import tw from "twin.macro"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { Img, Button, Datepicker } from "../../components"
+import { useSelector } from "react-redux"
+import { Img, Button, Datepicker, StyledLink } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
 import { useSelector } from "react-redux"
 import api from "../../utils/api"
 
 
-
-
 const BuildingCard = ({ building}) => {
 
   const { name, image } = building
   const slug = nameToSlug(name)
-  
+  const selectedDate = useSelector((state) => state.selectedDate);
+
+
   return (
-    <Link href={`/buildings/${slug}`} passHref>
-      <a tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
+    <Link href={{pathname: `/buildings/${slug}`, query: {date : selectedDate}}} as={`/buildings/${slug}`} passHref>
+      <StyledLink tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
         <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg ">
           {name}
         </span>
         <div tw="relative h-40 rounded-lg">
           <Img objectFit={"cover"} tw="rounded-lg" layout={"fill"} src={image} alt={name} />
         </div>
-      </a>
+      </StyledLink>
     </Link>
   )
 }
