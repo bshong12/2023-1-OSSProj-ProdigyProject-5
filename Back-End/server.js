@@ -27,7 +27,10 @@ connection.connect((err) => {
 });
 */
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // 클라이언트의 주소로 변경
+  credentials: true, // 쿠키 전송을 허용
+}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -59,9 +62,11 @@ const roomController = require('./controllers/rooms');
 const roomReservation = require('./controllers/reservation');
 const signUp = require('./controllers/signup')
 const logIn = require('./controllers/login')
+const logOut = require('./controllers/logout')
 
 app.use('/api/buildings', buildingController);
 app.use('/api/buildings/:date', roomController);
 app.use('/api/buildings/:date/:buildingname', roomReservation);
 app.use('/api/signup', signUp)
 app.use('/api/login', logIn)
+app.use('/api/logout', logOut)
