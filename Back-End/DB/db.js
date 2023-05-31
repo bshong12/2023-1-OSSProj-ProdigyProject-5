@@ -2,7 +2,7 @@ const { default: axios } = require('axios');
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const axios = require(axios);
+//const axios = require(axios);
 
 // MySQL 연결
 const connection = mysql.createPool({
@@ -81,11 +81,37 @@ const exportgetRoomInfo = async () => {
   return values;
 };
 
-// export 함수를 export
-module.exports = {
-  getRoomNames: exportgetRoomNames,
-  getRoomInfo: exportgetRoomInfo
-};
+
+// 날짜를 "YYYY-MM-DD" 형식으로 변환하는 함수
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// 요일, 강의실이름에 대하여 해당하는 예약, 수업 가져오는 함수
+function getLecturesAndReservationsByWeekdayAndRoom(weekday, room, callback) {
+
+  const lectureQuery = 'SELECT * FROM DB.Lecture WHERE weekday = ? AND room = ?';
+  connection.query(lectureQuery, [weekday, room], (lectureErr, lectureResults) => {
+    if (lectureErr) {
+      console.error('강의 조회 오류:', lectureErr);
+      callback(lectureErr, null);
+    } else {
+      const reservationQuery = 'SELECT * FROM DB.Reservation WHERE weekday = ? AND room_id = ?';
+      connection.query(reservationQuery, [weekday, room], (reservationErr, reservationResults) => {
+        if (reservationErr) {
+          console.error('예약 조회 오류:', reservationErr);
+          callback(reservationErr, null);
+        } else {
+          callback(null, { lectures: lectureResults, reservations: reservationResults });
+        }
+      });
+    }
+  });
+}
+
 
 //프론트엔드 >> 데이터베이스
 // reservation 데이터를 MySQL 데이터베이스에 저장하는 함수
@@ -119,8 +145,13 @@ async function updateApprovalToDatabase(user) {
   }
 }
 
-
-module.exports = {saveReservationToDatabase, updateApprovalToDatabase};
+module.exports = {
+  saveReservationToDatabase,
+  updateApprovalToDatabase,
+  getLecturesAndReservationsByWeekdayAndRoom,
+  getRoomNames: exportgetRoomNames,
+  getRoomInfo: exportgetRoomInfo
+};
 
 
 /*
