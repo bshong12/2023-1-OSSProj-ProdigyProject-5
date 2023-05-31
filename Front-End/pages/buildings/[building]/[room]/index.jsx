@@ -17,9 +17,6 @@ import api from "../../../../utils/api";
 
 const transReservedTimes = async (transData)  => {
   const res = await api.post(`/buildings/${transData.selectedDate}/${transData.buildingname}/${transData.room}`, transData, {
-    headers: {
-      Authorization: `Bearer ${transData.userToken}`,
-    },
   });
 };
 
@@ -27,9 +24,9 @@ const transReservedTimes = async (transData)  => {
 function TimeSplit(reservedTimes) {
   const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
 
-  reservedTimes.forEach((startTime, endTime) => {
-    const [startHour, startMinute] = startTime.split(":");
-    const [endHour, endMinute] = endTime.split(":");
+  reservedTimes.forEach(reserv => {
+    const [startHour, startMinute] = reserv.startTime.split(":");
+    const [endHour, endMinute] = reserv.endTime.split(":");
 
     if(startHour === endHour){
       fullTime.push(`${startHour}:${startMinute}`);
@@ -122,11 +119,6 @@ export default function Room({ buildingname,room, reservedTimes }) {
   const selectedDate = useSelector((state) => state.selectedDate);
 
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    setUserToken(token);
-  }, []);
-
   const transData = {
     buildingname: slugToName(buildingname),
     room: slugToName(room),
@@ -180,13 +172,9 @@ export default function Room({ buildingname,room, reservedTimes }) {
 Room.theme = "light"
 
 
-
-export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
-  const { store, query } = context;
-  const { buildingname, room } = query;
-
-  // Redux의 상태 값 가져오기
-  const selectedDate = store.getState().selectedDate;
+export async function getServerSideProps (context) {
+  const { buildingname, room } = context.params;
+  const { selectedDate } = context.query;
 
   try {
     const response = await api.get(`/buildings/${selectedDate}/${nameToSlug(buildingname)}/${nameToSlug(room)}`);
@@ -197,5 +185,4 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     // 오류 처리
     return { props: { buildingname: "" } };
   }
-});
-
+};
