@@ -3,7 +3,7 @@ import { DefaultSeo } from "next-seo"
 import { ThemeProvider } from "next-themes"
 import SEO from "../next-seo.config"
 import { createWrapper } from "next-redux-wrapper"
-import store from "../redux/store"
+import wrapper from "../redux/store"
 
 function App({ Component, pageProps }) {
   return (
@@ -22,6 +22,6 @@ function App({ Component, pageProps }) {
   )
 }
 
-const wrapper = createWrapper(() => store);
+// const wrapper = createWrapper(() => store);
 
 export default wrapper.withRedux(App);

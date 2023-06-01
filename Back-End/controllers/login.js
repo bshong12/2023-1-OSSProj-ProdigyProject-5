@@ -23,11 +23,11 @@ async function logIn(req, res){
     }
 
     // 비밀번호 검증
-    // const passwordMatch = await bcrypt.compare(password, user.password);
-    // if (!passwordMatch) {
-    //   throw new Error('비밀번호가 일치하지 않습니다.');
-    // }
-    // else{
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new Error('비밀번호가 일치하지 않습니다.');
+    }
+    else{
       
       // access token발급
       const accessToken = jwt.sign({
