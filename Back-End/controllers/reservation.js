@@ -3,10 +3,11 @@ const router = express.Router({mergeParams: true}); // 부모 라우터의 파�
 const buildingModel = require('../models/buildings');
 const {reservedTime, classTime} = require('../services/reservation');
 const {verifyToken} = require('../services/auth')
+const {saveReservationToDatabase} = require('../DB/db')
 
 router.get('/:room', getTimetable);   // 예약 가능한 시간 불러오기
 router.post('/:room', postReservTime);  // 선택한 시간 예약 저장
-router.post('/:room/reservation', verifyToken, getReservation);  // 선택한 시간 예약 저장
+router.get('/:room/reservation', verifyToken, getReservation);  // 이전 단계에서 선택한 예약에 필요한 정보(강의실, 시간 등) 불러오기
 router.post('/:room/reservation', postReservation);  // 선택한 시간 예약 저장
 
 async function getTimetable(req, res) {
@@ -19,7 +20,7 @@ async function getTimetable(req, res) {
     const time1 = reservedTime(date, room)
     const time2 = classTime(date, room)
 
-    // time = time1.concat(time2) // 예약과 수업으로 인해 사용되는 시간(시작, 끝시간 주어짐)
+    time = time1.concat(time2) // 예약과 수업으로 인해 사용되는 시간(시작, 끝시간 주어짐)
 
     res.status(200).send(time);
   }
@@ -32,7 +33,7 @@ async function postReservTime(req, res) {
   try{
     window.selectedTimes = req.body.time;
     if (window.selectedTimes) {
-      res.status(200).send('Selected times: ' + selectedTimes);
+      res.status(200).send({selectedTimes: selectedTimes});
     } else {
       res.status(400).send('No times selected');
     }
@@ -65,7 +66,9 @@ async function getReservation(req, res) {
 async function postReservation(req, res) {
   try{
     const data = req.body;
+    saveReservationToDatabase(data)
     // {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”} 이런 형식의 데이터를 데이터베이스에 저장
+    res.status(200).send(data)
   }
   catch(err) {
 
