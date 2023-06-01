@@ -11,10 +11,10 @@ import api from "../../../../utils/api"
 
 //전 페이지에서 신청정보 모두 넘겨줘야 함
 
-const user = {name:"name", studentID: "id", major: "major", phone: "phonenumber", email:"email@gmail.com"}
+const user = {name:"name", studentID: "id", phone: "phonenumber", email:"email@gmail.com"}
 
 function Form({user}) {
-
+  
   return (
     <div tw="w-full">
       <h3 tw="w-full text-left bg-neutral-2 h-10 flex items-center p-2">상세내역 입력</h3>
@@ -115,11 +115,15 @@ function Form({user}) {
   )
 }
 
-
+//responseData로 받는 정보
+//[user: {name: "name", studentID: "id", phone: "phonenumber", email: "email@gmail"},
+//reservation: {building: "building", room: "room", date: "2021-10-10", startTime: "10:00", endTime: "11:00"}]
 export default function ReserveForm() { //앞서 선택했던 예약 정보들 받아오기
   const { asPath } = useRouter();
   const router = useRouter();
-
+  const responseData = router.query.responseData;
+  const user = responseData.user;
+  const reservation = responseData.reservation;
 
   const onReserve = () => { //예약신청 버튼을 눌렀을 때
     const result = window.confirm("예약이 완료되었습니다. 예약내역을 확인하시겠습니까?");
@@ -163,11 +167,11 @@ export default function ReserveForm() { //앞서 선택했던 예약 정보들 �
               <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">신청장소</p>
             </div> 
             <div tw="flex w-full items-center border-t border-neutral-3 h-7">
-              <p tw="border-neutral-3 w-1/6 text-neutral-5">23.06.01</p>
-              <p tw="border-neutral-3 w-1/6 text-neutral-5">13:00</p>
-              <p tw="border-neutral-3 w-1/6 text-neutral-5">14:30</p>
-              <p tw="border-neutral-3 w-1/3 text-neutral-5">학술/문화관</p>
-              <p tw="border-neutral-3 w-1/3 text-neutral-5">K217</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">{reservation.date}</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">{reservation.startTime}</p>
+              <p tw="border-neutral-3 w-1/6 text-neutral-5">{reservation.endTime}</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5">{reservation.building}</p>
+              <p tw="border-neutral-3 w-1/3 text-neutral-5">{reservation.room}</p>
             </div>
            </div>
            <ButtonArea/>
