@@ -3,10 +3,7 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 
-
-
 //const axios = require(axios);
-
 
 // MySQL 연결
 const connection = mysql.createPool({
@@ -68,7 +65,21 @@ const getRoomInfo = () => {
       });
     });
   };
-  
+
+// 회원정보 가져오는 함수
+const getUser = () => {
+  return new Promise((resolve, reject) => {
+    connection.query("SELECT * FROM DB.User", (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        const values = results.map(row => ({ id:row.id, password:row.password,  name:row.name, phone:row.phone, type: row.type }));
+        resolve(values);
+      }
+    });
+  });
+};
+
 
 // 데이터베이스 값 export하는 함수
 // 1. 건물명 [{'name':건물1, 'image':'이미지바이너리형태'},{'name':건물2, 'image':'이미지바이너리형태'}...] 형태
@@ -82,6 +93,12 @@ const exportgetRoomNames = async () => {
 // 형태 [{'name':'명진관',{'room':'302','info':'건물설명','floor':4},{'room':'302','info':'건물설명','floor':4},{'room':'302','info':'건물설명','floor':4}}...]
 const exportgetRoomInfo = async () => {
   const values = await getRoomInfo();
+  return values;
+};
+
+// 회원정보
+const exportgetUser = async () => {
+  const values = await getUser();
   return values;
 };
 
@@ -119,19 +136,25 @@ function getLecturesAndReservationsByWeekdayAndRoom(weekday, room, callback) {
 
 //프론트엔드 >> 데이터베이스
 // reservation 데이터를 MySQL 데이터베이스에 저장하는 함수
-async function saveReservationToDatabase(user) {
+async function saveReservationToDatabase(Reservation) {
   try {
+    // Extract weekday from date
+    const dateObj = new Date(Reservation.date);
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const weekday = weekdays[dateObj.getDay()];
+
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, approval, start_time, end_time) VALUES (?, ?)';
+    const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, approval, start_time, end_time, weekday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     // 쿼리 실행
-    await connection.query(query, [Reservation.id, Reservation.room_id, Reservation.date, Reservation.reason, Reservation.event_name, Reservation.people, Reservation.group_name, Reservation.event_content, Reservation.user_id, Reservation.approval, Reservation.start_time, Reservation.end_time]);
+    await connection.query(query, [Reservation.id, Reservation.room_id, Reservation.date, Reservation.reason, Reservation.event_name, Reservation.people, Reservation.group_name, Reservation.event_content, Reservation.user_id, Reservation.approval, Reservation.start_time, Reservation.end_time, weekday]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
     throw error;
   }
 }
+
 
 // 예약 승인여부 전달하는 함수
 
@@ -154,9 +177,9 @@ module.exports = {
   updateApprovalToDatabase,
   getLecturesAndReservationsByWeekdayAndRoom,
   getRoomNames: exportgetRoomNames,
-  getRoomInfo: exportgetRoomInfo
+  getRoomInfo: exportgetRoomInfo,
+  getUser: exportgetUser
 };
-
 
 /*
 // 프론트엔드의 user 데이터
