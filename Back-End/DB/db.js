@@ -112,24 +112,25 @@ function formatDate(date) {
 }
 
 // 요일, 강의실이름에 대하여 해당하는 예약, 수업 가져오는 함수
-function getLecturesAndReservationsByWeekdayAndRoom(weekday, room, callback) {
-
-  const lectureQuery = 'SELECT * FROM DB.Lecture WHERE weekday = ? AND room = ?';
-  connection.query(lectureQuery, [weekday, room], (lectureErr, lectureResults) => {
-    if (lectureErr) {
-      console.error('강의 조회 오류:', lectureErr);
-      callback(lectureErr, null);
-    } else {
-      const reservationQuery = 'SELECT * FROM DB.Reservation WHERE weekday = ? AND room_id = ?';
-      connection.query(reservationQuery, [weekday, room], (reservationErr, reservationResults) => {
-        if (reservationErr) {
-          console.error('예약 조회 오류:', reservationErr);
-          callback(reservationErr, null);
-        } else {
-          callback(null, { lectures: lectureResults, reservations: reservationResults });
-        }
-      });
-    }
+function getLecturesAndReservationsByWeekdayAndRoom(weekday, room) {
+  return new Promise((resolve, reject) => {
+    const lectureQuery = 'SELECT * FROM DB.Lecture WHERE weekday = ? AND room = ?';
+    connection.query(lectureQuery, [weekday, room], (lectureErr, lectureResults) => {
+      if (lectureErr) {
+        console.error('강의 조회 오류:', lectureErr);
+        reject(lectureErr);
+      } else {
+        const reservationQuery = 'SELECT * FROM DB.Reservation WHERE weekday = ? AND room_id = ?';
+        connection.query(reservationQuery, [weekday, room], (reservationErr, reservationResults) => {
+          if (reservationErr) {
+            console.error('예약 조회 오류:', reservationErr);
+            reject(reservationErr);
+          } else {
+            resolve({ lectures: lectureResults, reservations: reservationResults });
+          }
+        });
+      }
+    });
   });
 }
 
