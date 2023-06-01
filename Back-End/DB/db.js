@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 
+//const axios = require(axios);
+
 // MySQL 연결
 const connection = mysql.createPool({
   host: "127.0.0.1", // 호스트

@@ -7,7 +7,7 @@ import { Img, Input, Button, LoadingCircle, StyledLink } from "../../components"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import api from "../../api"
+import api from "../../utils/api"
 
 const SmallDiv = styled.div(() => [
   tw`relative w-full text-center text-neutral-5 after:(right-0) before:(left-0)`,

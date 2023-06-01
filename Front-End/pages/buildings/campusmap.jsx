@@ -4,9 +4,11 @@ import { useRouter } from "next/router"
 import { Button, DropMenu, Datepicker } from "../../components";
 import { UserUIContainer } from "../../layouts/UserUIContainer";
 import { buildings, nameToSlug } from "../../utils/buildings"
+import { useSelector } from "react-redux";
 import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
-import axios from "axios";
+import api from "../../utils/api"
+
 
 export default function Map({Buildings}) {
   const router = useRouter()
@@ -16,12 +18,17 @@ export default function Map({Buildings}) {
   `;
   const allBuildings = buildings
 
+  const selectedDate = useSelector((state) => state.selectedDate);
+  const date = new Date(selectedDate);
+  const stringDate = date.toISOString().slice(0, 10);
+
+
   function handleBuildingClick(buildingName, buildingId) {
     const matchedBuilding = Buildings.find((building) => building.name === buildingId);
     if (matchedBuilding) {
       router.push(
         {pathname: `/buildings/${nameToSlug(buildingId)}`,
-        query: {date : selectedDate}})
+        query: {date : stringDate}})
      }else {
       alert(`${buildingName}은/는 대관신청이 불가능합니다`)
     }

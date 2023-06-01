@@ -6,19 +6,17 @@ import { useSelector } from "react-redux"
 import { Img, Button, Datepicker, StyledLink } from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
-import { useSelector } from "react-redux"
 import api from "../../utils/api"
 
 
-const BuildingCard = ({ building}) => {
+const BuildingCard = ({ building, date}) => {
 
   const { name, image } = building
   const slug = nameToSlug(name)
-  const selectedDate = useSelector((state) => state.selectedDate);
 
 
   return (
-    <Link href={{pathname: `/buildings/${slug}`, query: {date : selectedDate}}} as={`/buildings/${slug}`} passHref>
+    <Link href={{pathname: `/buildings/${slug}`, query: {date : date}}} as={`/buildings/${slug}`} passHref>
       <StyledLink tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
         <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg ">
           {name}
@@ -35,7 +33,9 @@ export default function Buildings({ allBuildings }) {
   const router = useRouter()
   const selectedDate = useSelector((state) => state.selectedDate);
   const date = new Date(selectedDate);
+  const stringDate = date.toISOString().slice(0, 10);
   console.log(date);
+  // 출력: "YYYY-MM-DD"
   return (
     <UserUIContainer title="Buildings" headerBorder footer>
       <main tw="h-full">
@@ -64,7 +64,7 @@ export default function Buildings({ allBuildings }) {
                   "
             >
               {allBuildings?.map((building) => (
-                <BuildingCard building={building} date={date} key={building.name} />
+                <BuildingCard building={building} date={stringDate} key={building.name} />
               ))}
             </div>
         </section>
