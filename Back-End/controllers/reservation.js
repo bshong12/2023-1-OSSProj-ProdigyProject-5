@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({mergeParams: true}); // 부모 라우터의 파라미터 사용하기 위해
 const buildingModel = require('../models/buildings');
-const {reservedTime, classTime} = require('../services/reservation');
+const {reservedTime} = require('../services/reservation');
 const {verifyToken} = require('../services/auth')
 const {saveReservationToDatabase} = require('../DB/db')
 
@@ -17,10 +17,7 @@ async function getTimetable(req, res) {
     // 날짜로 요일 계산해서 그 요일에 맞는 수업시간 가져옴
     const date = req.params.date;
     const room = req.params.room;
-    const time1 = reservedTime(date, room)
-    const time2 = classTime(date, room)
-
-    time = time1.concat(time2) // 예약과 수업으로 인해 사용되는 시간(시작, 끝시간 주어짐)
+    const time = await reservedTime(date, room)
 
     res.status(200).send(time);
   }
