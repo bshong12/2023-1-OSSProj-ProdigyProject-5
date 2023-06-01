@@ -22,12 +22,12 @@ async function logIn(req, res){
       throw new Error('사용자를 찾을 수 없습니다.');
     }
 
-    // // 비밀번호 검증
-    // const passwordMatch = await bcrypt.compare(password, user.password);
-    // if (!passwordMatch) {
-    //   throw new Error('비밀번호가 일치하지 않습니다.');
-    // }
-    // else{
+    // 비밀번호 검증
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      throw new Error('비밀번호가 일치하지 않습니다.');
+    }
+    else{
       
       // access token발급
       const accessToken = jwt.sign({

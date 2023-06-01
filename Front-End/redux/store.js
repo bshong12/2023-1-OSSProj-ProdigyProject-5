@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { createWrapper } from "next-redux-wrapper"
 
 // 초기 상태
 const initialState = {
