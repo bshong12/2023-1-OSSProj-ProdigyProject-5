@@ -48,7 +48,13 @@ const schema = yup.object().shape({
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+
+  const handleCheckboxChange = (event) => {
+    setIsAdmin(event.target.checked);
+  };
 
 
   const {
@@ -70,7 +76,12 @@ export default function Home() {
       if (response.status === 200) {
         // setToken(response.data.token);
         // sessionStorage.setItem("token", response.data.token); // 토큰 저장
-        setIsLoading(false);
+        if(isAdmin){
+          router.push("/manage");
+        } else {
+          setIsLoading(false);
+        }
+       
         router.push("/buildings");
       } else {
         setIsLoading(false);
@@ -142,7 +153,7 @@ export default function Home() {
             <small tw="text-red-700">{errors?.password?.message}</small>
           </div>
           <div tw="flex items-center">
-            <input type="checkbox" id="identify" name="identify" value="manager" tw="border border-neutral-4"/>
+            <input type="checkbox" id="identify" name="identify" value="manager" tw="border border-neutral-4" onChange={handleCheckboxChange}/>
             <label for="identify" tw="text-sm text-neutral-4 ml-3">관리자로 로그인하시겠습니까?</label>
           </div>
           <Button
