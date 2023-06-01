@@ -2,12 +2,14 @@
 React 기반의 동국대학교 대관신청 웹 시스템
 
 ## Developed by CSID-DGU: Prodigy_Project
-<img alt="MIT" src ="https://img.shields.io/badge/license-MIT-salmon"> <img src="https://img.shields.io/badge/Node.js-0175C2?style=flat-square&logo=Nodedotjs%2B%2B&logoColor=white"/> 
+<img alt="MIT" src ="https://img.shields.io/badge/license-MIT-salmon"> 
+<img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat-square&logo=Visual Studio Code&logoColor=white"/>
+
 
 | Role  | Name | Skills |
 | :-----: |:----:| ------ |
 | Frontend  | [김유리](https://github.com/yurik1m) |<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black"/> <img src="https://img.shields.io/badge/Tailwind CSS-06B6D4?style=flat-square&logo=Tailwind CSS&logoColor=white"/> <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white"/>|
-| Backend   | [홍범선](https://github.com/bshong12)|<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/>|
+| Backend   | [홍범선](https://github.com/bshong12)|<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/> <img src="https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=Postman&logoColor=white"/> |
 | DBA  | [홍서이](https://github.com/hongseoi) | <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/> <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/>|
 
 
