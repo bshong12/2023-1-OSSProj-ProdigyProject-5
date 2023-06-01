@@ -7,6 +7,7 @@ import { Img, BreadCrumb, StyledLink, Button, TimeTable } from "../../../../comp
 import { UserUIContainer } from "../../../../layouts/UserUIContainer"
 import { allTimes,nameToSlug, slugToName } from "../../../../utils/buildings"
 import api from "../../../../utils/api";
+// import { reservedTime } from "../../../../../Back-End/services/reservation";
 
 
 
@@ -14,13 +15,12 @@ import api from "../../../../utils/api";
 
 // const fullTime = []; 예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
 
-const transReservedTimes = async (transData)  => {
-  const res = await api.post(`/buildings/${transData.selectedDate}/${transData.buildingname}/${transData.room}`, transData, {
-  });
+const transReservedTimes = async ({transData})  => {
+  const res = await api.post(`/buildings/${transData.selectedDate}/${transData.buildingname}/${transData.room}`, transData);
 };
 
 
-function TimeSplit(reservedTimes) {
+function TimeSplit({reservedTimes}) {
   const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
 
   reservedTimes.forEach(reserv => {
@@ -50,7 +50,7 @@ function TimeSplit(reservedTimes) {
 }
 
 //예약되어 있는 시간 표시하는 테이블
-function ReservedTable() {
+function ReservedTable({ reservedTimes }) {
   const fullTime = TimeSplit(reservedTimes);
 
   const slotRefs = useRef([]);
@@ -64,21 +64,22 @@ function ReservedTable() {
   };
 
   useEffect(() => {
-    slotRefs.current.forEach((slotRef,index) => {
+    slotRefs.current.forEach((slotRef, index) => {
       const isReserved = fullTime.includes(allTimes[index]);
 
-      if(isReserved) {
+      if (isReserved) {
         handleReserved(slotRef);
       }
     });
   }, [fullTime]);
 
-
   return (
     <table tw="border-collapse border border-neutral-5 w-full lg:(w-1/2)">
       <thead>
         <tr tw="border-b border-neutral-4 text-center">
-          <th colSpan={2} tw="h-10">현재 예약 내역</th>
+          <th colSpan={2} tw="h-10">
+            현재 예약 내역
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -96,7 +97,9 @@ function ReservedTable() {
 
           return (
             <tr key={index} tw="h-5">
-              <td tw="border border-neutral-4 border-l-neutral-5 text-neutral-4 p-3 w-1/4">{time}</td>
+              <td tw="border border-neutral-4 border-l-neutral-5 text-neutral-4 p-3 w-1/4">
+                {time}
+              </td>
               <td ref={slotRefs.current[index]} id={slotId}></td>
             </tr>
           );
@@ -105,25 +108,27 @@ function ReservedTable() {
     </table>
   );
 }
+
   
 
 
-export default function Room({ buildingname,room, reservedTimes }) {
+export default function Room({ date, building,room, reservedTimes }) {
+
   const { asPath } = useRouter()
   const router = useRouter()
-  const pageHeading = room[0]?.toLowerCase().includes("room") ? room[0] : `Room -  ${room[0]}`
+  const pageHeading = room?.toLowerCase().includes("room") ? room : `Room -  ${room}`
   const [selectedTime, setSelectedTimes] = useState([]);
-  const [userToken, setUserToken] = useState("");
 
   const selectedDate = useSelector((state) => state.selectedDate);
+  const transDate = new Date(selectedDate);
+  const stringDate = transDate.toISOString().slice(0, 10);
 
 
   const transData = {
-    buildingname: slugToName(buildingname),
-    room: slugToName(room),
+    buildingname: building,
+    room: room,
     selectedTime: selectedTime,
-    userToken: userToken,
-    selectedDate: selectedDate,
+    selectedDate: stringDate,
   }
 
   
@@ -173,14 +178,14 @@ Room.theme = "light"
 
 export async function getServerSideProps (context) {
   console.log(context.query);
+ 
   const {date, building, room} = context.query;
 
   try {
-    const response = await api.get(`/buildings/${date}/${nameToSlug(building)}/${nameToSlug(room)}`);
+    const response = await api.get(`/buildings/${date}/${building}/${room}`);
     const reservedTimes = response.data;
     console.log(reservedTimes);
-    
-    return { props: { building, room, reservedTimes } };
+    return { props: { date, building, room, reservedTimes } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };

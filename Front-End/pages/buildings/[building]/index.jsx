@@ -38,14 +38,16 @@ export default function Building({ building, buildingData }) {
       <li tw="mr-5 mb-5">
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
           <Link href={
-            {pathname:`${asPath}/${nameToSlug(roomData.room)}`, query: {date: stringDate} }} passHref as={`${asPath}/${nameToSlug(roomData.room)}`}>
-            <StyledLink
-              underline
-              tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
-                        bg-neutral-1 px-2 py-2 rounded-lg capitalize"
-            >
-              {roomData.room}
-            </StyledLink>
+            {pathname:`${asPath}/${roomData.room}`, query: {date: stringDate} }} passHref as={`${asPath}/${roomData.room}`}>
+            <div suppressHydrationWarning>
+              <StyledLink
+                underline
+                tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
+                          bg-neutral-1 px-2 py-2 rounded-lg capitalize"
+              >
+                {roomData.room}
+              </StyledLink>
+            </div>
           </Link>
           <button onClick={() => setIsRoomOpen(!isRoomOpen)} tw="mr-3">
             <img src="/static/drop_icon.png" />
