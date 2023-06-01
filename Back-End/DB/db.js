@@ -119,7 +119,7 @@ async function updateApprovalToDatabase(user) {
 }
 
 
-module.exports = {saveReservationToDatabase, updateApprovalToDatabase};
+module.exports = {saveReservationToDatabase, updateApprovalToDatabase,getRoomNames,getRoomInfo};
 
 
 /*

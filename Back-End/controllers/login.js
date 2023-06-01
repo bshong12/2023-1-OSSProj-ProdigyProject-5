@@ -9,7 +9,7 @@ require('dotenv').config();
 
 router.post('/', logIn);
 
-const users = [{"id":"1", "name":"qwe", "email":"asd" },{"id":"2", "name":"asd", "email":"qwe" }]
+const users = [{"id":"1234", "name":"qwe", "email":"asd" },{"id":"2468", "name":"asd", "email":"qwe" }]
 
 async function logIn(req, res){
   try{
