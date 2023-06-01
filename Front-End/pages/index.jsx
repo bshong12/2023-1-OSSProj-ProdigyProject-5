@@ -17,7 +17,7 @@ const SmallDiv = styled.div(() => [
       ${tw`inline-block absolute 
       top-1/2 [content:""] 
       [border-bottom:1px_solid_rgba(var(--neutral-4))]
-      [width:calc(50% - 5em)]
+      [width:calc(50% - 6em)]
       `};
     }
     
@@ -128,7 +128,7 @@ export default function Home() {
           </div>
           <div>
             <Input
-              type="text"
+              type="password"
               placeholder="비밀번호를 입력해주세요"
               aria-label="password"
               autoComplete="off"

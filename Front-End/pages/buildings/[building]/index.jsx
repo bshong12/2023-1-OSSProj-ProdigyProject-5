@@ -6,19 +6,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BreadCrumb, StyledLink, DropMenu } from "../../../components";
 import { UserUIContainer } from "../../../layouts/UserUIContainer";
 import { nameToSlug } from "../../../utils/buildings";
-import {useSelector} from 'react-redux';
 import api from "../../../utils/api";
 import { set } from "react-hook-form";
 
 // const selectedDate = useSelector((state) => state.selectedDate);
 
 // {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
-export default function Building({ buildingname, buildingData }) {
+export default function Building({ building, buildingData }) {
   const { asPath } = useRouter();
-  const pageHeading = buildingname || "강의실 목록";
+  const pageHeading = building || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
-  const floors = [...new Set(buildingData.map((room) => room.floor))];
-  const date = useSelector((state) => state.selectedDate);
+  const floors = [...new Set(buildingData.map((roomData) => roomData.floor))];
+  //날짜
+  const selectedDate = useSelector((state) => state.selectedDate);
+  const date = new Date(selectedDate);
+  const stringDate = date.toISOString().slice(0, 10);
+
+  console.log(buildingData);
   
   const filterRoomsByFloor = () => {
     //선택된 층수에 따라 강의실 filter해서 분류
@@ -34,7 +38,7 @@ export default function Building({ buildingname, buildingData }) {
       <li tw="mr-5 mb-5">
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
           <Link href={
-            {pathname:`${asPath}/${nameToSlug(roomData.room)}`, query: date }} passHref as={`${asPath}/${nameToSlug(roomData.room)}`}>
+            {pathname:`${asPath}/${nameToSlug(roomData.room)}`, query: {date: stringDate} }} passHref as={`${asPath}/${nameToSlug(roomData.room)}`}>
             <StyledLink
               underline
               tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
@@ -50,9 +54,9 @@ export default function Building({ buildingname, buildingData }) {
         {isRoomOpen && (
           <div tw="bg-neutral-1 p-3">
             <ol>
-              <li>수용인원 : {roomData.capacity}</li>
-              <li>보유기자재정보 : {roomData.equip_info}</li>
-              <li>보유시설정비정보 : {roomData.facility_info}</li>
+              {roomData.cpacity === ""? null : <li><b>수용인원</b> : {roomData.capacity}</li>}
+              {roomData.equip_info === ""? null : <li><b>보유기자재정보</b> : {roomData.equip_info}</li>}
+              {roomData.facility_info === ""? null : <li><b>보유시설정비정보</b> : {roomData.facility_info}</li>}
             </ol>
           </div>
         )}
@@ -64,12 +68,13 @@ export default function Building({ buildingname, buildingData }) {
     pt-1 pb-1
   `;
 
+
   return (
     <UserUIContainer title={pageHeading} headerBorder footer>
       <main tw="h-full">
         {/* sm은 640px이 최대인 환경에서(모바일 고려) md-lg일때는 1040px이 최대 데탑환경고려 */}
         <section tw="max-w-screen-sm md:max-w-screen-lg mx-auto text-center my-28 px-4">
-          <BreadCrumb routesArr={asPath.split("/").filter(String)} />
+          <BreadCrumb routesArr={decodeURIComponent(asPath).split("/").filter(String)} />
           <h1 className="h2-headline" tw="mt-20 pb-5 capitalize">
             {pageHeading}
           </h1>
@@ -91,7 +96,7 @@ export default function Building({ buildingname, buildingData }) {
             </span>
             <ul tw="list-inside text-left text-lg font-hero grid gap-2 sm:(grid-cols-2) lg:(grid-cols-3)">
               {filterRoomsByFloor().map((roomData) => (
-                <Roomli key={room[0]} roomData={roomData} />
+                <Roomli key={roomData[0]} roomData={roomData} />
               ))}
             </ul>
           </div>
@@ -104,14 +109,15 @@ export default function Building({ buildingname, buildingData }) {
 Building.theme = "light";
 
 export async function getServerSideProps (context) {
-  const { buildingname } = context.params;
-  const { selectedDate } = context.query;
+  console.log(context.query);
+
+  const { date ,building } = context.query;
 
   try {
-    const response = await api.get(`/buildings/${selectedDate}/${buildingname}`);
+    const response = await api.get(`/buildings/${date}/${building}`);
     const buildingData = response.data;
     
-    return { props: { buildingname, ...buildingData } };
+    return { props: { building, buildingData } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };

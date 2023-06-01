@@ -3,7 +3,6 @@ import tw from "twin.macro"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from 'react-redux';
-import { wrapper } from '../../../store';
 import { Img, BreadCrumb, StyledLink, Button, TimeTable } from "../../../../components"
 import { UserUIContainer } from "../../../../layouts/UserUIContainer"
 import { allTimes,nameToSlug, slugToName } from "../../../../utils/buildings"
@@ -173,14 +172,15 @@ Room.theme = "light"
 
 
 export async function getServerSideProps (context) {
-  const { buildingname, room } = context.params;
-  const { selectedDate } = context.query;
+  console.log(context.query);
+  const {date, building, room} = context.query;
 
   try {
-    const response = await api.get(`/buildings/${selectedDate}/${nameToSlug(buildingname)}/${nameToSlug(room)}`);
+    const response = await api.get(`/buildings/${date}/${nameToSlug(building)}/${nameToSlug(room)}`);
     const reservedTimes = response.data;
+    console.log(reservedTimes);
     
-    return { props: { buildingname, room, ...reservedTimes } };
+    return { props: { building, room, reservedTimes } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };

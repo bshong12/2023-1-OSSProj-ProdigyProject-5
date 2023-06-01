@@ -2,7 +2,6 @@ const { default: axios } = require('axios');
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const axios = require(axios);
 
 // MySQL 연결
 const connection = mysql.createPool({
