@@ -13,7 +13,7 @@ async function signUp(req, res){
 
     // 사용자 확인
     const users = [] // users는 데이터베이스에서 가져와야함(지금은 임의로 설정)
-    const existingUser = users.find(user => user.name === name);  
+    const existingUser = users.find(user => user.id === id);  
     if (existingUser) {
       return res.status(409).json({ message: '이미 존재하는 사용자입니다.' });
     }
