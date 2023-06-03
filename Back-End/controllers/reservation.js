@@ -26,11 +26,12 @@ async function getTimetable(req, res) {
   }
 }
 
+let selectedTimes = [];
 async function postReservTime(req, res) {
   try{
-    window.selectedTimes = req.body.time;
-    if (window.selectedTimes) {
-      res.status(200).send({selectedTimes: selectedTimes});
+    selectedTimes = req.body;
+    if (selectedTimes) {
+      res.status(200).send('select time success');
     } else {
       res.status(400).send('No times selected');
     }
@@ -44,8 +45,10 @@ async function getReservation(req, res) {
   try{
     //[user: {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”}, reservation: {building: “building”, room: “room”, date: “2021-10-10”, startTime: “10:00", endTime: “11:00”}]
     const user = req.user;
+    delete user.iat;
+    delete user.exp;
     const reservation = req.params;
-    reservation.time = window.selectedTimes;    
+    reservation.time = selectedTimes;    
     
     const result = {
       user: user,
@@ -55,7 +58,7 @@ async function getReservation(req, res) {
     res.status(200).send(result);
   }
   catch(err) {
-
+    console.log(err);
   }
 }
 
@@ -63,7 +66,7 @@ async function getReservation(req, res) {
 async function postReservation(req, res) {
   try{
     const data = req.body;
-    saveReservationToDatabase(data)
+    await saveReservationToDatabase(data)
     // {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”} 이런 형식의 데이터를 데이터베이스에 저장
     res.status(200).send(data)
   }
