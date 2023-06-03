@@ -28,14 +28,23 @@ const SmallDiv = styled.div(() => [
 ])
 
 async function signup(data) {
+
   try {
-    const response = await api.post("/signup", data);
+    const requestData = {
+      id: data.studentID,
+      password: data.password,
+      name: data.name,
+      phone: data.phoneNumber,
+      email: data.email,
+      type: data.qualification,
+    }
+    const response = await api.post("/signup", requestData);
     // 회원가입 성공
     console.log(response.data);
     return response;  
   } catch (error) {
     // 회원가입 실패
-    console.error(error.response.data);
+    console.error(error);
     // 에러 처리 (예: 오류 메시지 표시)
   }
 }
@@ -73,11 +82,15 @@ export default function Signup() {
       console.log(response);
       setIsLoading(false);
       //서버측에서 json형태로 보내주는 경우 {"success": true} 
-      if (response.data.success) {
-         router.push("/");
-      }
-       else {
-       alert("회원가입에 실패하였습니다.");
+      if (response.status === 201) {
+        window.alert("회원가입이 완료되었습니다");
+        setTimeout(() => {
+          router.push("/");
+        }, [1000]);
+      } else if(response.status === 409) {
+        window.alert("이미 존재하는 사용자입니다")
+      } else {
+       window.alert("회원가입에 실패하였습니다.");
       }
       //서버측에서 리다이렉션을 해주는 경우에는 이대로 두면 됨
     })
@@ -108,8 +121,8 @@ export default function Signup() {
             <p>자격</p>
             <select tw="w-full rounded-lg border-neutral-3" {...register("qualification")} aria-label="qualification" required>
               <option value="">자격</option>
-              <option value="student">학생</option>
-              <option value="manager">관리자</option>
+              <option value="S">학생</option>
+              <option value="M">관리자</option>
             </select>
           </div>
           <div>
@@ -123,6 +136,7 @@ export default function Signup() {
               id="name"
               name="name"
               {...register("name")}
+              error={!!errors?.name}
               noLabel
               required
             />
@@ -138,6 +152,7 @@ export default function Signup() {
               id="studentID"
              name="studentID"
              {...register("studentID")}
+             error={!!errors?.studentID}
               noLabel
               required
             />
@@ -153,6 +168,7 @@ export default function Signup() {
               id="Password"
               name="Password"
               {...register("password")}
+              error={!!errors?.password}
               noLabel
               required
             />
@@ -165,10 +181,11 @@ export default function Signup() {
               aria-label="email"
               autoComplete="off"
               autoCapitalize="none"
-              maxLength="10"
+              maxLength="30"
               id="email"
               name="email"
               {...register("email")}
+              error={!!errors?.email}
               noLabel
               required
             />
@@ -180,10 +197,11 @@ export default function Signup() {
               aria-label="phoneNumber"
               autoComplete="off"
               autoCapitalize="none"
-              maxLength="10"
+              maxLength="11"
               id="phoneNumber"
               name="phoneNumber"
               {...register("phoneNumber")}
+              error={!!errors?.phoneNumber}
               noLabel
               required
             />
