@@ -34,8 +34,7 @@ export default function Buildings({ allBuildings }) {
   const selectedDate = useSelector((state) => state.selectedDate);
   const date = new Date(selectedDate);
   const stringDate = date.toISOString().slice(0, 10);
-  console.log(date);
-  // 출력: "YYYY-MM-DD"
+
   return (
     <UserUIContainer title="Buildings" headerBorder footer>
       <main tw="h-full">

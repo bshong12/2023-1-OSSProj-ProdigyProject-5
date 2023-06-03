@@ -39,7 +39,7 @@ const schema = yup.object().shape({
 //responseData로 받는 정보
 //[user: {name: "name", studentID: "id", phone: "phonenumber", email: "email@gmail"},
 //reservation: {building: "building", room: "room", date: "2021-10-10", startTime: "10:00", endTime: "11:00"}]
-export default function ReserveForm(reservation, user) { //앞서 선택했던 예약 정보들 받아오기
+export default function ReserveForm(responseData, user) { //앞서 선택했던 예약 정보들 받아오기
   const { asPath } = useRouter();
   const [reservationData, setReservationData] = useState([]);
   const [userData, setUserData] = useState([]);
@@ -246,14 +246,14 @@ export async function getServerSideProps (context) {
   const responseData = JSON.parse(decodeURIComponent(context.query.responseData));
   const building = context.query.building;
   const room  = context.query.room;
+  console.log(responseData);
 
   try {
-    const res1 = await api.post(`/buildings/${responseData.selectedDate}/${building}/${room}`, responseData);
     const response = await api.get(`/buildings/${responseData.selectedDate}/${building}/${room}/reservation`);
     const user = response.user;
-    const reservation = response.reservation;
-    return {props: {reservation, user}};
+    console.log(user);
+    return {props: {responseData, user}};
   } catch (error) {
-    return {props: {reservation: "", user: ""}};
+    return {props: {responseData: "", user: ""}};
   }
 };
