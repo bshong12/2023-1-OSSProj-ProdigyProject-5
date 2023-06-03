@@ -22,7 +22,9 @@ async function myReservation(req, res) {
 
 async function getReservation(req, res) {
   try{
-
+    const reservation = await db.getReservation();
+    const waitingReservation = await reservation.find(reserv => reserv.approval === 'W');
+    res.status(200).send(waitingReservation);
   }
   catch(err) {
     console.log(err)
@@ -31,7 +33,9 @@ async function getReservation(req, res) {
 
 async function approveReservation(req, res) {
   try{
-
+    await db.updateApprovalToDatabase(req.body);    //req.body로 approval, id 보내야함 ex){"id":"3", "approval":"T"}
+    res.status(200).send('save success')
+    
   }
   catch(err){
     console.log(err)

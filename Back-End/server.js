@@ -25,13 +25,15 @@ app.listen(PORT, () => {
 const buildingController = require('./controllers/buildings');
 const roomController = require('./controllers/rooms');
 const roomReservation = require('./controllers/reservation');
-const signUp = require('./controllers/signup')
-const logIn = require('./controllers/login')
-const logOut = require('./controllers/logout')
+const signUp = require('./controllers/signup');
+const logIn = require('./controllers/login');
+const logOut = require('./controllers/logout');
+const mypage = require('./controllers/mypage');
 
 app.use('/api/buildings', buildingController);
 app.use('/api/buildings/:date', roomController);
 app.use('/api/buildings/:date/:buildingname', roomReservation);
-app.use('/api/signup', signUp)
-app.use('/api/login', logIn)
-app.use('/api/logout', logOut)
+app.use('/api/signup', signUp);
+app.use('/api/login', logIn);
+app.use('/api/logout', logOut);
+app.use('/api', mypage);
