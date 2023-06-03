@@ -5,7 +5,7 @@ const mysql = require('mysql');
 
 //const axios = require(axios);
 
-// MySQL 연결
+// MySQL 연결-------------------------------------------------
 const connection = mysql.createPool({
   host: "127.0.0.1", // 호스트
   user: "root",      // 데이터베이스 계정
@@ -14,7 +14,7 @@ const connection = mysql.createPool({
 });
 
 
-// 데이터베이스 >> 프론트엔드
+// 데이터베이스 >> 프론트엔드------------------------------------------
 
 // 데이터베이스 값 가져오는 함수
 // 1. 건물명, 이미지링크 가져오기
@@ -80,6 +80,19 @@ const getUser = () => {
   });
 };
 
+// 예약내역 가져오는 함수
+const getReservation = () => {
+  return new Promise((resolve, reject) => {
+    connection.query("SELECT * FROM DB.Reservation", (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        const values = results.map(row => ({ id: row.id, room:row.room_id, date:row.date, reason:row.reason, event_name:row.event_name, people: row.people, group_name:row.group_name, approval:row.appproval, event_content:row.event_content, user_id:row.user_id, start_time:row.start_time, end_time:row.end_time }));
+        resolve(values);
+      }
+    });
+  });
+};
 
 // 데이터베이스 값 export하는 함수
 // 1. 건물명 [{'name':건물1, 'image':'이미지바이너리형태'},{'name':건물2, 'image':'이미지바이너리형태'}...] 형태
@@ -102,6 +115,11 @@ const exportgetUser = async () => {
   return values;
 };
 
+//예약내역
+const exportgetReservation = async () => {
+  const values = await getReservation();
+  return values;
+};
 
 // 날짜를 "YYYY-MM-DD" 형식으로 변환하는 함수
 function formatDate(date) {
@@ -135,7 +153,7 @@ function getLecturesAndReservationsByWeekdayAndRoom(weekday, room) {
 }
 
 
-//프론트엔드 >> 데이터베이스
+//프론트엔드 >> 데이터베이스--------------------------------------------------------------------------------------
 // reservation 데이터를 MySQL 데이터베이스에 저장하는 함수
 async function saveReservationToDatabase(Reservation) {
   try {
@@ -145,10 +163,10 @@ async function saveReservationToDatabase(Reservation) {
     const weekday = weekdays[dateObj.getDay()];
 
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, approval, start_time, end_time, weekday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, appproval, start_time, end_time, weekday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     // 쿼리 실행
-    await connection.query(query, [Reservation.id, Reservation.room_id, Reservation.date, Reservation.reason, Reservation.event_name, Reservation.people, Reservation.group_name, Reservation.event_content, Reservation.user_id, Reservation.approval, Reservation.start_time, Reservation.end_time, weekday]);
+    await connection.query(query, [Reservation.id, Reservation.room_id, Reservation.date, Reservation.reason, Reservation.event_name, Reservation.people, Reservation.group_name, Reservation.event_content, Reservation.user_id, Reservation.appproval, Reservation.start_time, Reservation.end_time, weekday]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
@@ -157,15 +175,15 @@ async function saveReservationToDatabase(Reservation) {
 }
 
 
-// 예약 승인여부 전달하는 함수
+// 예약 승인여부 변경하는 함수
 
 async function updateApprovalToDatabase(user) {
   try {
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'UPDATE DB.Reservation SET approval = ? WHERE id = ?';
+    const query = 'UPDATE DB.Reservation SET appproval = ? WHERE id = ?';
 
     // 쿼리 실행
-    await connection.query(query, [Reservation.approval, Reservation.id]);
+    await connection.query(query, [Reservation.appproval, Reservation.id]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
@@ -173,31 +191,29 @@ async function updateApprovalToDatabase(user) {
   }
 }
 
+//회원정보 저장 함수
+async function saveUserToDatabase(user) {
+  try {
+    // MySQL에 데이터 삽입하는 쿼리
+    const query = 'INSERT INTO DB.User (id, password, name, phone, type) VALUES (?, ?, ?, ?, ?)';
+
+    // 쿼리 실행
+    await connection.query(query, [user.id, user.password, user.name, user.phone, user.type]);
+    console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
+  } catch (error) {
+    console.error('데이터 저장 오류:', error);
+    throw error;
+  }
+}
+
+
 module.exports = {
   saveReservationToDatabase,
+  saveUserToDatabase,
   updateApprovalToDatabase,
   getLecturesAndReservationsByWeekdayAndRoom,
   getRoomNames: exportgetRoomNames,
   getRoomInfo: exportgetRoomInfo,
-  getUser: exportgetUser
+  getUser: exportgetUser,
+  getReservation: exportgetReservation
 };
-
-/*
-// 프론트엔드의 user 데이터
-const user = {
-  username: 'JohnDoe',
-  email: 'johndoe@example.com',
-};
-
-// user 데이터를 MySQL 데이터베이스에 저장하는 함수 호출
-saveUserToDatabase(user)
-  .then(() => {
-    console.log('데이터 저장이 완료되었습니다.');
-    // 추가적인 처리 또는 UI 업데이트 등을 수행할 수 있습니다.
-  })
-  .catch((error) => {
-    console.error('데이터 저장 오류:', error);
-    // 오류 처리를 수행할 수 있습니다.
-  });
-
-*/
