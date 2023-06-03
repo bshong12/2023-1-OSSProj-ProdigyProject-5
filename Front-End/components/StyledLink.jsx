@@ -1,6 +1,6 @@
 import tw, { styled } from "twin.macro"
 
-const StyledLink = styled.a(({ arrow, variant, underline }) => [
+const StyledLink = styled.div(({ arrow, variant, underline }) => [
   tw`appearance-none no-underline `,
   underline && tw`hocus:(underline)`,
   variant === "blue" && tw`text-blue-600`,

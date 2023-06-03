@@ -1,9 +1,10 @@
 import { use, useEffect, useState } from "react"
 import tw from "twin.macro"
+import styled from "@emotion/styled"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
-import { Img, Button, Datepicker, StyledLink } from "../../components"
+import { Img, Button, Datepicker, StyledLink} from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
 import api from "../../utils/api"
@@ -12,19 +13,18 @@ import api from "../../utils/api"
 const BuildingCard = ({ building, date}) => {
 
   const { name, image } = building
-  const slug = nameToSlug(name)
-
-
+  const slug = name
+ 
   return (
     <Link href={{pathname: `/buildings/${slug}`, query: {date : date}}} as={`/buildings/${slug}`} passHref>
-      <StyledLink tw="w-full p-2 text-left rounded transition ease-in-out hover:(bg-neutral-1)">
-        <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg ">
-          {name}
-        </span>
-        <div tw="relative h-40 rounded-lg">
-          <Img objectFit={"cover"} tw="rounded-lg" layout={"fill"} src={image} alt={name} />
-        </div>
-      </StyledLink>
+      <div tw="hover:bg-neutral-1 w-full p-2 text-left rounded transition ease-in-out">
+          <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg  ">
+            {name}
+          </span>
+          <div tw="relative h-40 rounded-lg">
+            <Img objectFit={"cover"} tw="rounded-lg" layout={"fill"} src={image} alt={name} />
+          </div>
+      </div>
     </Link>
   )
 }
