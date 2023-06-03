@@ -166,7 +166,7 @@ export default function Room({ date, building, room, reservedTimes }) {
             </h1>
             <Button tw="w-52 mt-5 mb-5" onClick={()=>router.push({
               pathname: `${asPath}/reserve`,
-              query: { responseData: transData },
+              query: { responseData: encodeURIComponent(JSON.stringify(transData)) },
             })}>예약하기</Button>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">

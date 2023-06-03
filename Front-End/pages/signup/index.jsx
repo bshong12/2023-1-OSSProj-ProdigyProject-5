@@ -72,15 +72,13 @@ export default function Signup() {
     .then((response) => {
       console.log(response);
       setIsLoading(false);
-      // 서버측에서 json형태로 보내주는 경우 {"success": true} 
-      // if (response.data.success) {
-      //  if(confirm("회원가입이 완료되었습니다. 로그인 페이지로 이동하시겠습니까?")) {
-      //    router.push("/");
-      //  }else {
-      //    router.push("/");
-      // }else {
-      //  alert("회원가입에 실패하였습니다.");
-      // }
+      //서버측에서 json형태로 보내주는 경우 {"success": true} 
+      if (response.data.success) {
+         router.push("/");
+      }
+       else {
+       alert("회원가입에 실패하였습니다.");
+      }
       //서버측에서 리다이렉션을 해주는 경우에는 이대로 두면 됨
     })
     .catch((error) => {
