@@ -43,6 +43,7 @@ export default function ReserveForm(reservation, user) { //앞서 선택했던 �
   const { asPath } = useRouter();
   const [reservationData, setReservationData] = useState([]);
   const [userData, setUserData] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     if(reservation != "" && user !="") {
