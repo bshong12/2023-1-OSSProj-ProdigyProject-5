@@ -6,7 +6,6 @@ const {verifyToken} = require('../services/auth')
 const {saveReservationToDatabase} = require('../DB/db')
 
 router.get('/:room', getTimetable);   // 예약 가능한 시간 불러오기
-router.post('/:room', postReservTime);  // 선택한 시간 예약 저장
 router.get('/:room/reservation', verifyToken, getReservation);  // 이전 단계에서 선택한 예약에 필요한 정보(강의실, 시간 등) 불러오기
 router.post('/:room/reservation', postReservation);  // 선택한 시간 예약 저장
 
@@ -26,36 +25,13 @@ async function getTimetable(req, res) {
   }
 }
 
-let selectedTimes = [];
-async function postReservTime(req, res) {
-  try{
-    selectedTimes = req.body;
-    if (selectedTimes) {
-      res.status(200).send('select time success');
-    } else {
-      res.status(400).send('No times selected');
-    }
-  }
-  catch(err) {
-    console.log(err)
-  }
-}
-
 async function getReservation(req, res) {
   try{
-    //[user: {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”}, reservation: {building: “building”, room: “room”, date: “2021-10-10”, startTime: “10:00", endTime: “11:00”}]
     const user = req.user;
     delete user.iat;
     delete user.exp;
-    const reservation = req.params;
-    reservation.time = selectedTimes;    
-    
-    const result = {
-      user: user,
-      reservation: reservation
-    }
 
-    res.status(200).send(result);
+    res.status(200).send(user);
   }
   catch(err) {
     console.log(err);
