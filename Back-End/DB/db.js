@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const connection = mysql.createPool({
   host: "127.0.0.1", // 호스트
   user: "root",      // 데이터베이스 계정
-  password: "0000",  // 데이터베이스 비밀번호
+  password: "beomseon3593!@",   // 데이터베이스 비밀번호
   database: "DB",    // 사용할 데이터베이스
 });
 
@@ -158,9 +158,9 @@ function getLecturesAndReservationsByWeekdayAndRoom(weekday, room) {
 async function saveReservationToDatabase(Reservation) {
   try {
     // Extract weekday from date
-    const dateObj = new Date(Reservation.date);
-    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const weekday = weekdays[dateObj.getDay()];
+    const dateStr = new Date(Reservation.date);
+    const options = { weekday: 'short' };
+    const weekday = dateStr.toLocaleString('ko-KR', options); // 선택된 날짜의 요일 계산
 
     // MySQL에 데이터 삽입하는 쿼리
     const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, appproval, start_time, end_time, weekday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -177,13 +177,13 @@ async function saveReservationToDatabase(Reservation) {
 
 // 예약 승인여부 변경하는 함수
 
-async function updateApprovalToDatabase(user) {
+async function updateApprovalToDatabase(Reservation) {
   try {
     // MySQL에 데이터 삽입하는 쿼리
     const query = 'UPDATE DB.Reservation SET appproval = ? WHERE id = ?';
 
     // 쿼리 실행
-    await connection.query(query, [Reservation.appproval, Reservation.id]);
+    await connection.query(query, [Reservation.approval, Reservation.id]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
