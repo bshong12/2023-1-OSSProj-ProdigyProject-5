@@ -2,17 +2,16 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-router.use(express.json());
-router.use(bodyParser.urlencoded({ extended: false }));
+const db = require('../DB/db');
 
-router.post('/signup', signUp);
+router.post('/', signUp);
 
 async function signUp(req, res){
   try{
-    const { id, password, name, phonenumber, email } = req.body;
+    const { id, password, name, phone, email, type } = req.body;
 
     // 사용자 확인
-    const users = [] // users는 데이터베이스에서 가져와야함(지금은 임의로 설정)
+    const users = await db.getUser(); // users는 데이터베이스에서 가져옴
     const existingUser = users.find(user => user.id === id);  
     if (existingUser) {
       return res.status(409).json({ message: '이미 존재하는 사용자입니다.' });
@@ -24,9 +23,9 @@ async function signUp(req, res){
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // 회원 정보 저장(나중에 DB와 연결할 부분)
-    // saveUser({ id, password: hashedPassword, name, phonenumber });
-    users.push({ id, password: hashedPassword, name, phonenumber, email });
+    // 회원 정보 저장
+    const user = { id, password: hashedPassword, name, phone, email, type }
+    db.saveUserToDatabase(user);
     res.status(201).json({ success: true, message: '회원 가입이 완료되었습니다.' });
   }
   catch(err){

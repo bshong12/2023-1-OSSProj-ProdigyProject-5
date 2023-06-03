@@ -12,7 +12,7 @@ async function verifyToken(req, res, next) {
     }
     // 액세스 토큰이 존재하는 경우
     else {
-      const userInfo = jwt.docode(accessToken)  // accessToken에서 사용자 정보 가져오기
+      const userInfo = jwt.decode(accessToken, { complete: false })  // accessToken에서 사용자 정보 가져오기
 
       jwt.verify(accessToken,process.env.ACCESS_SECRET, (err, user) => {  // access token 검증
         if(err) {
@@ -31,9 +31,10 @@ async function verifyToken(req, res, next) {
             const newAccessToken = jwt.sign(
               {
                 id: userInfo.id,
-                username: userInfo.name,
-                phone : userInfo.phonenumber,
-                email: userInfo.email
+                name: userInfo.name,
+                phone : userInfo.phone,
+                email: userInfo.email,
+                type: userInfo.type,
               },
               process.env.ACCESS_SECRET,
               {
@@ -75,7 +76,7 @@ async function verifyToken(req, res, next) {
 
   }
   catch(err) {
-
+    console.log(err)
   }
 }
 
