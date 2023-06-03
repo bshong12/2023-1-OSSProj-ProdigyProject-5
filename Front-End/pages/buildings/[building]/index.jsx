@@ -12,15 +12,12 @@ import { set } from "react-hook-form";
 // const selectedDate = useSelector((state) => state.selectedDate);
 
 // {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
-export default function Building({ building, buildingData }) {
+export default function Building({ date, building, buildingData }) {
   const { asPath } = useRouter();
   const pageHeading = building || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
   const floors = [...new Set(buildingData.map((roomData) => roomData.floor))];
-  //날짜
-  const selectedDate = useSelector((state) => state.selectedDate);
-  const date = new Date(selectedDate);
-  const stringDate = date.toISOString().slice(0, 10);
+  
 
   console.log(buildingData);
   
@@ -38,14 +35,16 @@ export default function Building({ building, buildingData }) {
       <li tw="mr-5 mb-5">
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
           <Link href={
-            {pathname:`${asPath}/${nameToSlug(roomData.room)}`, query: {date: stringDate} }} passHref as={`${asPath}/${nameToSlug(roomData.room)}`}>
-            <StyledLink
-              underline
-              tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
-                        bg-neutral-1 px-2 py-2 rounded-lg capitalize"
-            >
-              {roomData.room}
-            </StyledLink>
+            {pathname:`${asPath}/${roomData.room}`, query: {date: date} }} passHref as={`${asPath}/${roomData.room}`}>
+            <div>
+              <StyledLink
+                underline
+                tw="inline-flex items-center w-full before:([content:'🚪'] text-3xl mr-2)
+                          bg-neutral-1 px-2 py-2 rounded-lg capitalize"
+              >
+                {roomData.room}
+              </StyledLink>
+            </div>
           </Link>
           <button onClick={() => setIsRoomOpen(!isRoomOpen)} tw="mr-3">
             <img src="/static/drop_icon.png" />
@@ -117,7 +116,7 @@ export async function getServerSideProps (context) {
     const response = await api.get(`/buildings/${date}/${building}`);
     const buildingData = response.data;
     
-    return { props: { building, buildingData } };
+    return { props: { date, building, buildingData } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };
