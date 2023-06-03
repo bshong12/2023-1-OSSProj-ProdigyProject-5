@@ -8,7 +8,7 @@ router.post('/', signUp);
 
 async function signUp(req, res){
   try{
-    const { id, password, name, phone, type } = req.body;
+    const { id, password, name, phone, email, type } = req.body;
 
     // 사용자 확인
     const users = await db.getUser(); // users는 데이터베이스에서 가져옴
@@ -24,7 +24,7 @@ async function signUp(req, res){
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // 회원 정보 저장
-    const user = { id, password: hashedPassword, name, phone, type }
+    const user = { id, password: hashedPassword, name, phone, email, type }
     db.saveUserToDatabase(user);
     res.status(201).json({ success: true, message: '회원 가입이 완료되었습니다.' });
   }

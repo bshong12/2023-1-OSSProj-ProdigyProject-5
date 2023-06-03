@@ -27,7 +27,7 @@ async function logIn(req, res){
       // access token발급
       const accessToken = jwt.sign({
         id : user.id,
-        username: user.name,
+        name: user.name,
         phone : user.phone,
         email : user.email,
         type : user.type

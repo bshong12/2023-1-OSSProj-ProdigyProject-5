@@ -31,9 +31,10 @@ async function verifyToken(req, res, next) {
             const newAccessToken = jwt.sign(
               {
                 id: userInfo.id,
-                username: userInfo.name,
-                phone : userInfo.phonenumber,
-                email: userInfo.email
+                name: userInfo.name,
+                phone : userInfo.phone,
+                email: userInfo.email,
+                type: userInfo.type,
               },
               process.env.ACCESS_SECRET,
               {
