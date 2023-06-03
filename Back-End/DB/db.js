@@ -73,7 +73,7 @@ const getUser = () => {
       if (error) {
         reject(error);
       } else {
-        const values = results.map(row => ({ id:row.id, password:row.password,  name:row.name, phone:row.phone, type: row.type }));
+        const values = results.map(row => ({ id:row.id, password:row.password,  name:row.name, email:row.email, phone:row.phone, type: row.type }));
         resolve(values);
       }
     });
@@ -87,7 +87,7 @@ const getReservation = () => {
       if (error) {
         reject(error);
       } else {
-        const values = results.map(row => ({ id: row.id, room:row.room_id, date:row.date, reason:row.reason, event_name:row.event_name, people: row.people, group_name:row.group_name, approval:row.appproval, event_content:row.event_content, user_id:row.user_id, start_time:row.start_time, end_time:row.end_time }));
+        const values = results.map(row => ({ id: row.id, room:row.room_id, date:row.date, reason:row.reason, event_name:row.event_name, people: row.people, group_name:row.group_name, approval:row.approval, event_content:row.event_content, user_id:row.user_id, start_time:row.start_time, end_time:row.end_time }));
         resolve(values);
       }
     });
@@ -163,10 +163,10 @@ async function saveReservationToDatabase(Reservation) {
     const weekday = dateStr.toLocaleString('ko-KR', options); // 선택된 날짜의 요일 계산
 
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, appproval, start_time, end_time, weekday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO DB.Reservation (id, room_id, date, reason, event_name, people, group_name, event_content, user_id, approval, start_time, end_time, weekday) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     // 쿼리 실행
-    await connection.query(query, [Reservation.id, Reservation.room_id, Reservation.date, Reservation.reason, Reservation.event_name, Reservation.people, Reservation.group_name, Reservation.event_content, Reservation.user_id, Reservation.appproval, Reservation.start_time, Reservation.end_time, weekday]);
+    await connection.query(query, [Reservation.id, Reservation.room_id, Reservation.date, Reservation.reason, Reservation.event_name, Reservation.people, Reservation.group_name, Reservation.event_content, Reservation.user_id, Reservation.approval, Reservation.start_time, Reservation.end_time, weekday]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
@@ -180,7 +180,7 @@ async function saveReservationToDatabase(Reservation) {
 async function updateApprovalToDatabase(Reservation) {
   try {
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'UPDATE DB.Reservation SET appproval = ? WHERE id = ?';
+    const query = 'UPDATE DB.Reservation SET approval = ? WHERE id = ?';
 
     // 쿼리 실행
     await connection.query(query, [Reservation.approval, Reservation.id]);
@@ -195,10 +195,10 @@ async function updateApprovalToDatabase(Reservation) {
 async function saveUserToDatabase(user) {
   try {
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'INSERT INTO DB.User (id, password, name, phone, type) VALUES (?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO DB.User (id, password, email, name, phone, type) VALUES (?, ?, ?, ?, ?)';
 
     // 쿼리 실행
-    await connection.query(query, [user.id, user.password, user.name, user.phone, user.type]);
+    await connection.query(query, [user.id, user.password, user.email, user.name, user.phone, user.type]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
