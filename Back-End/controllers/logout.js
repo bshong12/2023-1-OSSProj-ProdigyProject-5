@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.post('/', logOut);
 
-function logOut(res, req){
+function logOut(req, res){
   try{
     // token 삭제
     res.cookie("accessToken", '');

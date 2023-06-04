@@ -14,6 +14,7 @@ async function myReservation(req, res) {
     const id = req.user.id; // 토큰에서 id 가져옴
     const reservation = await db.getReservation();
     const myReserv = await reservation.find(reserv => reserv.user_id === id);
+    console.log(myReserv);
     res.status(200).json(myReserv);
     }
     else{
