@@ -45,7 +45,7 @@ async function verifyToken(req, res, next) {
             // 쿠키에 새로운 액세스 토큰 저장
             res.cookie('accessToken', newAccessToken, {
               secure: false,
-              httpOnly: true
+              httpOnly: true,
             });
 
             jwt.verify(newAccessToken,process.env.ACCESS_SECRET, (err, user2) =>{
@@ -58,17 +58,17 @@ async function verifyToken(req, res, next) {
       
             // 다음 미들웨어로 진행
             next();
-            
           })
 
         }
-
-        // access token 유효한 경우
-        // 검증된 사용자 정보를 요청 객체에 저장
-        req.user = user;
-
-        // 다음 미들웨어로 진행
-        next();
+        else{
+          // access token 유효한 경우
+          // 검증된 사용자 정보를 요청 객체에 저장
+          req.user = user;
+  
+          // 다음 미들웨어로 진행
+          next();
+        }
 
       })
 
