@@ -47,7 +47,7 @@ async function postReservation(req, res) {
     res.status(200).send(data)
   }
   catch(err) {
-
+    console.log(err);
   }
 }
 
