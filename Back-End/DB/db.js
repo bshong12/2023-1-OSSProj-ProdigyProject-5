@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const connection = mysql.createPool({
   host: "127.0.0.1", // 호스트
   user: "root",      // 데이터베이스 계정
-  password: "beomseon3593!@",   // 데이터베이스 비밀번호
+  password: "0000",   // 데이터베이스 비밀번호
   database: "DB",    // 사용할 데이터베이스
 });
 
@@ -195,7 +195,7 @@ async function updateApprovalToDatabase(Reservation) {
 async function saveUserToDatabase(user) {
   try {
     // MySQL에 데이터 삽입하는 쿼리
-    const query = 'INSERT INTO DB.User (id, password, email, name, phone, type) VALUES (?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO DB.User (id, password, email, name, phone, type) VALUES (?, ?, ?, ?, ?, ?)';
 
     // 쿼리 실행
     await connection.query(query, [user.id, user.password, user.email, user.name, user.phone, user.type]);
