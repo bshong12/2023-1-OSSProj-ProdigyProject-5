@@ -7,18 +7,6 @@ import { Img, BreadCrumb, StyledLink, Button, TimeTable } from "../../../../comp
 import { UserUIContainer } from "../../../../layouts/UserUIContainer"
 import { allTimes,nameToSlug, slugToName } from "../../../../utils/buildings"
 import api from "../../../../utils/api";
-// import { reservedTime } from "../../../../../Back-End/services/reservation";
-
-
-
-//reservedTimes = [{name: "예약명", startTime: "시작시간", endTime: "종료시간"}, {name: "예약명", startTime: "시작시간", endTime: "종료시간"}] 이라고 가정
-
-// const fullTime = []; 예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
-
-// const transReservedTimes = async ({transData})  => {
-//   const res = await api.post(`/buildings/${transData.selectedDate}/${transData.buildingname}/${transData.room}`, transData);
-// };
-
 
 function TimeSplit(reservedTimes) {
   const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
@@ -61,67 +49,6 @@ function ReservedLi({reserved}) {
 
 }
 
-// //예약되어 있는 시간 표시하는 테이블
-// function ReservedTable(reservedArray, allTimes) {
-//  
-//   const slotRefs = useRef([]);
-
-//   const handleReserved = (slotRef) => {
-//     if (slotRef.current) {
-//       slotRef.current.textContent = "Reserved";
-//       slotRef.current.style.backgroundColor = "#d3d3d3";
-//       slotRef.current.style.color = "white";
-//     }
-//   };
-
-//   useEffect(() => {
-//     slotRefs.current.forEach((slotRef, index) => {
-//       const isReserved = reservedArray.includes(allTimes[index]);
-
-//       if (isReserved) {
-//         handleReserved(slotRef);
-//       }
-//     });
-//   }, [reservedArray]);
-
-//   return (
-//     <table tw="border-collapse border border-neutral-5 w-full lg:(w-1/2)">
-//       <thead>
-//         <tr tw="border-b border-neutral-4 text-center">
-//           <th colSpan={2} tw="h-10">
-//             현재 예약 내역
-//           </th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         {allTimes.map((time, index) => {
-//           const isReserved = reservedArrya.includes(time);
-//           const slotId = `time-slot-${index}`;
-//           if (!slotRefs.current[index]) {
-//             slotRefs.current[index] = React.createRef();
-//           }
-
-//           // 시간 슬롯의 내용과 배경색을 변경
-//           if (isReserved) {
-//             handleReserved(slotRefs.current[index]);
-//           }
-
-//           return (
-//             <tr key={index} tw="h-5">
-//               <td tw="border border-neutral-4 border-l-neutral-5 text-neutral-4 p-3 w-1/4">
-//                 {time}
-//               </td>
-//               <td ref={slotRefs.current[index]} id={slotId}></td>
-//             </tr>
-//           );
-//         })}
-//       </tbody>
-//     </table>
-//   );
-// }
-
-  
-
 
 export default function Room({ date, building, room, reservedTimes }) {
 
@@ -131,7 +58,6 @@ export default function Room({ date, building, room, reservedTimes }) {
   const [selectedTime, setSelectedTimes] = useState([]);
   const [reservedArray, setReservedArray] = useState([]);
 
-  console.log(reservedTimes);
   useEffect(() => {
     setReservedArray(TimeSplit(reservedTimes));
   }, []);
@@ -141,7 +67,6 @@ export default function Room({ date, building, room, reservedTimes }) {
     const startTimeB = new Date(`2000-01-01 ${b.startTime}`);
     return startTimeA - startTimeB;
   });
-  console.log(reservedArray);
 
   const transData = {
     buildingname: building,
@@ -166,7 +91,7 @@ export default function Room({ date, building, room, reservedTimes }) {
             </h1>
             <Button tw="w-52 mt-5 mb-5" onClick={()=>router.push({
               pathname: `${asPath}/reserve`,
-              query: { responseData: transData },
+              query: { responseData: encodeURIComponent(JSON.stringify(transData)) },
             })}>예약하기</Button>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">

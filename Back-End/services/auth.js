@@ -12,7 +12,7 @@ async function verifyToken(req, res, next) {
     }
     // 액세스 토큰이 존재하는 경우
     else {
-      const userInfo = jwt.docode(accessToken)  // accessToken에서 사용자 정보 가져오기
+      const userInfo = jwt.decode(accessToken, { complete: false })  // accessToken에서 사용자 정보 가져오기
 
       jwt.verify(accessToken,process.env.ACCESS_SECRET, (err, user) => {  // access token 검증
         if(err) {
@@ -31,9 +31,10 @@ async function verifyToken(req, res, next) {
             const newAccessToken = jwt.sign(
               {
                 id: userInfo.id,
-                username: userInfo.name,
-                phone : userInfo.phonenumber,
-                email: userInfo.email
+                name: userInfo.name,
+                phone : userInfo.phone,
+                email: userInfo.email,
+                type: userInfo.type,
               },
               process.env.ACCESS_SECRET,
               {
@@ -44,7 +45,7 @@ async function verifyToken(req, res, next) {
             // 쿠키에 새로운 액세스 토큰 저장
             res.cookie('accessToken', newAccessToken, {
               secure: false,
-              httpOnly: true
+              httpOnly: true,
             });
 
             jwt.verify(newAccessToken,process.env.ACCESS_SECRET, (err, user2) =>{
@@ -57,17 +58,17 @@ async function verifyToken(req, res, next) {
       
             // 다음 미들웨어로 진행
             next();
-            
           })
 
         }
-
-        // access token 유효한 경우
-        // 검증된 사용자 정보를 요청 객체에 저장
-        req.user = user;
-
-        // 다음 미들웨어로 진행
-        next();
+        else{
+          // access token 유효한 경우
+          // 검증된 사용자 정보를 요청 객체에 저장
+          req.user = user;
+  
+          // 다음 미들웨어로 진행
+          next();
+        }
 
       })
 
@@ -75,7 +76,7 @@ async function verifyToken(req, res, next) {
 
   }
   catch(err) {
-
+    console.log(err)
   }
 }
 
