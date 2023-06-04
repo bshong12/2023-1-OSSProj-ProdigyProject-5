@@ -33,5 +33,22 @@ async function reservedTime(date, room) {
   return  combinedData;
 }
 
+async function reservationId(req, res) {
+  try{
+    const reservation = await db.getReservation();
+    var maxId = 0;
+    reservation.forEach(item => {
+      if(item.id >maxId){
+        maxId = item.id;
+      }
+    });
 
-module.exports = {reservedTime};
+    return (maxId+1);
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
+
+module.exports = {reservedTime, reservationId};

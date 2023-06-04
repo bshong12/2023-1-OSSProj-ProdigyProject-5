@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({mergeParams: true}); // 부모 라우터의 파라미터 사용하기 위해
 const buildingModel = require('../models/buildings');
-const {reservedTime} = require('../services/reservation');
+const {reservedTime, reservationId} = require('../services/reservation');
 const {verifyToken} = require('../services/auth')
 const {saveReservationToDatabase} = require('../DB/db')
 
@@ -41,13 +41,15 @@ async function getReservation(req, res) {
 // 예약 정보 저장
 async function postReservation(req, res) {
   try{
+    const id = await reservationId();
     const data = req.body;
+    data.id = id;
     await saveReservationToDatabase(data)
     // {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”} 이런 형식의 데이터를 데이터베이스에 저장
-    res.status(200).send(data)
+    res.status(200).json(data)
   }
   catch(err) {
-
+    console.log(err);
   }
 }
 
