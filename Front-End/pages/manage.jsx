@@ -94,10 +94,10 @@ const ButtonArea = ({handleApprovalClick, handleDenyClick, reserv, index}) => {
     </div>
   )
 }
-export default function Management(reservedList) {
+export default function Management({reservedList}) {
 
 
-  const arrayList = Object.values(reservedList);
+  const arrayList = reservedList;
   const [wait, setWait] = useState(arrayList);
   console.log(wait);
   const [approval, setApproval] = useState([]);
