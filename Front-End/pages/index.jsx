@@ -49,13 +49,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   // const [token, setToken] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-
-  const handleCheckboxChange = (event) => {
-    setIsAdmin(event.target.checked);
-  };
-
 
   const {
     register,
@@ -76,13 +69,11 @@ export default function Home() {
       if (response.status === 200) {
         // setToken(response.data.token);
         // sessionStorage.setItem("token", response.data.token); // 토큰 저장
-        if(isAdmin){
+        if(response.data.type === "관리자"){
           router.push("/manage");
-        } else {
-          setIsLoading(false);
+        } else{
+          router.push("/buildings");
         }
-       
-        router.push("/buildings");
       } else {
         setIsLoading(false);
         alert("로그인 실패");
@@ -152,10 +143,6 @@ export default function Home() {
             />
             <small tw="text-red-700">{errors?.password?.message}</small>
           </div>
-          <div tw="flex items-center">
-            <input type="checkbox" id="identify" name="identify" value="manager" tw="border border-neutral-4" onChange={handleCheckboxChange}/>
-            <label for="identify" tw="text-sm text-neutral-4 ml-3">관리자로 로그인하시겠습니까?</label>
-          </div>
           <Button
             type="submit"
             // type="submit"
@@ -167,7 +154,7 @@ export default function Home() {
           </Button>
         </form>
         <Link href="/signup">
-          <StyledLink tw="text-center">회원가입</StyledLink>
+          <StyledLink tw="text-left">회원가입</StyledLink>
         </Link>
       </main>
     </MarketingContainer>

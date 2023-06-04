@@ -108,8 +108,6 @@ export default function Building({ date, building, buildingData }) {
 Building.theme = "light";
 
 export async function getServerSideProps (context) {
-  console.log(context.query);
-
   const { date ,building } = context.query;
 
   try {
