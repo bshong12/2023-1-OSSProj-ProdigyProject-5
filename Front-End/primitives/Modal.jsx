@@ -20,6 +20,7 @@ export default function Modal({
     <Fragment>
       <Transition show={isOpen} as={Fragment}>
         <Dialog
+          open={isOpen}
           tw="fixed inset-0 z-50 overflow-y-auto"
           onClose={closeModal}
           {...dialogProps}
