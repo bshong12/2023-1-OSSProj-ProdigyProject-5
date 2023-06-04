@@ -15,26 +15,24 @@ import api from "../../utils/api"
               예약시간 : TIME,
               처리상태 : boolean} 이라고 가정*/
 const ReservCard =(reserve) => {
-  
+  let approval = "";
+  console.log(reserve.reserve.approval);
+  if(reserve.reserve.approval === "W"){
+    approval = "대기중"
+  } else if(reserve.reserve.approval === "T") {
+    approval = "승인"
+  } else {
+    approval = "거절"
+  }
+
   return (
-    <li tw="flex flex-col bg-neutral-1">
-      <p>{reserve.inDate}</p>
-      <div tw="w-full flex justify-between rounded-lg bg-white">
-        <table tw="text-left">
-          <tr>
-            <td>예약명 : {reserve.name}</td>
-            <td>강의실 : {reserve.room}</td>
-          </tr>
-          <tr>
-            <td>예약날짜 : {reserve.resDate}</td>
-            <td>예약시간 : {reserve.resTime}</td>
-          </tr>
-          <tr>
-            <td rowSpan={2}>처리상태 : {reserve.resAllow}</td>
-          </tr>
-        </table>
-        <span tw="flex flex-col justify-center">
-        </span>
+    <li tw="flex flex-col bg-neutral-1 rounded-lg border border-neutral-4 m-14">
+      <p tw="text-lg font-bold">{reserve.reserve.event_name}</p>
+      <div tw="w-full flex justify-between  bg-white flex-col items-start p-3">
+        <p>날짜 : {reserve.reserve.date.slice(0,10)}</p>
+        <p>강의실 : {reserve.reserve.room}</p>
+        <p>예약시간 : {reserve.reserve.start_time} ~ {reserve.reserve.end_time}</p>
+        <p>처리상태 : {approval}</p>
       </div>
     </li>
   );
@@ -46,9 +44,31 @@ const Tab = ({handleTabChange, activeTab}) => {
     <div tw="w-full bg-white border-b border-neutral-3">
       <div tw="max-w-screen-lg h-full mx-auto justify-between flex items-center">
         <div tw="w-auto flex">
-          <input tw="appearance-none bg-transparent border-0 outline-none w-4 h-4 rounded-full border-solid border-2 border-gray-500">
+          <label tw="relative pl-8">
             예약내역
-          </input>
+            <input 
+              type="radio" 
+              value="reservation"
+              name="tab"
+              tw="absolute opacity-0 h-0 w-0"
+              checked={activeTab === 'reservation'}
+              onChange={handleTabChange}
+            />
+            
+          </label>
+
+
+          <label tw="relative pl-8">
+            <input 
+            type="radio" 
+            value="approval"
+            name="tab"
+            tw="absolute opacity-0 h-0 w-0"
+            checked={activeTab === 'approval'}
+            onChange={handleTabChange}
+            /> 예약승인내역
+          </label>
+    
         {/* <button
             onClick={() => handleTabChange("reservation")}
             tw={`text-neutral-7 mr-5 ${activeTab === "reservation" && "active:(text-dguMain font-bold)"}`}
@@ -73,22 +93,21 @@ const Tab = ({handleTabChange, activeTab}) => {
 
 export default function MyPage(reservedList) {
   const [activeTab, setActiveTab] = useState("reservation");
-  const [showReserved, setShowReserved] = useState(reservedList);
+  const arrayList = Object.values(reservedList);
+  console.log(arrayList);
+  const [showReserved, setShowReserved] = useState(arrayList);
 
-  const approvalList = reservedList.filter((item) => item.approval === "T");
+  const approvalList = arrayList.filter((item) => item.approval === "T");
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    if (tab === "reservation") {
-      setShowReserved(reservedList);
+  const handleTabChange = (event) => {
+    console.log("handle")
+    setActiveTab(event.target.value);
+    if (activeTab === "reservation") {
+      setShowReserved(arrayList);
     } else {
       setShowReserved(approvalList);
     }
   }
-
-  useEffect(() => {
-    handleTabChange
-  }, [activeTab]);
 
   return(
     <UserUIContainer title="mypage" headerBorder footer logoName="마이페이지">
@@ -97,9 +116,9 @@ export default function MyPage(reservedList) {
         <section tw="max-w-screen-lg mx-auto text-center my-28">
         <Tab activeTab={activeTab} handleTabChange={handleTabChange}/>
         <ul tw="w-full mb-7">
-          {showReserved.map((reserv, index) => {
-            <ReservCard reserve={reserv} key={index}/>
-          })}
+          {showReserved.map((reserve, index) => (
+            <ReservCard reserve={reserve} key={index}/>
+          ))}
         </ul>
         </section>
       </main>
@@ -109,7 +128,11 @@ export default function MyPage(reservedList) {
 
 export async function getServerSideProps(context) {
   try {
-    const response = await api.get("/mypage");
+    const response = await api.get("/mypage",{
+      headers:{
+        cookie: context.req.headers.cookie || '',
+      }
+    });
     if(response.status === 200){
       console.log(response.data);
       const reservedList = response.data;
