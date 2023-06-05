@@ -1,7 +1,7 @@
-const { default: axios } = require('axios');
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
+const { default: axios } = require('axios');
 
 //const axios = require(axios);
 
@@ -87,7 +87,7 @@ const getReservation = () => {
       if (error) {
         reject(error);
       } else {
-        const values = results.map(row => ({ id: row.id, room:row.room_id, date:row.date, reason:row.reason, event_name:row.event_name, people: row.people, group_name:row.group_name, approval:row.approval, event_content:row.event_content, user_id:row.user_id, start_time:row.start_time, end_time:row.end_time }));
+        const values = results.map(row => ({ id: row.id, room:row.room_id, date:row.date, reason:row.reason, event_name:row.event_name, people: row.people, group_name:row.group_name, approval:row.approval, event_content:row.event_content, user_id:row.user_id, start_time:row.start_time, end_time:row.end_time, repuse_reason:row.repuse_reason }));
         resolve(values);
       }
     });
@@ -179,17 +179,25 @@ async function saveReservationToDatabase(Reservation) {
 
 async function updateApprovalToDatabase(Reservation) {
   try {
-    // MySQL에 데이터 삽입하는 쿼리
-    const query = 'UPDATE DB.Reservation SET approval = ? WHERE id = ?';
+    let query;
+
+    if (Reservation.approval === 'F') {
+      // MySQL에 데이터 업데이트하는 쿼리 (approval이 'F'인 경우)
+      query = 'UPDATE DB.Reservation SET approval = ? WHERE id = ?';
+    } else {
+      // MySQL에 데이터 업데이트하는 쿼리 (approval이 'F'가 아닌 경우)
+      query = 'UPDATE DB.Reservation SET approval = ?, repuse_reason = ? WHERE id = ?';
+    }
 
     // 쿼리 실행
-    await connection.query(query, [Reservation.approval, Reservation.id]);
+    await connection.query(query, [Reservation.approval, Reservation.repuse_reason, Reservation.id]);
     console.log('데이터가 MySQL 데이터베이스에 저장되었습니다.');
   } catch (error) {
     console.error('데이터 저장 오류:', error);
     throw error;
   }
 }
+
 
 //회원정보 저장 함수
 async function saveUserToDatabase(user) {
