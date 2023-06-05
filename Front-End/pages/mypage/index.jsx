@@ -91,9 +91,9 @@ const Tab = ({handleTabChange, activeTab}) => {
 }
 
 
-export default function MyPage(reservedList) {
+export default function MyPage({reservedList}) {
   const [activeTab, setActiveTab] = useState("reservation");
-  const arrayList = Object.values(reservedList);
+  const arrayList = reservedList;
   console.log(arrayList);
   const [showReserved, setShowReserved] = useState(arrayList);
 
