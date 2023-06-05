@@ -95,14 +95,13 @@ const ButtonArea = ({ handleApprovalClick, handleDenyClick, reserv, index }) => 
         거절
       </Button>
       {showPopover && (
-        <div tw="max-w-sm px-4 mt-3 transform overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 flex flex-col">
+        <div tw="max-w-sm w-[70%] h-[40%] px-4 mt-3 transform overflow-hidden rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 flex flex-col fixed top-[40%] left-[40%] p-3">
           <p tw="m-5">거절 사유</p>
           <textarea
-            type={text}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="거절 사유를 입력하세요"
-            tw="rounded-lg border border-neutral-5 h-60"
+            tw="rounded-lg border border-neutral-5 h-60 mb-6"
           />
           <Button variant="primary" onClick={handleDenySubmit}>
             확인
@@ -160,8 +159,7 @@ export default function Management({reservedList}) {
                 mx-auto px-4 pb-28 md:(px-8) flex
                 flex-row items-start justify-start mt-10"
       >
-        <div tw="relative px-5 py-10
-                  grid gap-4 grid-cols-2 sm:(grid-cols-1) lg:(grid-cols-2)">
+        
         <div tw="w-1/2 flex flex-col mt-28">
           <h3>새로운 예약 내역</h3>
           <div tw="border border-neutral-4 rounded-lg w-[95%] bg-neutral-1 h-[45rem] overflow-scroll flex flex-col items-center p-5">
@@ -188,7 +186,6 @@ export default function Management({reservedList}) {
                 return <ReservCard reserv={reserv} key={index}/>
               })}
           </div>
-        </div>
         </div>
       </main>
     </UserUIContainer>
