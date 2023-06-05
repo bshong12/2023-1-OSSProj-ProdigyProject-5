@@ -27,7 +27,7 @@ export default function Map({Buildings}) {
     const matchedBuilding = Buildings.find((building) => building.name === buildingId);
     if (matchedBuilding) {
       router.push(
-        {pathname: `/buildings/${nameToSlug(buildingId)}`,
+        {pathname: `/buildings/${buildingId}`,
         query: {date : stringDate}})
      }else {
       alert(`${buildingName}은/는 대관신청이 불가능합니다`)
