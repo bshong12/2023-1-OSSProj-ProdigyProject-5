@@ -13,7 +13,7 @@ async function myReservation(req, res) {
     if(req.user.type === 'S'){
     const id = req.user.id; // 토큰에서 id 가져옴
     const reservation = await db.getReservation();
-    const myReserv = await reservation.find(reserv => reserv.user_id === id);
+    const myReserv = await reservation.filter(reserv => reserv.user_id === id);
     console.log(myReserv);
     res.status(200).json(myReserv);
     }
@@ -31,7 +31,7 @@ async function getReservation(req, res) {
   try{
     if(req.user.type === 'M') {
     const reservation = await db.getReservation();
-    const waitingReservation = await reservation.find(reserv => reserv.approval === 'W');
+    const waitingReservation = await reservation.filter(reserv => reserv.approval === 'W');
     res.status(200).json(waitingReservation);
     }
     else{
