@@ -31,11 +31,14 @@ export default function Building({ date, building, buildingData }) {
 
   const Roomli = ({ roomData }) => {
     const [isRoomOpen, setIsRoomOpen] = useState(false);
+
     return (
       <li tw="mr-5 mb-5">
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
           <Link href={
-            {pathname:`${asPath}/${roomData.room}`, query: {date: date} }} passHref as={`${asPath}/${roomData.room}`}>
+            
+            {pathname: `/buildings/${building}/${roomData.room}`, query: {date : date}}} 
+            passHref as={`/buildings/${building}/${roomData.room}`}>
             <div>
               <StyledLink
                 underline

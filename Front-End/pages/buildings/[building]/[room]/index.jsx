@@ -90,14 +90,8 @@ export default function Room({ date, building, room, reservedTimes }) {
               {pageHeading}
             </h1>
             <Button tw="w-52 mt-5 mb-5" onClick={()=> {
-              let newURL =``;
-              if(decodeURIComponent(asPath).includes("campusmap")) {
-                newURL = `/buildings/${building}/${room}/reserve`;
-              } else {
-                newURL = `${asPath}/reserve`
-              }
               router.push({
-              pathname: newURL,
+              pathname: `${asPath}/reserve`,
               query: { responseData: encodeURIComponent(JSON.stringify(transData)) },
             })}}>예약하기</Button>
           </div>

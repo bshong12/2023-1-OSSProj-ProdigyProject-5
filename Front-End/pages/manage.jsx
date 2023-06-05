@@ -124,7 +124,7 @@ export default function Management({reservedList}) {
     if(window.confirm("해당 예약을 승인하시겠습니까?")) { //confirm창을 띄워서 한 번 더 확인한 뒤 확인 버튼을 누르고 서버로부터 200 응답을 받으면 예약 승인
       reserv.approval = "T"; //DB에 저장하는 형식 W:대기, T:승인, F:거절
       const reason = "";
-      postApproval(reserv.approval, reason)
+      postApproval(reserv.approval, reserv.id, reason)
       .then(response => {
         if (response.status === 200) {
           setWait(wait.filter((_, i) => i !== index));
@@ -140,7 +140,7 @@ export default function Management({reservedList}) {
   const handleDenyClick = (reserv, index, reason) => { //거절 버튼을 눌렀을 때(매개변수로 받는 reserv는 각 예약의 정보. index는 그 예약의 index)
       if(window.confirm("해당 예약을 거절하시겟습니까?")) { //confirm창을 띄워서 한번 더 확인한 뒤 확인 버튼을 누르고 서버로부터 200 응답을 받으면 예약 거절
         reserv.approval = "F";
-        postApproval(reserv.approval, reason)
+        postApproval(reserv.approval, reserv.id, reason)
         .then(response => {
           if(response.status === 200) {
             setWait(wait.filter((_, i) => i !== index));
