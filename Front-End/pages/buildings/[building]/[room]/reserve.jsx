@@ -14,7 +14,6 @@ import api from "../../../../utils/api"
 const apply = async (data, responseData, user) => {
   try {
     const requestData = {
-      id: "5",
       room_id: responseData.room,
       date: responseData.selectedDate,
       reason: data.reason,

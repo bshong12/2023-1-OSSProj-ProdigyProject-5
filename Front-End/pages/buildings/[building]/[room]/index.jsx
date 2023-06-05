@@ -89,10 +89,17 @@ export default function Room({ date, building, room, reservedTimes }) {
             >
               {pageHeading}
             </h1>
-            <Button tw="w-52 mt-5 mb-5" onClick={()=>router.push({
-              pathname: `${asPath}/reserve`,
+            <Button tw="w-52 mt-5 mb-5" onClick={()=> {
+              let newURL =``;
+              if(decodeURIComponent(asPath).includes("campusmap")) {
+                newURL = `/buildings/${building}/${room}/reserve`;
+              } else {
+                newURL = `${asPath}/reserve`
+              }
+              router.push({
+              pathname: newURL,
               query: { responseData: encodeURIComponent(JSON.stringify(transData)) },
-            })}>예약하기</Button>
+            })}}>예약하기</Button>
           </div>
           <div tw="max-w-screen-lg mx-auto my-8 px-3 flex flex-wrap justify-evenly">
             <div tw="w-full mb-12 lg:(w-1/2 border-r mb-0)">

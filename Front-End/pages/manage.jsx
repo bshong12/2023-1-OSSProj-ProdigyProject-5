@@ -160,6 +160,8 @@ export default function Management({reservedList}) {
                 mx-auto px-4 pb-28 md:(px-8) flex
                 flex-row items-start justify-start mt-10"
       >
+        <div tw="relative px-5 py-10
+                  grid gap-4 grid-cols-2 sm:(grid-cols-1) lg:(grid-cols-2)">
         <div tw="w-1/2 flex flex-col mt-28">
           <h3>새로운 예약 내역</h3>
           <div tw="border border-neutral-4 rounded-lg w-[95%] bg-neutral-1 h-[45rem] overflow-scroll flex flex-col items-center p-5">
@@ -186,6 +188,7 @@ export default function Management({reservedList}) {
                 return <ReservCard reserv={reserv} key={index}/>
               })}
           </div>
+        </div>
         </div>
       </main>
     </UserUIContainer>
