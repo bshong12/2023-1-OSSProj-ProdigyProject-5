@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router"
 import { headers } from "next/dist/client/components/headers";
 import api from "../../utils/api"
+import { Modal } from "../../primitives";
 
 //이 컴포넌트는 나중에 마이페이지 페이지 제작할 때 들어갈 컴포넌트로 이 파일 삭제 후 마이페이지 페이지에 바로 컴포넌트 생성 후 활용할 예정
 /* reserve = {예약번호 : INT,
@@ -25,6 +26,8 @@ const ReservCard =(reserve) => {
     approval = "거절"
   }
 
+  const [isOpen, setIsOpen] = useState();
+
   return (
     <li tw="flex flex-col bg-neutral-1 rounded-lg border border-neutral-4 m-14">
       <p tw="text-lg font-bold">{reserve.reserve.event_name}</p>
@@ -33,7 +36,12 @@ const ReservCard =(reserve) => {
         <p>강의실 : {reserve.reserve.room}</p>
         <p>예약시간 : {reserve.reserve.start_time} ~ {reserve.reserve.end_time}</p>
         <p>처리상태 : {approval}</p>
+        {approval === "거절" && <p tw="text-neutral-4 underline" onClick={() => setIsOpen(!isOpen)}>거절 사유 보기</p>}
       </div>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="거절사유" contentProps={{
+          title: "거절 사유",
+          description: `${reserve.refuse_reason}`,
+        }} /> 
     </li>
   );
 }

@@ -20,12 +20,12 @@ module.exports = {
   trailingSlash: false,
   reactStrictMode: true,
   //swcMinify: true,
-  experimental: {
-    turboMode: true,
-    eslint: true,
-    //concurrentFeatures: true,
-    //serverComponents: true,
-  },
+  // experimental: {
+  //   turboMode: true,
+  //   eslint: true,
+  //   //concurrentFeatures: true,
+  //   //serverComponents: true,
+  // },
   babel: {
     presets: ['next/babel'],
   },
@@ -46,7 +46,7 @@ module.exports = {
     return [
       {
         source: "/login",
-        destination: "/signin",
+        destination: "/",
         permanent: false,
       },
     ]
@@ -60,7 +60,7 @@ module.exports = {
       ...cacheFontsHeaders(),
     ]
   },
-  ebpack: (config) => {
+  webpack: (config) => {
     config.resolve.fallback = { fs: false, module: false }
     return config
   },

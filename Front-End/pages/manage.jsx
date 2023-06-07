@@ -103,8 +103,11 @@ const ButtonArea = ({ handleApprovalClick, handleDenyClick, reserv, index }) => 
             placeholder="거절 사유를 입력하세요"
             tw="rounded-lg border border-neutral-5 h-60 mb-6"
           />
-          <Button variant="primary" onClick={handleDenySubmit}>
+          <Button variant="primary" onClick={handleDenySubmit} tw="mr-7">
             확인
+          </Button>
+          <Button variant="primary" onClick={() => setShowPopover(false)}>
+            취소
           </Button>
         </div>
       )}
