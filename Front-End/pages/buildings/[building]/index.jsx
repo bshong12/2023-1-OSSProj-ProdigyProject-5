@@ -112,12 +112,15 @@ Building.theme = "light";
 
 export async function getServerSideProps (context) {
   const { date ,building } = context.query;
-
   try {
     const response = await api.get(`/buildings/${date}/${building}`);
-    const buildingData = response.data;
-    
-    return { props: { date, building, buildingData } };
+    if(response.status === 200) {
+      const buildingData = response.data;
+      return { props: { date, building, buildingData } };
+    } else {
+      return { props: { date: "", building: "", buildingData:[]}}
+    }
+   
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };

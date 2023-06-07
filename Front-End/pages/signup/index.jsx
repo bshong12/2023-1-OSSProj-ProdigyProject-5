@@ -164,7 +164,7 @@ export default function Signup() {
               aria-label="password"
               autoComplete="off"
               autoCapitalize="none"
-              maxLength="10"
+              maxLength="20"
               id="Password"
               name="Password"
               {...register("password")}

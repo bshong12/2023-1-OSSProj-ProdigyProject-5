@@ -11,6 +11,7 @@ const Datepicker = () => {
   const handleDateChange = (date) => { //날짜를 선택하면 Redux에 있는 날짜를 바꾸기 위한 함수
     const selectedDate = date.getTime();
     dispatch(setSelectedDate(selectedDate));
+    localStorage.setItem('date', selectedDate);
   };
 
   return (

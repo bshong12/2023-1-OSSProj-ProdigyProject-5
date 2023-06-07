@@ -83,7 +83,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
         if(result) {
           router.push('../../../mypage');
         } else {
-          router.push('../../buildings');
+          router.push('../../../buildings');
         }
       }
       else {
@@ -140,7 +140,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                 <p tw="w-3/12 mr-3">신청인원</p>
                 <Input
                       type="number"
-                      placeholder="신청사유"
+                      placeholder="신청인원"
                       aria-label="headcount"
                       autoComplete="off"
                       autoCapitalize="none"
@@ -220,8 +220,8 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                       <p tw="border-neutral-3 w-1/6 text-neutral-5 overflow-ellipsis">{responseData.selectedDate}</p>
                       <p tw="border-neutral-3 w-1/6 text-neutral-5">{startTime}</p>
                       <p tw="border-neutral-3 w-1/6 text-neutral-5">{endTime()}</p>
-                      <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden overflow-ellipsis">{responseData.buildingname}</p>
-                      <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden overflow-ellipsis" style={{overflow: "hidden", textOverflow: "ellipsis"}}>{responseData.room}</p>
+                      <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{responseData.buildingname}</p>
+                      <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{responseData.room}</p>
                     </div>
                   </div>
                   <div tw="w-full flex justify-center">
@@ -229,7 +229,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                     <Button variant={"trans"} onClick={() => {
                       const result = window.confirm("예약을 취소하시겠습니까?");
                       if(result) {
-                        router.push('../mypage');
+                        router.push('../../../buildings');
                       }
                     }} tw="m-7 w-36">취소</Button>
                   </div>
@@ -249,8 +249,13 @@ export async function getServerSideProps (context) {
 
   try {
     const response = await api.get(`/buildings/${responseData.selectedDate}/${responseData.buildingname}/${responseData.room}/reservation`, {headers:{cookie: context.req.headers.cookie || ''}});
-    const user = response.data;
-    return { props: { responseData, user } };
+    if(response.status === 200) {
+      const user = response.data;
+      return { props: { responseData, user } };
+    } else {
+
+    }
+    
   } catch (error) {
     console.error(error);
     return {props: {responseData: "", user: ""}};
