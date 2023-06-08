@@ -7,6 +7,8 @@ import {
   HiChevronRight,
 } from "react-icons/hi"
 
+
+//icon이랑 아이콘 동작 정의
 const IconsDropdown = {
   ChevronUp: ({ ariaHidden = true, ...rest }) => (
     <HiChevronUp aria-hidden={ariaHidden} {...rest} />

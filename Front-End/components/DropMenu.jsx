@@ -1,16 +1,16 @@
 import tw from "twin.macro";
 import {useState, useRef} from 'react';
 
-export default function DropMenu ({ buttonText, children, variant }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const buttonRef = useRef(null);
+export default function DropMenu ({ buttonText, children, variant }) { //메뉴를 드롭버튼을 통해 열고 닫을 수 있게 만든 컴포넌트
+  const [isMenuOpen, setIsMenuOpen] = useState(false); //메뉴의 열고 닫는 상태 지정
+  const buttonRef = useRef(null); 
   
   return (
     <div tw="relative">
       <button
         tw="border border-gray-400 font-bold text-gray-700 py-2 px-4 rounded inline-flex items-center w-40 justify-between"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        css={{ position: 'relative' }} // 버튼에 position: relative 추가
+        onClick={() => setIsMenuOpen(!isMenuOpen)} //버튼 누르면 메뉴 열림
+        css={{ position: 'relative' }} // 버튼에 position: relative 추가 - 메뉴속성이 absolute이기 때문
         ref={buttonRef}
       >
         <span>{buttonText}</span>
@@ -26,7 +26,7 @@ export default function DropMenu ({ buttonText, children, variant }) {
           overflowY: "auto", // 스크롤 추가
         }} 
         >
-          {children}
+          {children} 
         </div>
       )}
     </div>

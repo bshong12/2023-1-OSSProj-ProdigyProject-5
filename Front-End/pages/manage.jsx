@@ -95,7 +95,7 @@ const ButtonArea = ({ handleApprovalClick, handleDenyClick, reserv, index }) => 
         거절
       </Button>
       {showPopover && (
-        <div tw="max-w-sm w-[70%] h-[40%] px-4 mt-3 transform overflow-hidden rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 flex flex-col fixed top-[40%] left-[40%] p-3">
+        <div tw="max-w-sm w-[70%] h-[40%] z-10 px-4 mt-3 transform overflow-hidden rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 flex flex-col fixed top-[40%] left-[40%] p-3">
           <p tw="m-5">거절 사유</p>
           <textarea
             value={reason}
@@ -103,12 +103,15 @@ const ButtonArea = ({ handleApprovalClick, handleDenyClick, reserv, index }) => 
             placeholder="거절 사유를 입력하세요"
             tw="rounded-lg border border-neutral-5 h-60 mb-6"
           />
-          <Button variant="primary" onClick={handleDenySubmit} tw="mr-7">
-            확인
-          </Button>
-          <Button variant="primary" onClick={() => setShowPopover(false)}>
-            취소
-          </Button>
+          <div tw="flex w-full justify-center">
+            <Button variant="primary" onClick={handleDenySubmit} tw="mr-7">
+              확인
+            </Button>
+            <Button variant="primary" onClick={() => setShowPopover(false)}>
+              취소
+            </Button>
+          </div>
+          
         </div>
       )}
     </div>

@@ -4,6 +4,10 @@ import { Dialog } from "@headlessui/react"
 import Transition from "./Transition"
 import { HiX } from "react-icons/hi"
 
+//모달창 isOpen과 setIsOpen은 모달창이 열리는 조건 정의
+//modalFunc는 모달 창이 닫힐 때 동작 정이
+//나머지는 모달 창에 표시될 내용을 Props 형태로 저장
+//contentProps에 들어갈 내용은 content 컴포넌트에 들어갈 props넣으면 됨
 export default function Modal({
   isOpen,
   setIsOpen,
