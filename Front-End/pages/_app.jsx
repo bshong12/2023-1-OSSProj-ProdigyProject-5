@@ -5,7 +5,7 @@ import SEO from "../next-seo.config"
 import { createWrapper } from "next-redux-wrapper"
 import store from "../redux/store"
 
-
+//페이지의 전역 스타일 지정
 function App({ Component, pageProps }) {
   return (
     <ThemeProvider
@@ -23,6 +23,7 @@ function App({ Component, pageProps }) {
   )
 }
 
+//리덕스를 사용하기 위한 처리
 const wrapper = createWrapper(() => store);
 
 export default wrapper.withRedux(App);

@@ -8,16 +8,9 @@ import { headers } from "next/dist/client/components/headers";
 import api from "../../utils/api"
 import { Modal } from "../../primitives";
 
-//이 컴포넌트는 나중에 마이페이지 페이지 제작할 때 들어갈 컴포넌트로 이 파일 삭제 후 마이페이지 페이지에 바로 컴포넌트 생성 후 활용할 예정
-/* reserve = {예약번호 : INT,
-              신청일 : DATE,
-              시설분류 : Charset,
-              예약날짜 : DATE,
-              예약시간 : TIME,
-              처리상태 : boolean} 이라고 가정*/
-const ReservCard =(reserve) => {
+const ReservCard =(reserve) => { //예약 정보를 나타내는 컴포넌트
   let approval = "";
-  console.log(reserve.reserve.approval);
+  //서버로부터 받은 예약 정보 중 예약이 대기 중인지 처리되었는 지를 사용자에게 나타내기 위해 변환
   if(reserve.reserve.approval === "W"){
     approval = "대기중"
   } else if(reserve.reserve.approval === "T") {
@@ -26,7 +19,8 @@ const ReservCard =(reserve) => {
     approval = "거절"
   }
 
-  const [isOpen, setIsOpen] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false); //모달을 여냐 마냐
+
 
   return (
     <li tw="flex flex-col bg-neutral-1 rounded-lg border border-neutral-4 m-14">
@@ -36,9 +30,9 @@ const ReservCard =(reserve) => {
         <p>강의실 : {reserve.reserve.room}</p>
         <p>예약시간 : {reserve.reserve.start_time} ~ {reserve.reserve.end_time}</p>
         <p>처리상태 : {approval}</p>
-        {approval === "거절" && <p tw="text-neutral-4 underline" onClick={() => setIsOpen(!isOpen)}>거절 사유 보기</p>}
+        {approval === "거절" && <p tw="text-neutral-4 underline" onClick={() => setIsModalOpen(true)}>거절 사유 보기</p>}
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="거절사유" contentProps={{
+      <Modal isOpen={(isModalOpen)} setIsOpen={setIsModalOpen} title="거절사유" contentProps={{
           title: "거절 사유",
           description: `${reserve.refuse_reason}`,
         }} /> 
@@ -46,6 +40,7 @@ const ReservCard =(reserve) => {
   );
 }
 
+//본인이 한 예약을 전부 확인할 것인지 승인된 내역만 확인할 것인지 선택하는 탭 컴포넌트 (라디오 버튼으로 표현)
 const Tab = ({handleTabChange, activeTab}) => {
   const router = useRouter();
   return (
@@ -76,19 +71,6 @@ const Tab = ({handleTabChange, activeTab}) => {
             onChange={handleTabChange}
             /> 예약승인내역
           </label>
-    
-        {/* <button
-            onClick={() => handleTabChange("reservation")}
-            tw={`text-neutral-7 mr-5 ${activeTab === "reservation" && "active:(text-dguMain font-bold)"}`}
-          >
-            예약내역
-          </button>
-          <button
-            onClick={() => handleTabChange("approval")}
-            tw={`text-neutral-7 ${activeTab === "approval" && "active:(text-dguMain font-bold)"}`}
-          >
-            예약승인내역
-          </button> */}
         </div>
         <button onClick={() => router.push("/buildings")} tw="ml-auto">
           <img src="/static/out_icon.png" alt="나가기" tw="w-7 h-7"/>
@@ -100,13 +82,14 @@ const Tab = ({handleTabChange, activeTab}) => {
 
 
 export default function MyPage({reservedList}) {
-  const [activeTab, setActiveTab] = useState("reservation");
+  const [activeTab, setActiveTab] = useState("reservation"); //기본적으로 모든 예약을 보여줌
   const arrayList = reservedList;
   console.log(arrayList);
-  const [showReserved, setShowReserved] = useState(arrayList);
+  const [showReserved, setShowReserved] = useState(arrayList); //보여줄 예약 내역이 저장될 배열
 
   const approvalList = arrayList.filter((item) => item.approval === "T");
 
+  //모든 예약을 볼 것인지 승인된 예약만 볼 것인지 선택할 때 처리되는 함수
   const handleTabChange = (event) => {
     console.log("handle")
     setActiveTab(event.target.value);

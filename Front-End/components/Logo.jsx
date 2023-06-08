@@ -3,6 +3,7 @@ import tw from "twin.macro"
 import { SvgLogo, Img, StyledLink } from "../components"
 import SEO from "../next-seo.config"
 
+//로고를 클릭하면 /buildings 페이지로 가도록 지정
 const Logo = ({ url, showName, name }) => {
   const currLink = url || "/buildings"
   const title = name || SEO.defaultTitle

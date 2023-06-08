@@ -1,4 +1,4 @@
-const SvgLogo = (props) => (
+const SvgLogo = (props) => ( //로고 기본 스타일 지정
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"

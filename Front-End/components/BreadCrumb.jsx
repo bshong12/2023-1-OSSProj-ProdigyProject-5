@@ -2,6 +2,7 @@ import tw, { css } from "twin.macro"
 import Link from "next/link"
 import { slugToName } from "../utils/buildings"
 
+//현재 위치와 과거 위치를 나타내는 컴포넌트. routesArr는 현재 경로를 /를 기준으로 나눠서 배열로 저장한 것
 export default function BreadCrumb({ routesArr }) {
   return (
     <nav
@@ -9,7 +10,7 @@ export default function BreadCrumb({ routesArr }) {
       aria-label="Breadcrumb"
     >
       <ol tw="inline-flex items-center space-x-1 md:(space-x-3)">
-        {routesArr?.map((route, i) => (
+        {routesArr?.map((route, i) => ( //routesArr를 통해 다시 경로를 만들어 링크 안에 넣음.
           <li key={i} tw="flex items-center">
             <Link href={`/${routesArr.slice(0, i + 1).join("/")}`} passHref>
                 <div

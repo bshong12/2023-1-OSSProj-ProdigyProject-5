@@ -9,24 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import api from "../../utils/api"
 
-const SmallDiv = styled.div(() => [
-  tw`relative w-full text-center text-neutral-5 after:(right-0) before:(left-0)`,
-  css`
-    &:before,
-    &:after {
-      ${tw`inline-block absolute 
-      top-1/2 [content:""] 
-      [border-bottom:1px_solid_rgba(var(--neutral-4))]
-      [width:calc(50% - 5em)]
-      `};
-    }
-    
-    > small {
-      ${tw`inline-block`}
-    }
-  `,
-])
-
+//회원가입 처리를 위한 백엔드로 보내는 요청
 async function signup(data) {
 
   try {
@@ -49,6 +32,7 @@ async function signup(data) {
   }
 }
 
+//회원가입 폼 요소들의 스키마 정의
 const schema = yup.object().shape({
   qualification: yup.string().required("자격을 선택해주세요."),
   name: yup.string().required("이름을 입력해주세요."),
@@ -59,7 +43,7 @@ const schema = yup.object().shape({
 });
 
 
-
+//회원가입 페이지 
 export default function Signup() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -73,6 +57,7 @@ export default function Signup() {
     resolver: yupResolver(schema),
   });
 
+  //회원가입 폼을 제출했을 때의 동작
   const onSubmit = (data) => {
     setIsLoading(true);
     console.log(data);
@@ -81,10 +66,10 @@ export default function Signup() {
     .then((response) => {
       console.log(response);
       setIsLoading(false);
-      //서버측에서 json형태로 보내주는 경우 {"success": true} 
+      //회원가입성공하면 완료 이미 존재하는 지 아닌지에 따라 뜨는 문구가 다름
       if (response.status === 201) {
         window.alert("회원가입이 완료되었습니다");
-        setTimeout(() => {
+        setTimeout(() => { //alert창이 뜨고 1초 뒤 로그인 페이지로 이동
           router.push("/");
         }, [1000]);
       } else if(response.status === 409) {

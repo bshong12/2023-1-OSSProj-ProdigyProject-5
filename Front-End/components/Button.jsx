@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro"
 
 const Button = styled.button(({ variant, isSmall, isLarge, isBold }) => [
-  // 버튼 기본 색상, 호버 상태 색상 변경
+  // variant에 따라 버튼의 색상 등이 달라짐. isSmall, isLarge, isBold는 글씨 크기 또는 굵기 지정
   tw`   p-3 rounded-brand w-full
         text-white font-medium tracking-tight
         transform duration-200 ease-in-out

@@ -2,6 +2,7 @@ import { Fragment } from "react"
 import Document, { Html, Head, Main, NextScript } from "next/document"
 import { extractCritical } from "@emotion/server"
 
+//페이지의 html 문서 구조 정의
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx)

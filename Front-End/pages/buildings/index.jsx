@@ -1,4 +1,5 @@
 import { use, useEffect, useState } from "react"
+import { useRouter } from "next/router"
 import tw from "twin.macro"
 import styled from "@emotion/styled"
 import Link from "next/link"
@@ -9,13 +10,34 @@ import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
 import api from "../../utils/api"
 
+// const exportDate = async (date) => {
+//   try {
+//     const response = await api.post("/buildings", date);
+//     return response;
+//   } catch(error) {
+//     console.error(error);
+//   }
+// };
 
+//건물의 이름과 사진을 나타낼 반복되는 건물카드 컴포넌트
 const BuildingCard = ({ building, date}) => {
-
+  const router = useRouter();
   const { name, image } = building
   const slug = name
- 
-  return (
+
+  // const onHandleClick = () => {
+  //   exportDate(date)
+  //   .then((res) => {
+  //     if(res.status === 200) {
+  //       router.push(`/buildings/${slug}`);
+  //     } else {
+  //       console.log(res.status);
+  //     }
+  //   })
+  //   .catch(err => console.err(err));
+  // };
+
+  return ( //해당 카드를 선택하면 query를 통해 datePicker에서 선택한 날짜를 보내주고 선택한 건물에 맞는 페이지로 이동
     <Link href={{pathname: `/buildings/${slug}`, query: {date : date}}} as={`/buildings/${slug}`} passHref>
       <div tw="hover:bg-neutral-1 w-full p-2 text-left rounded transition ease-in-out">
           <span tw="block px-2 py-2 my-6 font-semibold capitalize bg-neutral-1 rounded-lg text-lg  ">
@@ -29,11 +51,12 @@ const BuildingCard = ({ building, date}) => {
   )
 }
 
+//건물의 사진과 이름으로 나타나는 건물 페이지. 캠퍼스맵페이지와 서로 왔다갔다함
 export default function Buildings({ allBuildings }) {
   const router = useRouter()
   const selectedDate = useSelector((state) => state.selectedDate);
-  const date = new Date(selectedDate);
-  const stringDate = date.toISOString().slice(0, 10);
+  const date = new Date(selectedDate); //리덕스에 저장되어 있는 날짜 Date로 반환
+  const stringDate = date.toISOString().slice(0, 10); //YYYY-MM-DD형태로 나타남
 
   return (
     <UserUIContainer title="Buildings" headerBorder footer>
@@ -72,7 +95,7 @@ export default function Buildings({ allBuildings }) {
   )
 }
 
-// 백엔드에서 보내주는 data buildings가 [{name: "name", img: "img"}, ...] 형태로 보내줄 것이라 가정
+// 백엔드에서 대관이 가능한 건물들을 [{name: "name", image: "img"}, ...] 형태로 보내줄 것
 //만약 객체 형태로 올 경우 {{}, {}, ...} => Object.values(buildings)로 배열로 바꿔줘야 함
 export async function getServerSideProps() {
   try {

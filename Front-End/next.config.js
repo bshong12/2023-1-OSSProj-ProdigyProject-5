@@ -19,6 +19,7 @@ const cacheFontsHeaders = () => {
 module.exports = {
   trailingSlash: false,
   reactStrictMode: true,
+  distDir: 'build',
   //swcMinify: true,
   // experimental: {
   //   turboMode: true,

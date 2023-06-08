@@ -10,7 +10,7 @@ import { Dialog } from "@headlessui/react"
 import { HiOutlineMenuAlt4, HiOutlineX } from "react-icons/hi"
 import { Header, Button, Footer, Logo } from "../components"
 
-export default function MarketingContainer({
+export default function MarketingContainer({ //로고가 가운데로 오고 유저 아이콘이 없는 기본 레이아웃
   children,
   fixed,
   noHeaderNav,
