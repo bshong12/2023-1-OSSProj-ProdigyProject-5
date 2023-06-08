@@ -22,7 +22,9 @@ async function reservedTime(date, room) {
     endTime: item.end_time
   }));
 
-  const reservations = reservation.reservations.map(item => ({
+  const reservations = reservation.reservations
+    .filter(item => item.approval !== 'F')  // 예약 거절되지 않은 예약만 필터링  
+    .map(item => ({
     name: item.event_name,
     startTime: item.start_time,
     endTime: item.end_time
