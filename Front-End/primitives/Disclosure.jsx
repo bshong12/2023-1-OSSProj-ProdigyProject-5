@@ -3,6 +3,10 @@ import { Disclosure as HeadlessDisclosure } from "@headlessui/react"
 import Icons from "./Icons"
 import Transition from "./Transition"
 
+//접기 펼치기 동작을 구현하는 Disclosure 컴포넌트
+//HeadlessDisclosure.Button과 HeadlessDisclosure.Panel은 접기/펼치기 동작을 처리하는 버튼과 패널을 제공
+//items 배열을 매개변수로 받아서 각 아이템에 대한 접기/펼치기 동작을 생성
+//buttonProps와 panelProps
 export default function Disclosure({
   items,
   disclosureProps,

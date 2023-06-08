@@ -4,6 +4,12 @@ import { Menu } from "@headlessui/react"
 import Icons from "./Icons"
 import Transition from "./Transition"
 
+//라이브러리를 이용한 드롭다운 구현
+// items: 드롭다운 메뉴의 항목들을 담고 있는 배열
+// menuProps: Menu 컴포넌트에 전달되는 props
+// menuItemsProps: Menu.Items 컴포넌트에 전달되는 props
+// menuItemProps: Menu.Item 컴포넌트에 전달되는 props
+// children: 드롭다운 메뉴의 레이블로 표시될 컨텐츠
 export default function Dropdown({
   items,
   menuProps,

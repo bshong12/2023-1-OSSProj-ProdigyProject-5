@@ -2,8 +2,9 @@ import tw, { css } from "twin.macro"
 import { Fragment } from "react"
 import { Popover as HeadlessPopover } from "@headlessui/react"
 import { HiChevronDown } from "react-icons/hi"
-
 import Transition from "./Transition"
+
+//팝오버(흔히 팝업창이라 부름) 정의
 export default function Popover({ label, items, panelProps }) {
   if (items.length === 0) return null
   return (

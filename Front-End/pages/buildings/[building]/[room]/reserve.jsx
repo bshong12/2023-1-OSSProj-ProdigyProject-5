@@ -10,7 +10,7 @@ import api from "../../../../utils/api"
 
 
 //id, room_id, date, reason, event_name, people, group_name, event_content, user_id, approval, start_time, end_time
-
+//예약 폼 서버로 전송하는 함수
 const apply = async (data, responseData, user) => {
   try {
     const requestData = {
@@ -34,7 +34,7 @@ const apply = async (data, responseData, user) => {
   }
 };
 
-const schema = yup.object().shape({
+const schema = yup.object().shape({ //에약 폼 스키마
   reason: yup.string().required("신청사유를 입력해주세요."),
   name: yup.string().required("예약명(행사명)을 입력해주세요"),
   headcount: yup.string().required("인원수를 입력해주세요. "),
@@ -46,11 +46,9 @@ const schema = yup.object().shape({
 
 export default function ReserveForm({responseData, user}) { //앞서 선택했던 예약 정보들 받아오기
   const router = useRouter();
-  console.log(responseData);
-  console.log(user);
-  const startTime = responseData.selectedTime[0];
+  const startTime = responseData.selectedTime[0]; //시작시간은 선택한 시간 중 가장 앞시간
 
-  const endTime = () => {
+  const endTime = () => { //끝시간은 선택한 시간 중 가장 마지막 시간에서 30분 지난 시간
     const Time = responseData.selectedTime;
     const lastItem = Time[Time.length - 1];
     const [hour, minute] = lastItem.split(":")
@@ -74,16 +72,15 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
   })
 
   
-  const onSubmit = (data) => {
-    console.log("onsubmit")
+  const onSubmit = (data) => { //예약 폼을 제출하면 하는 동작
     apply(data, responseData, user)
     .then(response => {
       if(response.status === 200) {
         const result = window.confirm("예약이 완료되었습니다. 예약내역을 확인하시겠습니까?");
         if(result) {
-          router.push('../../../mypage');
+          router.push('../../../mypage'); //예약내역을 확인할 수 있는 마이페이지로 이동
         } else {
-          router.push('../../../buildings');
+          router.push('../../../buildings'); //새로운 예약을 하기 위한 buildings페이지로 이동
         }
       }
       else {
@@ -226,7 +223,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                   </div>
                   <div tw="w-full flex justify-center">
                     <Button variant={"primary"} type="submit" tw="m-7 w-36">예약신청</Button>
-                    <Button variant={"trans"} onClick={() => {
+                    <Button variant={"trans"} onClick={() => { //예약 취소 버튼. 클릭하게 되면 다시 건물 페이지로 이동
                       const result = window.confirm("예약을 취소하시겠습니까?");
                       if(result) {
                         router.push('../../../buildings');
@@ -242,6 +239,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
   )
 }
 
+//해당 예약을 하는 유저 정보와 앞서 선택했던 예약 정보들을 받아옴
 export async function getServerSideProps (context) {
   console.log(context.query);
   const responseData = JSON.parse(decodeURIComponent(context.query.responseData));

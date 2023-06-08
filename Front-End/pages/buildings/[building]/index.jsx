@@ -12,11 +12,12 @@ import { set } from "react-hook-form";
 // const selectedDate = useSelector((state) => state.selectedDate);
 
 // {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
+//강의실 리스트 나타나는 페이지
 export default function Building({ date, building, buildingData }) {
   const { asPath } = useRouter();
   const pageHeading = building || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
-  const floors = [...new Set(buildingData.map((roomData) => roomData.floor))];
+  const floors = [...new Set(buildingData.map((roomData) => roomData.floor))]; //층 리스트를 만들기 위해 해당 건물에 존재하는 층을 중복된 것 제외 저장
   
 
   console.log(buildingData);
@@ -29,7 +30,7 @@ export default function Building({ date, building, buildingData }) {
     return buildingData.filter((room) => room.floor === selectedFloor);
   };
 
-  const Roomli = ({ roomData }) => {
+  const Roomli = ({ roomData }) => { //강의실 리스트 컴포넌트. 해당 컴포넌트 클릭하면 강의실 예약 페이지로 이동
     const [isRoomOpen, setIsRoomOpen] = useState(false);
 
     return (
@@ -110,6 +111,7 @@ export default function Building({ date, building, buildingData }) {
 
 Building.theme = "light";
 
+//강의실 리스트를 받는 SSR
 export async function getServerSideProps (context) {
   const { date ,building } = context.query;
   try {

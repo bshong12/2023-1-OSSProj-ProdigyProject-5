@@ -1,5 +1,7 @@
 import { Transition as HeadlessUiTransition } from "@headlessui/react"
-export default function Transition(props) {
+
+
+export default function Transition(props) { //애니메이션(어떤 컴포넌트의 상태가 변할 때 동작 정의)
   return <HeadlessUiTransition {...getProps(props)} />
 }
 Transition.Child = function TransitionChild(props) {

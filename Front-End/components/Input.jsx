@@ -1,6 +1,6 @@
 import tw, { styled } from "twin.macro"
 
-const Input = styled.input(({ noLabel, blueFocus, error }) => [
+const Input = styled.input(({ noLabel, blueFocus, error }) => [ //사용자의 입력을 받는 input 컴포넌트
   tw` block w-full appearance-none bg-base
       px-3 py-4 
       text-neutral-7 text-sm sm:text-base 

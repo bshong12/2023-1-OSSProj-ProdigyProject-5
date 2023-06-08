@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 import api from "../../utils/api"
 
-
+//캠퍼스 지도에 표시된 번호를 통해 건물의 위치와 이름을 함께 알려주고 있는 페이지로, 이 페이지에는 대관신청이 안되는 건물도 있기 때문에 대관신청이 되지 않는 건물은 따로 처리
 export default function Map({Buildings}) {
   const router = useRouter()
   const BuildingItem = tw.li`
@@ -24,12 +24,12 @@ export default function Map({Buildings}) {
 
 
   function handleBuildingClick(buildingName, buildingId) {
-    const matchedBuilding = Buildings.find((building) => building.name === buildingId);
+    const matchedBuilding = Buildings.find((building) => building.name === buildingId); //서버에서 보내준 건물과 utils폴더에 buildings.js에 있는 건물 배열의 id와 일치할경우
     if (matchedBuilding) {
       router.push(
         {pathname: `/buildings/${buildingId}`,
         query: {date : stringDate}})
-     }else {
+     }else { //학교에 존재하는 건물이지만 대관 신청은 불가능한 건물이 있음
       alert(`${buildingName}은/는 대관신청이 불가능합니다`)
     }
   }

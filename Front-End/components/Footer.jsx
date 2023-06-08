@@ -5,7 +5,7 @@ import { ExternalLink, ThemeChanger, Logo } from "../components"
 import { Disclosure } from "../primitives"
 import SEO from "../next-seo.config"
 
-export default function Footer({ nav = false }) {
+export default function Footer({ nav = false }) { //화면에 제일 마지막을 차지하는 요소
   return (
     <footer tw="relative w-full text-sm bottom-0 bg-neutral-1 text-neutral-5 px-4 py-8">
       <div tw="w-full max-w-screen-lg mx-auto">

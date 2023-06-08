@@ -6,7 +6,7 @@ const initialState = {
   selectedDate: new Date(),
 };
 
-// createSlice를 사용하여 액션과 리듀서를 생성
+// createSlice를 사용하여 액션과 리듀서를 생성-날짜 저장
 const dateSlice = createSlice({
   name: "date",
   initialState,

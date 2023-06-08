@@ -3,6 +3,7 @@ import tw from "twin.macro"
 import { Button } from "../components"
 import MarketingContainer from "../layouts/MarketingContainer"
 
+//page NotFound시에 뜨는 페이지. Link를 클릭하면 로그인창으로 가게 해 놓음
 export default function NotFound() {
   return (
     <MarketingContainer title="Page not found" footer>
@@ -17,7 +18,7 @@ export default function NotFound() {
           <br />
           Kindly double check the current URL.
         </small>
-        <Link href="/" passHref>
+        <Link href="/" passHref> 
           <Button
             as="a"
             tw="p-4 w-64 font-extrabold mx-auto tracking-wide"

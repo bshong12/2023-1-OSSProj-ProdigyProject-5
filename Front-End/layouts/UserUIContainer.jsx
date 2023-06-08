@@ -10,7 +10,7 @@ import { Header, Img, Button, ThemeChanger, Footer, Logo } from "../components"
 import { HiLightningBolt, HiCog, HiUser, HiLogout } from "react-icons/hi"
 import api from "../utils/api"
 
-const dropDownOptions = [
+const dropDownOptions = [ //유저 아이콘 메뉴
   {
     name: "마이페이지",
     href: "/mypage",
@@ -65,7 +65,7 @@ export const UserUIContainer = ({
   )
 }
 
-const logout = async () => {
+const logout = async () => { //로그아웃 요청
   try {
     const response = await api.post("/logout");
     return response;
@@ -74,10 +74,10 @@ const logout = async () => {
   }
 };
 
-export const UserDropDown = () => {
+export const UserDropDown = () => { //유저 메뉴 
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const handleLogout = () => {
+  const handleLogout = () => { //로그아웃이 성공하면 로그인 페이지로 돌아감
     logout()
     .then(response => {
       if(response.status === 200) {
@@ -110,7 +110,7 @@ export const UserDropDown = () => {
               >
                   {dropDownOptions.map((option) => (
                   <div key={option.name}>
-                    {option.href ? (
+                    {option.href ? ( //dropDownOptions에 href가 포함되어 있는 지 아닌 지에 따라 Link를 넣거나 버튼을 넣거나 함
                       <Link href={option.href} passHref>
                         <div
                           tw="inline-flex items-center w-full p-2 transition duration-150
@@ -123,7 +123,7 @@ export const UserDropDown = () => {
                           {option.name}
                         </div>
                       </Link>
-                    ) : (
+                    ) : ( //버튼은 로그아웃을 수행하는 버튼
                       <button
                         onClick={handleLogout}
                         tw="inline-flex items-center w-full p-2 transition duration-150

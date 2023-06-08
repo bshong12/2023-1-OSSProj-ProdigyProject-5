@@ -1,6 +1,7 @@
 import tw, { css } from "twin.macro"
 
-export default function Header({ fixed, headerBorder, noHeaderNav, children }) {
+ //헤더. 헤더 아래에 border를 넣을 지 말지 지정 가능. 헤더에 로고에 nav기능도 넣을지말지 지정 가능
+export default function Header({ headerBorder, noHeaderNav, children }) {
   return (
     <header
       css={[

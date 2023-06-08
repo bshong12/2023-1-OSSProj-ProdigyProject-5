@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import api from "../utils/api"
 
-const SmallDiv = styled.div(() => [
+const SmallDiv = styled.div(() => [ //가운데 가 비어있는 선 컴포넌트
   tw`relative w-full text-center text-neutral-5 after:(right-0) before:(left-0)`,
   css`
     &:before,
@@ -27,6 +27,7 @@ const SmallDiv = styled.div(() => [
   `,
 ])
 
+//로그인 요청을 백엔드로 보내는 비동기 함수
 const login = async (data) => {
   try {
     const requestData = {
@@ -40,16 +41,19 @@ const login = async (data) => {
   }
 };
 
+//로그인 할 때 받는 id와 비밀번호 스키마 정의
 const schema = yup.object().shape({
   studentID: yup.string().required("학번 또는 ID를 입력해주세요."),
   password: yup.string().required("비밀번호를 입력해주세요."),
 });
 
+//웹을 실행하면 가장 먼저 로드되는 페이지
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   // const [token, setToken] = useState(null);
 
+  //useForm 훅을 이용하여 form 조건 정의
   const {
     register,
     handleSubmit,
@@ -59,16 +63,14 @@ export default function Home() {
     resolver: yupResolver(schema),
   })
 
-  
+  //폼을 제출했을 때의 동작 정의 
   const onSubmit = (data) => {
     setIsLoading(true)
     console.log(data)
 
     login(data)
     .then((response) => {
-      if (response.status === 200) {
-        // setToken(response.data.token);
-        // sessionStorage.setItem("token", response.data.token); // 토큰 저장
+      if (response.status === 200) { //로그인에 성공하면 관리자냐 관리자가 아니냐에 따라 들어가지는 페이지가 다름
         if(response.data.type === "관리자"){
           router.push("/manage");
         } else{
