@@ -1,4 +1,5 @@
 import { use, useEffect, useState } from "react"
+import { useRouter } from "next/router"
 import tw from "twin.macro"
 import styled from "@emotion/styled"
 import Link from "next/link"
@@ -9,12 +10,33 @@ import { UserUIContainer } from "../../layouts/UserUIContainer"
 import { buildings, nameToSlug } from "../../utils/buildings"
 import api from "../../utils/api"
 
+// const exportDate = async (date) => {
+//   try {
+//     const response = await api.post("/buildings", date);
+//     return response;
+//   } catch(error) {
+//     console.error(error);
+//   }
+// };
+
 //건물의 이름과 사진을 나타낼 반복되는 건물카드 컴포넌트
 const BuildingCard = ({ building, date}) => {
-
+  const router = useRouter();
   const { name, image } = building
   const slug = name
- 
+
+  // const onHandleClick = () => {
+  //   exportDate(date)
+  //   .then((res) => {
+  //     if(res.status === 200) {
+  //       router.push(`/buildings/${slug}`);
+  //     } else {
+  //       console.log(res.status);
+  //     }
+  //   })
+  //   .catch(err => console.err(err));
+  // };
+
   return ( //해당 카드를 선택하면 query를 통해 datePicker에서 선택한 날짜를 보내주고 선택한 건물에 맞는 페이지로 이동
     <Link href={{pathname: `/buildings/${slug}`, query: {date : date}}} as={`/buildings/${slug}`} passHref>
       <div tw="hover:bg-neutral-1 w-full p-2 text-left rounded transition ease-in-out">
