@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const db = require('../DB/db');
@@ -18,7 +18,7 @@ async function logIn(req, res){
     }
 
     // 비밀번호 검증
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcryptjs.compare(password, user.password);
     if (!passwordMatch) {
       throw new Error('비밀번호가 일치하지 않습니다.');
     }
