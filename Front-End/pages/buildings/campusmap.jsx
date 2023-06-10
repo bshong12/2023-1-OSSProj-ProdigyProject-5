@@ -57,11 +57,11 @@ export default function Map({Buildings}) {
                 isSmall
                 > 건물 보기</Button>
             </div>
-            <div tw="w-full flex ">
-              <div tw="w-10/12">
+            <div tw="w-full flex flex-col lg:(flex-row) ">
+              <div tw=" w-full lg:(w-10/12) mt-14">
                 <img src="/static/campus_map.png" alt="캠퍼스 지도" />
               </div>
-              <div tw="w-1/6 flex mt-20">
+              <div tw="lg:(w-1/6) w-full flex justify-center lg:(justify-start) mt-20">
                 <DropMenu buttonText={"건물 리스트"}>
                   <ul>
                     {allBuildings.map((building) => (
