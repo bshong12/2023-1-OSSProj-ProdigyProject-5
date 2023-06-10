@@ -40,9 +40,9 @@ module.exports = {
     ],
   },
   i18n: {
-    locales: ["en-US"],
-    defaultLocale: "en-US",
-  },
+    locales: ["ko-KR"],
+    defaultLocale: "ko-KR",
+  },  
   async redirects() {
     return [
       {
