@@ -120,7 +120,7 @@
 
 **예약 폼 작성**
 
-<img src='./Documents/pages/mobile_4.jpg' width=50%>  <img src='./Documents/pages/mobile_6.jpg' width=50% align=right padding=10px> <img src='./Documents/pages/mobile_5.jpg' width=50%>
+<img src='./Documents/pages/mobile_4.jpg' width=50%>  <img src='./Documents/pages/mobile_6.jpg' width=45% align=right padding=10px> <img src='./Documents/pages/mobile_5.jpg' width=50%>
 
 
 
