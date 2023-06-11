@@ -246,9 +246,10 @@ export async function getServerSideProps (context) {
   console.log(responseData);
 
   try {
-    const response = await api.get(`/buildings/${responseData.selectedDate}/${responseData.buildingname}/${responseData.room}/reservation`, {headers:{cookie: context.req.headers.cookie || ''}});
+    const response = await api.get(`/buildings/${responseData.buildingname}/${responseData.room}/reservation`, {headers:{cookie: context.req.headers.cookie || ''}});
     if(response.status === 200) {
-      const user = response.data;
+      const user = response.data.user;
+      const date = response.data.date;
       return { props: { responseData, user } };
     } else {
 
