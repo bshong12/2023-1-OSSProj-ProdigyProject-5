@@ -70,6 +70,8 @@
 
 # 프로젝트 실행 모습
 
+토글 클릭시 프로젝트 실행 모습을 확인하실 수 있습니다.
+
 <details>
 <summary> Desktop Pages </summary>
 <div>
