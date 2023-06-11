@@ -181,7 +181,7 @@ async function updateApprovalToDatabase(Reservation) {
   try {
     let query;
 
-    if (Reservation.approval === 'F') {
+    if (Reservation.approval === 'T') {
       // MySQL에 데이터 업데이트하는 쿼리 (approval이 'F'인 경우)
       query = 'UPDATE DB.Reservation SET approval = ? WHERE id = ?';
     } else {

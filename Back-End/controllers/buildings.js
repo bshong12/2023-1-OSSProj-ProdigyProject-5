@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const building = require('../DB/db')
-const dateService = require('../services/buildings')
+const dateStorage = require('../services/dateStorage')
+// const dateService = require('../services/buildings')
 
 router.get('/', getBuildings);
-router.get('/:date', getBuildingsByDate)
+router.post('/', getDate)
 
 // 건물 이름 가져오기
 async function getBuildings(req, res) {
@@ -17,12 +18,10 @@ async function getBuildings(req, res) {
   }
 }
 
-// 날짜에 맞는 건물 정보 불러오기 (나중에 db연동 후 좀 더 구체적으로 변경 예정)
-async function getBuildingsByDate(req, res) {
+// 날짜에 맞는 건물 정보 불러오기 
+async function getDate(req, res) {
   try{
-    // const BuildingsByDate = await dateService.findByDate(req, res)
-    const buildingName = await building.getRoomNames();
-    res.status(200).send(buildingName);
+    dateStorage.setData(req.body.date);
   }
   catch(err) {
     console.log(err)
