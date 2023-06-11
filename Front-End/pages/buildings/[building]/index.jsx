@@ -13,14 +13,11 @@ import { set } from "react-hook-form";
 
 // {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
 //강의실 리스트 나타나는 페이지
-export default function Building({ date, building, buildingData }) {
+export default function Building({ building, buildingData }) {
   const { asPath } = useRouter();
   const pageHeading = building || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
   const floors = [...new Set(buildingData.map((roomData) => roomData.floor))]; //층 리스트를 만들기 위해 해당 건물에 존재하는 층을 중복된 것 제외 저장
-  
-
-  console.log(buildingData);
   
   const filterRoomsByFloor = () => {
     //선택된 층수에 따라 강의실 filter해서 분류
@@ -38,7 +35,7 @@ export default function Building({ date, building, buildingData }) {
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
           <Link href={
             
-            {pathname: `/buildings/${building}/${roomData.room}`, query: {date : date}}} 
+            {pathname: `/buildings/${building}/${roomData.room}`}} 
             passHref as={`/buildings/${building}/${roomData.room}`}>
             <div>
               <StyledLink
@@ -76,14 +73,14 @@ export default function Building({ date, building, buildingData }) {
     <UserUIContainer title={pageHeading} headerBorder footer>
       <main tw="h-full">
         {/* sm은 640px이 최대인 환경에서(모바일 고려) md-lg일때는 1040px이 최대 데탑환경고려 */}
-        <section tw="max-w-screen-sm md:max-w-screen-lg mx-auto text-center my-28 px-4">
+        <section tw="max-w-screen-lg md:max-w-screen-lg mx-auto text-center my-28 px-4">
           <BreadCrumb routesArr={decodeURIComponent(asPath).split("/").filter(String)} />
           <h1 className="h2-headline" tw="mt-20 pb-5 capitalize">
             {pageHeading}
           </h1>
-          <div tw="flex mt-10">
-            <span tw="mr-10">
-              <DropMenu buttonText={"층 리스트"}>
+          <div tw="flex mt-10 flex-col lg:(flex-row)">
+            <div tw="mr-10 mb-14">
+              <DropMenu buttonText={"층 리스트"} tw="w-full mb-12 lg:(w-1/2 border-r mb-0)">
                 <ul>
                   <FloorItem onClick={() => setSelectedFloor("")}>
                     모든 층 보기
@@ -96,10 +93,10 @@ export default function Building({ date, building, buildingData }) {
                   ))}
                 </ul>
               </DropMenu>
-            </span>
+            </div>
             <ul tw="list-inside text-left text-lg font-hero grid gap-2 sm:(grid-cols-1) lg:(grid-cols-1)">
-              {filterRoomsByFloor().map((roomData) => (
-                <Roomli key={roomData[0]} roomData={roomData} />
+              {filterRoomsByFloor().map((roomData, index) => (
+                <Roomli key={index} roomData={roomData} />
               ))}
             </ul>
           </div>
@@ -113,14 +110,14 @@ Building.theme = "light";
 
 //강의실 리스트를 받는 SSR
 export async function getServerSideProps (context) {
-  const { date ,building } = context.query;
+  const { building } = context.query;
   try {
-    const response = await api.get(`/buildings/${date}/${building}`);
+    const response = await api.get(`/buildings/${building}`);
     if(response.status === 200) {
       const buildingData = response.data;
-      return { props: { date, building, buildingData } };
+      return { props: { building, buildingData } };
     } else {
-      return { props: { date: "", building: "", buildingData:[]}}
+      return { props: { building: "", buildingData:[]}}
     }
    
   } catch (error) {

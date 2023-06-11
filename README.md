@@ -23,10 +23,36 @@
 <br>
 
 # 주요 기능들
+- **회원가입**
+
+<img src='./Documents/pages/SignUp.png'>
+
+    - 해싱을 통한 비밀번호 저장
 - **로그인 기능**
+
+<img src='./Documents/pages/signin.png'>
+
     - JWT 토큰을 활용한 로그인 기능 구현
 - **예약 기능**
-    - 예약
+
+<img src='./Documents/pages/timetable.png'>
+
+    - 30분 단위로 시간 선택, 최대 시간 4시간 예약 가능
+    - 본인 예약 내역 및 승인 또는 거절 사유 확인 가능한 마이페이지 구현
+
+- **관리자 기능**
+
+<img src='./Documents/pages/manage.png'>
+
+    - 예약 승인 및 예약 거절 기능 구현
+    - 예약 거절 시 예약 거절 사유 작성 기능 구현
+
+- **편의 기능**
+
+<img src='./Documents/pages/floor.png'>
+
+    - 편리한 UX를 위한 강의실 리스트 층별 분리 기능 구현
+    - 건물 위치를 쉽게 알 수 있도록 캠퍼스 맵 페이지 리스트 구현
 <br>
 
 # Team members

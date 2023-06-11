@@ -197,10 +197,10 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                       <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">이메일</p>
                     </div> 
                     <div tw="flex w-full items-center border-t border-neutral-3 h-7">
-                      <p tw="border-neutral-3 w-1/12 text-neutral-5">{user.name}</p>
-                      <p tw="border-neutral-3 w-1/6 text-neutral-5">{user.id}</p>
-                      <p tw="border-neutral-3 w-1/3 text-neutral-5">{user.phone}</p>
-                      <p tw="border-neutral-3 w-1/3 text-neutral-5">{user.email}</p>
+                      <p tw="border-neutral-3 w-1/12 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{user.name}</p>
+                      <p tw="border-neutral-3 w-1/6 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{user.id}</p>
+                      <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{user.phone}</p>
+                      <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{user.email}</p>
                     </div>
                   </div>
                   <h3 tw="text-left mt-5">신청 정보 확인</h3>
@@ -211,12 +211,12 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                       <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">시작시간</p>
                       <p tw="border-neutral-3 w-1/6 text-neutral-5 text-sm">종료시간</p>
                       <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">신청건물</p>
-                      <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm">신청장소</p>
+                      <p tw="border-neutral-3 w-1/3 text-neutral-5 text-sm ">신청장소</p>
                     </div> 
                     <div tw="flex w-full items-center border-t border-neutral-3 h-7">
-                      <p tw="border-neutral-3 w-1/6 text-neutral-5 overflow-ellipsis">{responseData.selectedDate}</p>
-                      <p tw="border-neutral-3 w-1/6 text-neutral-5">{startTime}</p>
-                      <p tw="border-neutral-3 w-1/6 text-neutral-5">{endTime()}</p>
+                      <p tw="border-neutral-3 w-1/6 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{responseData.selectedDate}</p>
+                      <p tw="border-neutral-3 w-1/6 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{startTime}</p>
+                      <p tw="border-neutral-3 w-1/6 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{endTime()}</p>
                       <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{responseData.buildingname}</p>
                       <p tw="border-neutral-3 w-1/3 text-neutral-5 overflow-hidden whitespace-nowrap overflow-ellipsis">{responseData.room}</p>
                     </div>
@@ -246,9 +246,10 @@ export async function getServerSideProps (context) {
   console.log(responseData);
 
   try {
-    const response = await api.get(`/buildings/${responseData.selectedDate}/${responseData.buildingname}/${responseData.room}/reservation`, {headers:{cookie: context.req.headers.cookie || ''}});
+    const response = await api.get(`/buildings/${responseData.buildingname}/${responseData.room}/reservation`, {headers:{cookie: context.req.headers.cookie || ''}});
     if(response.status === 200) {
-      const user = response.data;
+      const user = response.data.user;
+      const date = response.data.date;
       return { props: { responseData, user } };
     } else {
 

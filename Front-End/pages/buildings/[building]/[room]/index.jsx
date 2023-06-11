@@ -52,7 +52,7 @@ function ReservedLi({reserved}) { //이미 에약되어 있는 리스트 나타�
 }
 
 //강의실 예약을 위한 시간 선택 페이지
-export default function Room({ date, building, room, reservedTimes }) {
+export default function Room({building, room, reservedTimes }) {
 
   const { asPath } = useRouter()
   const router = useRouter()
@@ -67,8 +67,7 @@ export default function Room({ date, building, room, reservedTimes }) {
   const transData = { //다음 페이지에 보내주기 위한 데이터
     buildingname: building,
     room: room,
-    selectedTime: selectedTime,
-    selectedDate: date,
+    selectedTime: selectedTime
   }
 
   
@@ -103,13 +102,13 @@ export default function Room({ date, building, room, reservedTimes }) {
                 selectedTimes={selectedTime}
                 setSelectedTimes={setSelectedTimes}/>
             </div>
-            <table tw="border border-neutral-4 rounded-lg table-auto w-1/3 border-collapse text-left">
+            <table tw="border border-neutral-4 rounded-lg table-auto w-full lg:(w-1/3) border-collapse text-left">
               <thead>
                 <tr tw="border-b border-neutral-3 rounded-lg text-center">
                   <th colSpan={2} tw="h-10 rounded-lg">현재 예약/수업 내역</th>
                 </tr>
               </thead>
-              <tbody tw="h-[45rem] overflow-scroll">
+              <tbody tw="h-[45rem] overflow-scroll ">
                 <ul>
                 {reservedTimes
                 .sort((a, b) => { //예약 리스트를 시간 순으로 정렬하여 보여줌
@@ -138,12 +137,12 @@ Room.theme = "light"
 //해당 날짜에 예약되어 있는 리스트 반환
 export async function getServerSideProps (context) {
  
-  const {date, building, room} = context.query;
+  const {building, room} = context.query;
 
   try {
-    const response = await api.get(`/buildings/${date}/${building}/${room}`);
+    const response = await api.get(`/buildings/${building}/${room}`);
     const reservedTimes = response.data;
-    return { props: { date, building, room, reservedTimes } };
+    return { props: { building, room, reservedTimes } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };
