@@ -25,7 +25,7 @@
 # 주요 기능들
 - **회원가입**
 
-<img src='./Documents/pages/SingUp.png'>
+<img src='./Documents/pages/SignUp.png'>
 
     - 해싱을 통한 비밀번호 저장
 - **로그인 기능**
