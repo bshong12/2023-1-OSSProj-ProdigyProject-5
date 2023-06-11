@@ -12,7 +12,7 @@ import api from "../../utils/api"
 
 const exportDate = async (date) => {
   try {
-    const response = await api.post("/buildings", date);
+    const response = await api.post("/buildings", {date:date});
     return response;
   } catch(error) {
     console.error(error);
