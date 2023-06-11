@@ -34,7 +34,7 @@ const ReservCard =(reserve) => { //예약 정보를 나타내는 컴포넌트
       </div>
       <Modal isOpen={(isModalOpen)} setIsOpen={setIsModalOpen} title="거절사유" contentProps={{
           title: "거절 사유",
-          description: `${reserve.refuse_reason}`,
+          description: `${reserve.reserve.repuse_reason}`,
         }} /> 
     </li>
   );
