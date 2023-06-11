@@ -103,13 +103,13 @@ export default function Room({ date, building, room, reservedTimes }) {
                 selectedTimes={selectedTime}
                 setSelectedTimes={setSelectedTimes}/>
             </div>
-            <table tw="border border-neutral-4 rounded-lg table-auto w-1/3 border-collapse text-left">
+            <table tw="border border-neutral-4 rounded-lg table-auto w-full lg:(w-1/3) border-collapse text-left">
               <thead>
                 <tr tw="border-b border-neutral-3 rounded-lg text-center">
                   <th colSpan={2} tw="h-10 rounded-lg">현재 예약/수업 내역</th>
                 </tr>
               </thead>
-              <tbody tw="h-[45rem] overflow-scroll">
+              <tbody tw="h-[45rem] overflow-scroll w-full mb-12 lg:(w-1/2 border-r mb-0)">
                 <ul>
                 {reservedTimes
                 .sort((a, b) => { //예약 리스트를 시간 순으로 정렬하여 보여줌

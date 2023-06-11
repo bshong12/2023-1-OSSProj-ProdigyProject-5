@@ -84,7 +84,6 @@ const Tab = ({handleTabChange, activeTab}) => {
 export default function MyPage({reservedList}) {
   const [activeTab, setActiveTab] = useState("reservation"); //기본적으로 모든 예약을 보여줌
   const arrayList = reservedList;
-  console.log(arrayList);
   const [showReserved, setShowReserved] = useState(arrayList); //보여줄 예약 내역이 저장될 배열
 
   const approvalList = arrayList.filter((item) => item.approval === "T");
@@ -93,7 +92,7 @@ export default function MyPage({reservedList}) {
   const handleTabChange = (event) => {
     console.log("handle")
     setActiveTab(event.target.value);
-    if (activeTab === "reservation") {
+    if (activeTab === "approval") {
       setShowReserved(arrayList);
     } else {
       setShowReserved(approvalList);

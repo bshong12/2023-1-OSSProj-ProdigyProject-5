@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import tw from "twin.macro"
 import styled from "@emotion/styled"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
 import { Img, Button, Datepicker, StyledLink} from "../../components"
 import { UserUIContainer } from "../../layouts/UserUIContainer"
@@ -82,7 +81,7 @@ export default function Buildings({ allBuildings }) {
             </div>
             <div
               tw="relative px-5 py-10
-                  grid gap-4 grid-cols-2 sm:(grid-cols-3) lg:(grid-cols-4)
+                  grid gap-4 grid-cols-1 sm:(grid-cols-3) lg:(grid-cols-4)
                   "
             >
               {allBuildings?.map((building) => (

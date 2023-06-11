@@ -66,7 +66,6 @@ export default function Home() {
   //폼을 제출했을 때의 동작 정의 
   const onSubmit = (data) => {
     setIsLoading(true)
-    console.log(data)
 
     login(data)
     .then((response) => {

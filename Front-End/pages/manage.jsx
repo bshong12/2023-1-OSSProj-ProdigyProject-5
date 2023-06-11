@@ -163,10 +163,10 @@ export default function Management({reservedList}) {
       <main
               tw="min-h-screen max-w-screen-lg w-full
                 mx-auto px-4 pb-28 md:(px-8) flex
-                flex-row items-start justify-start mt-10"
+                flex-col lg:(flex-row) items-start justify-start mt-10"
       >
         
-        <div tw="w-1/2 flex flex-col mt-28">
+        <div tw="w-full lg:(w-1/2) flex flex-col mt-28">
           <h3>새로운 예약 내역</h3>
           <div tw="border border-neutral-4 rounded-lg w-[95%] bg-neutral-1 h-[45rem] overflow-scroll flex flex-col items-center p-5">
           {wait.map((reserv, index) => {
@@ -179,15 +179,15 @@ export default function Management({reservedList}) {
             
           </div>
         </div>
-        <div tw="w-1/2 flex flex-col mt-28 items-end">
-          <h3 tw="text-left w-5/6 ">승인한 예약</h3>
-          <div tw="border border-neutral-4 rounded-lg w-5/6 bg-neutral-1 h-[20rem] mb-14 max-h-[20rem] overflow-scroll flex flex-col items-center p-5">
+        <div tw="w-full lg:(w-1/2) flex flex-col mt-28 items-end">
+          <h3 tw="text-left lg:(w-5/6) w-full">승인한 예약</h3>
+          <div tw="border border-neutral-4 w-full rounded-lg lg:(w-5/6) bg-neutral-1 h-[20rem] mb-14 max-h-[20rem] overflow-scroll flex flex-col items-center p-5">
             {approval.map((reserv, index) => {
                return <ReservCard reserv={reserv} key={index}/>
             })}
           </div>
-          <h3 tw="text-left w-5/6">거절한 예약</h3>
-          <div tw="border border-neutral-4 rounded-lg w-5/6 bg-neutral-1 h-[20rem] max-h-[20rem] overflow-scroll flex flex-col items-center p-5">
+          <h3 tw="w-full text-left lg:(w-5/6)">거절한 예약</h3>
+          <div tw="border w-full border-neutral-4 rounded-lg lg:(w-5/6) bg-neutral-1 h-[20rem] max-h-[20rem] overflow-scroll flex flex-col items-center p-5">
             {denied.map((reserv, index) => {
                 return <ReservCard reserv={reserv} key={index}/>
               })}
