@@ -52,7 +52,7 @@ function ReservedLi({reserved}) { //이미 에약되어 있는 리스트 나타�
 }
 
 //강의실 예약을 위한 시간 선택 페이지
-export default function Room({ date, building, room, reservedTimes }) {
+export default function Room({building, room, reservedTimes }) {
 
   const { asPath } = useRouter()
   const router = useRouter()
@@ -67,8 +67,7 @@ export default function Room({ date, building, room, reservedTimes }) {
   const transData = { //다음 페이지에 보내주기 위한 데이터
     buildingname: building,
     room: room,
-    selectedTime: selectedTime,
-    selectedDate: date,
+    selectedTime: selectedTime
   }
 
   

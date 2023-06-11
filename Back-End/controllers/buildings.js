@@ -22,6 +22,7 @@ async function getBuildings(req, res) {
 async function getDate(req, res) {
   try{
     dateStorage.setData(req.body.date);
+    console.log(req.body.date);
   }
   catch(err) {
     console.log(err)

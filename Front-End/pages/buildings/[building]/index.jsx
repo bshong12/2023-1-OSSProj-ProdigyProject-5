@@ -95,8 +95,8 @@ export default function Building({ building, buildingData }) {
               </DropMenu>
             </div>
             <ul tw="list-inside text-left text-lg font-hero grid gap-2 sm:(grid-cols-1) lg:(grid-cols-1)">
-              {filterRoomsByFloor().map((roomData) => (
-                <Roomli key={roomData[0]} roomData={roomData} />
+              {filterRoomsByFloor().map((roomData, index) => (
+                <Roomli key={index} roomData={roomData} />
               ))}
             </ul>
           </div>
