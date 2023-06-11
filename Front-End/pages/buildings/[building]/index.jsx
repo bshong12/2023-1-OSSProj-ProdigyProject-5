@@ -13,7 +13,7 @@ import { set } from "react-hook-form";
 
 // {"room":"401-2166(신공학관(기숙사) 2166 강의실)","capacity":100,"equip_info":"","facility_info":"","floor":4}
 //강의실 리스트 나타나는 페이지
-export default function Building({ building, buildingData }) {
+export default function Building({ date, building, buildingData }) {
   const { asPath } = useRouter();
   const pageHeading = building || "강의실 목록";
   const [selectedFloor, setSelectedFloor] = useState(""); //선택된 층
@@ -35,7 +35,7 @@ export default function Building({ building, buildingData }) {
         <span tw="flex w-auto bg-neutral-1 justify-between rounded-lg">
           <Link href={
             
-            {pathname: `/buildings/${building}/${roomData.room}`}} 
+            {pathname: `/buildings/${building}/${roomData.room}`, query: {date : date}}} 
             passHref as={`/buildings/${building}/${roomData.room}`}>
             <div>
               <StyledLink
@@ -110,14 +110,14 @@ Building.theme = "light";
 
 //강의실 리스트를 받는 SSR
 export async function getServerSideProps (context) {
-  const { building } = context.query;
+  const { date ,building } = context.query;
   try {
-    const response = await api.get(`/buildings/${building}`);
+    const response = await api.get(`/buildings/${date}/${building}`);
     if(response.status === 200) {
       const buildingData = response.data;
-      return { props: { building, buildingData } };
+      return { props: { date, building, buildingData } };
     } else {
-      return { props: { building: "", buildingData:[]}}
+      return { props: { date: "", building: "", buildingData:[]}}
     }
    
   } catch (error) {

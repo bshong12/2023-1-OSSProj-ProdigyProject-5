@@ -109,7 +109,7 @@ export default function Room({ date, building, room, reservedTimes }) {
                   <th colSpan={2} tw="h-10 rounded-lg">현재 예약/수업 내역</th>
                 </tr>
               </thead>
-              <tbody tw="h-[45rem] overflow-scroll ">
+              <tbody tw="h-[45rem] overflow-scroll w-full mb-12 lg:(w-1/2 border-r mb-0)">
                 <ul>
                 {reservedTimes
                 .sort((a, b) => { //예약 리스트를 시간 순으로 정렬하여 보여줌
@@ -138,12 +138,12 @@ Room.theme = "light"
 //해당 날짜에 예약되어 있는 리스트 반환
 export async function getServerSideProps (context) {
  
-  const {building, room} = context.query;
+  const {date, building, room} = context.query;
 
   try {
-    const response = await api.get(`/buildings/${building}/${room}`);
+    const response = await api.get(`/buildings/${date}/${building}/${room}`);
     const reservedTimes = response.data;
-    return { props: { building, room, reservedTimes } };
+    return { props: { date, building, room, reservedTimes } };
   } catch (error) {
     // 오류 처리
     return { props: { buildingname: "" } };
