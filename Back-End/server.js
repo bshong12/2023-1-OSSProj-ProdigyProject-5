@@ -31,8 +31,8 @@ const logOut = require('./controllers/logout');
 const mypage = require('./controllers/mypage');
 
 app.use('/api/buildings', buildingController);
-app.use('/api/buildings', roomController);
-app.use('/api/buildings/:buildingname', roomReservation);
+app.use('/api/buildings/:date', roomController);
+app.use('/api/buildings/:date/:buildingname', roomReservation);
 app.use('/api/signup', signUp);
 app.use('/api/login', logIn);
 app.use('/api/logout', logOut);

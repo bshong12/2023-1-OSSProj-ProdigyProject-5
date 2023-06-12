@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const db = require('../DB/db');
 
@@ -20,8 +20,8 @@ async function signUp(req, res){
 
     // 비밀번호를 해시화
     const saltRounds = 10; // 솔트 라운드 수
-    const salt = await bcryptjs.genSalt(saltRounds);
-    const hashedPassword = await bcryptjs.hash(password, salt);
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     // 회원 정보 저장
     const user = { id, password: hashedPassword, name, phone, email, type }
