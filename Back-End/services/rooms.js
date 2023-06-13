@@ -2,7 +2,6 @@ const db = require('../DB/db')
 
 async function findByBuildingname(req, res) {
   const buildingname = req.params.buildingname;
-  console.log(buildingname)
   const roomInfo = await db.getRoomInfo();  // 강의실 정보
   const roomsWtihBuilding = await roomInfo.filter(item => item.name == buildingname);  // 강의실 정보중 이름과 같은 항목만 뽑아냄
 

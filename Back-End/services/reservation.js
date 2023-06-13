@@ -1,17 +1,12 @@
-const buildingModel = require('../models/buildings')
+
 const db = require('../DB/db')
 
 // 예약날짜[{name: "예약명", startTime: "시작시간", endTime: "종료시간"}, {name: "예약명", startTime: "시작시간", endTime: "종료시간"}]
 async function reservedTime(date, room) {
-  console.log(date);
   const dateStr = new Date(date);
   const options = { weekday: 'short' };
   const weekday = dateStr.toLocaleString('ko-KR', options); // 선택된 날짜의 요일 계산
   
-  console.log(weekday);  
-  console.log(room);
-
-
   // 강의실과 요일로 데이터베이스에서 해당하는 예약 가져옴
   const reservation = await db.getLecturesAndReservationsByWeekdayAndRoom(weekday,room);
 
@@ -29,7 +24,6 @@ async function reservedTime(date, room) {
   }));
   const combinedData = [...lectures, ...reservations];
 
-  console.log(combinedData)
   return  combinedData;
 }
 

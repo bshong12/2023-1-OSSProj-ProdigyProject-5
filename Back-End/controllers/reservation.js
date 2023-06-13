@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router({mergeParams: true}); // 부모 라우터의 파라미터 사용하기 위해
-const buildingModel = require('../models/buildings');
 const {reservedTime, reservationId} = require('../services/reservation');
 const {verifyToken} = require('../services/auth')
 const {saveReservationToDatabase} = require('../DB/db')
