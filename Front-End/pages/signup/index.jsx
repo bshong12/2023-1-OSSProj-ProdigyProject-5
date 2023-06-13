@@ -23,7 +23,6 @@ async function signup(data) {
     }
     const response = await api.post("/signup", requestData);
     // 회원가입 성공
-    console.log(response.data);
     return response;  
   } catch (error) {
     // 회원가입 실패
@@ -60,7 +59,6 @@ export default function Signup() {
   //회원가입 폼을 제출했을 때의 동작
   const onSubmit = (data) => {
     setIsLoading(true);
-    console.log(data);
 
     signup(data)
     .then((response) => {
