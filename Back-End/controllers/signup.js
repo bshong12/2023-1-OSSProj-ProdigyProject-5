@@ -12,8 +12,8 @@ async function signUp(req, res){
 
     // 사용자 확인
     const users = await db.getUser(); // users는 데이터베이스에서 가져옴
-    const existingUser = users.find(user => user.id === id);  
-    if (existingUser) {
+    const existingUser = users.find(user => user.id === id);   
+    if (existingUser) {  // 이미 있는 id라면 회원가입안되게 
       return res.status(409).json({ message: '이미 존재하는 사용자입니다.' });
     }
 

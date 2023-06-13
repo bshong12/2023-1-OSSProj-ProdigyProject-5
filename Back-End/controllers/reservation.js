@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router({mergeParams: true}); // 부모 라우터의 파라미터 사용하기 위해
-const buildingModel = require('../models/buildings');
 const {reservedTime, reservationId} = require('../services/reservation');
 const {verifyToken} = require('../services/auth')
 const {saveReservationToDatabase} = require('../DB/db')
@@ -27,8 +26,8 @@ async function getTimetable(req, res) {
 
 async function getReservation(req, res) {
   try{
-    const user = req.user;
-    delete user.iat;
+    const user = req.user;    // 토큰 인증 후 access token에 담겨있는 user정보를 가져옴
+    delete user.iat;          // 토큰에 담겨 있는 정보 중 유효기간 관련된 정보를 제외하고 클라이언트로 보냄
     delete user.exp;
 
     res.status(200).send(user);
@@ -41,11 +40,10 @@ async function getReservation(req, res) {
 // 예약 정보 저장
 async function postReservation(req, res) {
   try{
-    const id = await reservationId();
+    const id = await reservationId();   // 예약번호 지정함
     const data = req.body;
     data.id = id;
-    await saveReservationToDatabase(data)
-    // {name: “name”, studentID: “id”, phone: “phonenumber”, email: “email@gmail”} 이런 형식의 데이터를 데이터베이스에 저장
+    await saveReservationToDatabase(data)   //예약 정보 db에 저장
     res.status(200).json(data)
   }
   catch(err) {

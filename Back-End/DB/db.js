@@ -181,11 +181,11 @@ async function updateApprovalToDatabase(Reservation) {
   try {
     let query;
 
-    if (Reservation.approval === 'F') {
-      // MySQL에 데이터 업데이트하는 쿼리 (approval이 'F'인 경우)
+    if (Reservation.approval === 'T') {
+      // MySQL에 데이터 업데이트하는 쿼리 (approval이 'T'인 경우) - 승인
       query = 'UPDATE DB.Reservation SET approval = ? WHERE id = ?';
     } else {
-      // MySQL에 데이터 업데이트하는 쿼리 (approval이 'F'가 아닌 경우)
+      // MySQL에 데이터 업데이트하는 쿼리 (approval이 'F'인 경우) - 거절
       query = 'UPDATE DB.Reservation SET approval = ?, repuse_reason = ? WHERE id = ?';
     }
 
