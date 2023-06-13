@@ -38,7 +38,7 @@ async function verifyToken(req, res, next) {
               },
               process.env.ACCESS_SECRET,
               {
-                expiresIn: '1m'
+                expiresIn: '15m'
               }
             );
             

@@ -12,8 +12,8 @@ async function reservedTime(date, room) {
 
   // 예약명, start time, end time만 뽑아서 저장
   const lectures = reservation.lectures.map(item => ({
-    name: item.subject,
-    startTime: item.start_time,
+    name: item.subject,           
+    startTime: item.start_time,   
     endTime: item.end_time
   }));
 
@@ -24,12 +24,12 @@ async function reservedTime(date, room) {
     startTime: item.start_time,
     endTime: item.end_time
   }));
-  const combinedData = [...lectures, ...reservations];
+  const combinedData = [...lectures, ...reservations];    // 수업과 예약 시간 클라이언트로 보내서 예약시간 선택시 선택 불가능하게
 
   return  combinedData;
 }
 
-async function reservationId(req, res) {
+async function reservationId(req, res) {    // 예약id 지정(마지막 예약id 다음번호로 id지정)
   try{
     const reservation = await db.getReservation();
     var maxId = 0;

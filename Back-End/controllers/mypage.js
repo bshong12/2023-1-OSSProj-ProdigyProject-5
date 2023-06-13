@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../DB/db');
-const {verifyToken} = require('../services/auth')
+const {verifyToken} = require('../services/auth')   // 토큰 인증하는 미들웨어 
 
 // mypage와 관리자 모드 등에서는 토큰인증이 된 경우에만 실행됨
 router.get('/mypage',verifyToken, myReservation); 
