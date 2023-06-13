@@ -10,14 +10,6 @@ import { store } from '../../redux/store';
 import api from "../../utils/api"
 
 
-// const exportDate = async (date) => {
-//   try {
-//     const response = await api.post("/buildings", {date:date});
-//     return response;
-//   } catch(error) {
-//     console.error(error);
-//   }
-// };
 
 //캠퍼스 지도에 표시된 번호를 통해 건물의 위치와 이름을 함께 알려주고 있는 페이지로, 이 페이지에는 대관신청이 안되는 건물도 있기 때문에 대관신청이 되지 않는 건물은 따로 처리
 export default function Map({Buildings}) {

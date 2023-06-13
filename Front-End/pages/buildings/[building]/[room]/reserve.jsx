@@ -26,7 +26,6 @@ const apply = async (data, responseData, user) => {
       start_time: responseData.startTime,
       end_time: responseData.endTime,
     };
-    console.log(requestData);
     const response = await api.post(`/buildings/${requestData.date}/${responseData.buildingname}/${requestData.room_id}/reservation`, requestData);
     return response;
   } catch (error) {
@@ -223,7 +222,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
                   </div>
                   <div tw="w-full flex justify-center">
                     <Button variant={"primary"} type="submit" tw="m-7 w-36">예약신청</Button>
-                    <Button variant={"trans"} onClick={() => { //예약 취소 버튼. 클릭하게 되면 다시 건물 페이지로 이동
+                    <Button variant={"trans"} type="button" onClick={() => { //예약 취소 버튼. 클릭하게 되면 다시 건물 페이지로 이동
                       const result = window.confirm("예약을 취소하시겠습니까?");
                       if(result) {
                         router.push('../../../buildings');
@@ -241,10 +240,7 @@ export default function ReserveForm({responseData, user}) { //앞서 선택했�
 
 //해당 예약을 하는 유저 정보와 앞서 선택했던 예약 정보들을 받아옴
 export async function getServerSideProps (context) {
-  console.log(context.query);
   const responseData = JSON.parse(decodeURIComponent(context.query.responseData));
-  console.log(responseData);
-
   try {
     const response = await api.get(`/buildings/${responseData.selectedDate}/${responseData.buildingname}/${responseData.room}/reservation`, {headers:{cookie: context.req.headers.cookie || ''}});
     if(response.status === 200) {

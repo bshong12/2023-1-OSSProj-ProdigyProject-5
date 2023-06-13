@@ -15,7 +15,6 @@ const postApproval = async (approve,id,repuse_reason) => { //승인되거나 거
       id: id,
       repuse_reason: repuse_reason
     };
-    console.log(requestData);
     const response = await api.post("/admin", requestData); //엔드포인트는 /admin
     return response;
   } catch (error) {
@@ -206,7 +205,6 @@ export async function getServerSideProps(context) {
         cookie: context.req.headers.cookie || '', //쿠키에 저장된 사용자 토큰을 포함
       }
     });
-    console.log(response.data);
     const reservedList = response.data;
     return { props: { reservedList } };
     } 

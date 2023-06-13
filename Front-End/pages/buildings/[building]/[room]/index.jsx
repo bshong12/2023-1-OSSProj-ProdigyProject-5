@@ -10,7 +10,6 @@ import api from "../../../../utils/api";
 
 function TimeSplit(reservedTimes) { //예약 시작시간 예약 끝 시간이 저장되어있는 예약 시간을 받아 예약이 되어있는 시간을 30분 단위로 쪼개서 저장하는 함수
   const fullTime = []; //예약되어있는 시간을 30분 단위로 쪼개서 저장하는 배열
-  console.log(reservedTimes);
   
   reservedTimes.forEach(reserv => {
     //시간과 분으로 쪼갬

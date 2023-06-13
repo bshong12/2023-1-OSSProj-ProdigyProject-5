@@ -34,7 +34,7 @@ const ReservCard =(reserve) => { //예약 정보를 나타내는 컴포넌트
       </div>
       <Modal isOpen={(isModalOpen)} setIsOpen={setIsModalOpen} title="거절사유" contentProps={{
           title: "거절 사유",
-          description: `${reserve.refuse_reason}`,
+          description: `${reserve.reserve.repuse_reason}`,
         }} /> 
     </li>
   );
@@ -47,21 +47,19 @@ const Tab = ({handleTabChange, activeTab}) => {
     <div tw="w-full bg-white border-b border-neutral-3">
       <div tw="max-w-screen-lg h-full mx-auto justify-between flex items-center">
         <div tw="w-auto flex">
-          <label tw="relative pl-8">
+          <label tw="relative pl-8 active:(text-dguMain font-bold)" >
             예약내역
             <input 
               type="radio" 
               value="reservation"
               name="tab"
-              tw="absolute opacity-0 h-0 w-0"
+              id="reservation"
+              tw="absolute opacity-0 h-0 w-0 checked:(text-dguMain font-bold)"
               checked={activeTab === 'reservation'}
               onChange={handleTabChange}
             />
-            
           </label>
-
-
-          <label tw="relative pl-8">
+          <label tw="relative pl-8 active:(text-dguMain font-bold)">
             <input 
             type="radio" 
             value="approval"
@@ -124,7 +122,6 @@ export async function getServerSideProps(context) {
       }
     });
     if(response.status === 200){
-      console.log(response.data);
       const reservedList = response.data;
       return { props: { reservedList } };
     } else {
