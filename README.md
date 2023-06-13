@@ -65,7 +65,8 @@
 | Backend   | [홍범선](https://github.com/bshong12)|<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/> <img src="https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=Postman&logoColor=white"/> |
 | DBA  | [홍서이](https://github.com/hongseoi) | <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/> <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/> <img src="https://img.shields.io/badge/Express-000000?style=flat-square&logo=Express&logoColor=white"/> <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/> |
 
-
+*이름 클릭 시 개인 github profile로 이동
+<br>
 <br>
 
 # 프로젝트 실행 모습
@@ -164,11 +165,22 @@
 
 ```
 └─📂Back-End # 백엔드 관련 파일들
-    ├─📂controllers
+    ├─📂controllers # 라우팅 관련 모듈 
+        ├─📃buildings.js    # 건물 목록 전송
+        ├─📃login.js        # 로그인(토큰 생성)
+        ├─📃logout.js       # 로그아웃(토큰 삭제)
+        ├─📃mypage.js       # 마이페이지 및 관리자모드 페이지
+        ├─📃reservation.js  # 수업과 예약 시간 클라이언트로 전송 및 작성한 예약정보 db저장
+        ├─📃rooms.js        # 강의실 목록 전송
+        └─📃signup.js       # 회원가입
     ├─📂DB
         └─📃db.js # 데이터베이스에서 데이터 SELECT, INSERT 하는 함수 정의
-    ├─📂models
-    └─📂services
+    ├─📂services    
+        ├─📃auth.js         # 토큰인증 및 재발급 
+        ├─📃reservation.js  # 선택된 날짜와 강의실에 있는 수업과 예약 시간 불러오기
+        └─📃rooms.js        # 건물에 해당하는 강의실 목록
+    └─📃server.js       # 라우팅 경로 설정 및 서버 실행 파일
+
 └─📂Documents   # 문서 및 데이터베이스 관련 파일들
     └─📂DB
         ├─📂Backup  # MySQL sql 백업 파일들
@@ -178,6 +190,7 @@
     ├─📂Interim Announcement    # 중간발표 파일들
     ├─📂Proceddings # 회의록 파일들
     └─📂Propossal   # 제안서 파일들
+   
 └─📂Front-End
     ├─📂components # 컴포넌트들 정의
     ├─📂layouts # 페이지에 공통적으로 사용된 레이아웃 미리 정의
@@ -212,8 +225,8 @@ git clone https://github.com/CSID-DGU/2023-1-OSSProj-ProdigyProject-5.git
 
 
 2. ./Documents/DB 위치의 230605.sql 파일을 다운로드하고 MySQL 데이터베이스에 백업합니다.
-
-3. 터미널에서 프로젝트 루트 디렉토리로 이동하고 아래 명령어를 실행합니다.
+3. Back-End 폴더에 .env파일을 생성하고 ACCESS_SECRET와 REFRESH_SECRET 값을 작성(토큰 암호화에 사용)
+4. 터미널에서 프로젝트 루트 디렉토리로 이동하고 아래 명령어를 실행합니다.
 
  ```
  cd ./Back-End
@@ -225,7 +238,7 @@ git clone https://github.com/CSID-DGU/2023-1-OSSProj-ProdigyProject-5.git
  yarn dev
  ```
 
-4. http://localhost:3000 주소에서 실행된 프로젝트를 확인할 수 있습니다.
+5. http://localhost:3000 주소에서 실행된 프로젝트를 확인할 수 있습니다.
 
 <br>
 
